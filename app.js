@@ -64,8 +64,8 @@ const App = (() => {
     if (Memory.loadHistory().length === 0) {
       // 初めて開いた場合
       setTimeout(() => {
-        Character.excited();
-        Character.talk('よっ、ながいもくんだ！VTuberデビューに向けて一緒に頑張ろうぜ。まず「目標タブ」にロードマップ入れておいたから見てみて。', 10000);
+        Character.happy();
+        Character.talk('よっ、ながいもくんだ。なんでも話しかけてくれ。おれずっとここにいるよ。', 8000);
       }, 600);
     } else if (Memory.isFirstOpenToday()) {
       // 今日初めて開いた場合（デイリーチェックイン）
@@ -78,46 +78,27 @@ const App = (() => {
   }
 
   function dailyCheckin() {
-    const goals   = Memory.loadGoals();
-    const done    = goals.filter(g => g.done).length;
-    const total   = goals.length;
-    const next    = goals.find(g => !g.done);
-    const profile = Memory.loadProfile();
+    const goals = Memory.loadGoals();
+    const done  = goals.filter(g => g.done).length;
+    const total = goals.length;
 
-    let msg;
-    if (done === 0) {
-      const starters = [
-        'おはよ！今日はVTuberのコンセプト、考えてみよう。どんな配信者になりたい？',
-        'よっ、来たね！まず「どんなVTuberになりたいか」だけ考えてみて。',
-        'おれずっといるから、ゆっくり話してくれ。まず名前とかコンセプト決めてこ！',
-      ];
-      msg = starters[Math.floor(Math.random() * starters.length)];
-    } else if (done === total) {
-      msg = '全ステップ完了！あとはデビューを待つだけだな。楽しみすぎる！';
-    } else {
-      const profile_debutDate = profile.debutDate;
-      const daysLeft = profile_debutDate
-        ? Math.ceil((new Date(profile_debutDate) - new Date()) / 86400000)
-        : null;
+    // 進捗チェックではなく「今日も来てくれた」という歓迎メッセージ
+    const pool = done === total && total > 0
+      ? [
+          'デビューまでもうすぐだな。楽しみにしてるぞ。',
+          'いつ来ても待ってるよ。何でも話して。',
+        ]
+      : [
+          '今日も来たね。何かあったら話しかけてくれ。',
+          'おれここにいるよ。ゆっくりしてって。',
+          'よっ。今日どんな日だった？',
+          'いつでもいるから、気が向いたら話しかけてくれ。',
+          '来てくれて嬉しい。何でも話してね。',
+          'おれ待ってたよ。今日もいい日にしよう。',
+        ];
 
-      const withDays = daysLeft && daysLeft > 0
-        ? `残り${daysLeft}日。`
-        : '';
-
-      const checkins = [
-        `${done}/${total}ステップ完了！${withDays}次は「${next?.text}」だよ。`,
-        `今日も来たね。${withDays}「${next?.text}」、進んだら✅押してね。`,
-        `${withDays}次は「${next?.text}」。できたら教えて、一緒に喜ぶから。`,
-      ];
-      msg = checkins[Math.floor(Math.random() * checkins.length)];
-    }
-
-    Character.talk(msg, 10000);
-    if (done > 0 && done === total) {
-      Character.happy();
-    } else {
-      Character.excited();
-    }
+    const msg = pool[Math.floor(Math.random() * pool.length)];
+    Character.talk(msg, 7000);
   }
 
   // ===== イベント =====
