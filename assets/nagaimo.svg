@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 220" width="120" height="220">
+  <!-- 葉っぱ -->
+  <ellipse cx="52" cy="28" rx="14" ry="22" fill="#6BBF59" transform="rotate(-25, 52, 42)" opacity="0.9"/>
+  <ellipse cx="68" cy="28" rx="14" ry="22" fill="#55A845" transform="rotate(25, 68, 42)" opacity="0.9"/>
+  <line x1="60" y1="44" x2="60" y2="58" stroke="#55A845" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- ボディ（長芋の形：縦長の楕円） -->
+  <ellipse cx="60" cy="135" rx="40" ry="72" fill="#C8874A"/>
+  <ellipse cx="60" cy="132" rx="37" ry="68" fill="#D9975A"/>
+
+  <!-- テクスチャの節 -->
+  <ellipse cx="42" cy="100" rx="5" ry="3" fill="#B87840" opacity="0.55" transform="rotate(-10,42,100)"/>
+  <ellipse cx="78" cy="115" rx="4" ry="2.5" fill="#B87840" opacity="0.55" transform="rotate(8,78,115)"/>
+  <ellipse cx="44" cy="135" rx="4.5" ry="2.5" fill="#B87840" opacity="0.45" transform="rotate(-5,44,135)"/>
+  <ellipse cx="76" cy="150" rx="4" ry="2" fill="#B87840" opacity="0.45" transform="rotate(12,76,150)"/>
+  <ellipse cx="48" cy="165" rx="3.5" ry="2" fill="#B87840" opacity="0.4"/>
+
+  <!-- 目（白目） -->
+  <ellipse cx="47" cy="108" rx="10" ry="11" fill="white"/>
+  <ellipse cx="73" cy="108" rx="10" ry="11" fill="white"/>
+
+  <!-- 目（瞳） -->
+  <circle cx="48" cy="109" r="6.5" fill="#2A1A0A"/>
+  <circle cx="74" cy="109" r="6.5" fill="#2A1A0A"/>
+
+  <!-- 目（ハイライト） -->
+  <circle cx="50" cy="107" r="2.2" fill="white"/>
+  <circle cx="76" cy="107" r="2.2" fill="white"/>
+
+  <!-- ほっぺ -->
+  <ellipse cx="36" cy="120" rx="8" ry="5.5" fill="#FF9999" opacity="0.45"/>
+  <ellipse cx="84" cy="120" rx="8" ry="5.5" fill="#FF9999" opacity="0.45"/>
+
+  <!-- 口（笑顔） -->
+  <path d="M 51 124 Q 60 132 69 124" fill="none" stroke="#8B5E3C" stroke-width="2.8" stroke-linecap="round"/>
+
+  <!-- 腕（小さなずんぐりした腕） -->
+  <ellipse cx="22" cy="125" rx="12" ry="8" fill="#C8874A" transform="rotate(-20, 22, 125)"/>
+  <ellipse cx="22" cy="125" rx="10" ry="6.5" fill="#D9975A" transform="rotate(-20, 22, 125)"/>
+
+  <ellipse cx="98" cy="125" rx="12" ry="8" fill="#C8874A" transform="rotate(20, 98, 125)"/>
+  <ellipse cx="98" cy="125" rx="10" ry="6.5" fill="#D9975A" transform="rotate(20, 98, 125)"/>
+
+  <!-- 足 -->
+  <ellipse cx="47" cy="198" rx="10" ry="12" fill="#B87840"/>
+  <ellipse cx="47" cy="196" rx="8.5" ry="9" fill="#C8874A"/>
+
+  <ellipse cx="73" cy="198" rx="10" ry="12" fill="#B87840"/>
+  <ellipse cx="73" cy="196" rx="8.5" ry="9" fill="#C8874A"/>
+</svg>
