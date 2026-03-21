@@ -1,50 +1,154 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 220" width="120" height="220">
-  <!-- 葉っぱ -->
-  <ellipse cx="52" cy="28" rx="14" ry="22" fill="#6BBF59" transform="rotate(-25, 52, 42)" opacity="0.9"/>
-  <ellipse cx="68" cy="28" rx="14" ry="22" fill="#55A845" transform="rotate(25, 68, 42)" opacity="0.9"/>
-  <line x1="60" y1="44" x2="60" y2="58" stroke="#55A845" stroke-width="2.5" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 200" width="112" height="200" shape-rendering="crispEdges">
+  <!-- ながいもくん 16-bit pixel art / pixel=8x8 / 14col x 25row -->
 
-  <!-- ボディ（長芋の形：縦長の楕円） -->
-  <ellipse cx="60" cy="135" rx="40" ry="72" fill="#C8874A"/>
-  <ellipse cx="60" cy="132" rx="37" ry="68" fill="#D9975A"/>
+  <!-- === LEAVES (rows 0-5) === -->
+  <!-- row 0 -->
+  <rect x="40" y="0"  width="8"  height="8" fill="#338833"/>
+  <rect x="48" y="0"  width="16" height="8" fill="#55cc44"/>
+  <rect x="64" y="0"  width="8"  height="8" fill="#338833"/>
+  <!-- row 1 -->
+  <rect x="32" y="8"  width="8"  height="8" fill="#338833"/>
+  <rect x="40" y="8"  width="32" height="8" fill="#55cc44"/>
+  <rect x="72" y="8"  width="8"  height="8" fill="#338833"/>
+  <!-- row 2 -->
+  <rect x="24" y="16" width="8"  height="8" fill="#338833"/>
+  <rect x="32" y="16" width="48" height="8" fill="#55cc44"/>
+  <rect x="80" y="16" width="8"  height="8" fill="#338833"/>
+  <!-- row 3 -->
+  <rect x="24" y="24" width="8"  height="8" fill="#338833"/>
+  <rect x="32" y="24" width="48" height="8" fill="#55cc44"/>
+  <rect x="80" y="24" width="8"  height="8" fill="#338833"/>
+  <!-- row 4 -->
+  <rect x="32" y="32" width="8"  height="8" fill="#338833"/>
+  <rect x="40" y="32" width="32" height="8" fill="#55cc44"/>
+  <rect x="72" y="32" width="8"  height="8" fill="#338833"/>
+  <!-- row 5: stem -->
+  <rect x="48" y="40" width="16" height="8" fill="#338833"/>
 
-  <!-- テクスチャの節 -->
-  <ellipse cx="42" cy="100" rx="5" ry="3" fill="#B87840" opacity="0.55" transform="rotate(-10,42,100)"/>
-  <ellipse cx="78" cy="115" rx="4" ry="2.5" fill="#B87840" opacity="0.55" transform="rotate(8,78,115)"/>
-  <ellipse cx="44" cy="135" rx="4.5" ry="2.5" fill="#B87840" opacity="0.45" transform="rotate(-5,44,135)"/>
-  <ellipse cx="76" cy="150" rx="4" ry="2" fill="#B87840" opacity="0.45" transform="rotate(12,76,150)"/>
-  <ellipse cx="48" cy="165" rx="3.5" ry="2" fill="#B87840" opacity="0.4"/>
+  <!-- === ARMS + SHOULDER (rows 7-8) === -->
+  <!-- row 7 -->
+  <rect x="8"  y="56" width="16" height="8" fill="#c07838"/>
+  <rect x="24" y="56" width="8"  height="8" fill="#a05a28"/>
+  <rect x="32" y="56" width="48" height="8" fill="#d4884a"/>
+  <rect x="80" y="56" width="8"  height="8" fill="#a05a28"/>
+  <rect x="88" y="56" width="16" height="8" fill="#c07838"/>
+  <!-- row 8 -->
+  <rect x="0"  y="64" width="16" height="8" fill="#c07838"/>
+  <rect x="16" y="64" width="8"  height="8" fill="#a05a28"/>
+  <rect x="24" y="64" width="64" height="8" fill="#d4884a"/>
+  <rect x="88" y="64" width="8"  height="8" fill="#a05a28"/>
+  <rect x="96" y="64" width="16" height="8" fill="#c07838"/>
 
-  <!-- 目（白目） -->
-  <ellipse cx="47" cy="108" rx="10" ry="11" fill="white"/>
-  <ellipse cx="73" cy="108" rx="10" ry="11" fill="white"/>
+  <!-- === EYES row 9: top row / highlight at col3 & col7 === -->
+  <rect x="16" y="72" width="8"  height="8" fill="#a05a28"/>
+  <rect x="24" y="72" width="8"  height="8" fill="#ffffff"/>
+  <rect x="32" y="72" width="16" height="8" fill="#f0ece8"/>
+  <rect x="48" y="72" width="8"  height="8" fill="#d4884a"/>
+  <rect x="56" y="72" width="8"  height="8" fill="#ffffff"/>
+  <rect x="64" y="72" width="16" height="8" fill="#f0ece8"/>
+  <rect x="80" y="72" width="8"  height="8" fill="#d4884a"/>
+  <rect x="88" y="72" width="8"  height="8" fill="#a05a28"/>
 
-  <!-- 目（瞳） -->
-  <circle cx="48" cy="109" r="6.5" fill="#2A1A0A"/>
-  <circle cx="74" cy="109" r="6.5" fill="#2A1A0A"/>
+  <!-- === EYES row 10: mid row / all white === -->
+  <rect x="16" y="80" width="8"  height="8" fill="#a05a28"/>
+  <rect x="24" y="80" width="24" height="8" fill="#f0ece8"/>
+  <rect x="48" y="80" width="8"  height="8" fill="#d4884a"/>
+  <rect x="56" y="80" width="24" height="8" fill="#f0ece8"/>
+  <rect x="80" y="80" width="8"  height="8" fill="#d4884a"/>
+  <rect x="88" y="80" width="8"  height="8" fill="#a05a28"/>
 
-  <!-- 目（ハイライト） -->
-  <circle cx="50" cy="107" r="2.2" fill="white"/>
-  <circle cx="76" cy="107" r="2.2" fill="white"/>
+  <!-- === EYES row 11: bottom row / pupils === -->
+  <rect x="16" y="88" width="8"  height="8" fill="#a05a28"/>
+  <rect x="24" y="88" width="16" height="8" fill="#f0ece8"/>
+  <rect x="40" y="88" width="8"  height="8" fill="#220800"/>
+  <rect x="48" y="88" width="8"  height="8" fill="#d4884a"/>
+  <rect x="56" y="88" width="16" height="8" fill="#f0ece8"/>
+  <rect x="72" y="88" width="8"  height="8" fill="#220800"/>
+  <rect x="80" y="88" width="8"  height="8" fill="#d4884a"/>
+  <rect x="88" y="88" width="8"  height="8" fill="#a05a28"/>
 
-  <!-- ほっぺ -->
-  <ellipse cx="36" cy="120" rx="8" ry="5.5" fill="#FF9999" opacity="0.45"/>
-  <ellipse cx="84" cy="120" rx="8" ry="5.5" fill="#FF9999" opacity="0.45"/>
+  <!-- === CHEEKS row 12 === -->
+  <rect x="16" y="96" width="8"  height="8" fill="#a05a28"/>
+  <rect x="24" y="96" width="16" height="8" fill="#ff9999"/>
+  <rect x="40" y="96" width="24" height="8" fill="#d4884a"/>
+  <rect x="64" y="96" width="16" height="8" fill="#ff9999"/>
+  <rect x="80" y="96" width="8"  height="8" fill="#d4884a"/>
+  <rect x="88" y="96" width="8"  height="8" fill="#a05a28"/>
 
-  <!-- 口（笑顔） -->
-  <path d="M 51 124 Q 60 132 69 124" fill="none" stroke="#8B5E3C" stroke-width="2.8" stroke-linecap="round"/>
+  <!-- === BODY plain row 13 === -->
+  <rect x="16" y="104" width="8"  height="8" fill="#a05a28"/>
+  <rect x="24" y="104" width="64" height="8" fill="#d4884a"/>
+  <rect x="88" y="104" width="8"  height="8" fill="#a05a28"/>
 
-  <!-- 腕（小さなずんぐりした腕） -->
-  <ellipse cx="22" cy="125" rx="12" ry="8" fill="#C8874A" transform="rotate(-20, 22, 125)"/>
-  <ellipse cx="22" cy="125" rx="10" ry="6.5" fill="#D9975A" transform="rotate(-20, 22, 125)"/>
+  <!-- === MOUTH row 14: corners === -->
+  <rect x="16" y="112" width="8"  height="8" fill="#a05a28"/>
+  <rect x="24" y="112" width="8"  height="8" fill="#d4884a"/>
+  <rect x="32" y="112" width="8"  height="8" fill="#7a3820"/>
+  <rect x="40" y="112" width="24" height="8" fill="#d4884a"/>
+  <rect x="64" y="112" width="8"  height="8" fill="#7a3820"/>
+  <rect x="72" y="112" width="16" height="8" fill="#d4884a"/>
+  <rect x="88" y="112" width="8"  height="8" fill="#a05a28"/>
 
-  <ellipse cx="98" cy="125" rx="12" ry="8" fill="#C8874A" transform="rotate(20, 98, 125)"/>
-  <ellipse cx="98" cy="125" rx="10" ry="6.5" fill="#D9975A" transform="rotate(20, 98, 125)"/>
+  <!-- === MOUTH row 15: curve === -->
+  <rect x="16" y="120" width="8"  height="8" fill="#a05a28"/>
+  <rect x="24" y="120" width="16" height="8" fill="#d4884a"/>
+  <rect x="40" y="120" width="32" height="8" fill="#7a3820"/>
+  <rect x="72" y="120" width="16" height="8" fill="#d4884a"/>
+  <rect x="88" y="120" width="8"  height="8" fill="#a05a28"/>
 
-  <!-- 足 -->
-  <ellipse cx="47" cy="198" rx="10" ry="12" fill="#B87840"/>
-  <ellipse cx="47" cy="196" rx="8.5" ry="9" fill="#C8874A"/>
+  <!-- === BODY rows 16-18 === -->
+  <rect x="16" y="128" width="8"  height="8" fill="#a05a28"/>
+  <rect x="24" y="128" width="64" height="8" fill="#d4884a"/>
+  <rect x="88" y="128" width="8"  height="8" fill="#a05a28"/>
 
-  <ellipse cx="73" cy="198" rx="10" ry="12" fill="#B87840"/>
-  <ellipse cx="73" cy="196" rx="8.5" ry="9" fill="#C8874A"/>
+  <rect x="16" y="136" width="8"  height="8" fill="#a05a28"/>
+  <rect x="24" y="136" width="64" height="8" fill="#d4884a"/>
+  <rect x="88" y="136" width="8"  height="8" fill="#a05a28"/>
+
+  <!-- row 18: yam texture nodes -->
+  <rect x="16" y="144" width="8"  height="8" fill="#a05a28"/>
+  <rect x="24" y="144" width="8"  height="8" fill="#f2c080"/>
+  <rect x="32" y="144" width="16" height="8" fill="#d4884a"/>
+  <rect x="48" y="144" width="8"  height="8" fill="#b06830"/>
+  <rect x="56" y="144" width="16" height="8" fill="#d4884a"/>
+  <rect x="72" y="144" width="8"  height="8" fill="#f2c080"/>
+  <rect x="80" y="144" width="8"  height="8" fill="#d4884a"/>
+  <rect x="88" y="144" width="8"  height="8" fill="#a05a28"/>
+
+  <!-- === BODY taper rows 19-22 === -->
+  <!-- row 19 -->
+  <rect x="24" y="152" width="8"  height="8" fill="#a05a28"/>
+  <rect x="32" y="152" width="48" height="8" fill="#d4884a"/>
+  <rect x="80" y="152" width="8"  height="8" fill="#a05a28"/>
+
+  <!-- row 20: texture node -->
+  <rect x="24" y="160" width="8"  height="8" fill="#a05a28"/>
+  <rect x="32" y="160" width="8"  height="8" fill="#d4884a"/>
+  <rect x="40" y="160" width="8"  height="8" fill="#b06830"/>
+  <rect x="48" y="160" width="24" height="8" fill="#d4884a"/>
+  <rect x="72" y="160" width="8"  height="8" fill="#b06830"/>
+  <rect x="80" y="160" width="8"  height="8" fill="#a05a28"/>
+
+  <!-- row 21 -->
+  <rect x="32" y="168" width="8"  height="8" fill="#a05a28"/>
+  <rect x="40" y="168" width="32" height="8" fill="#d4884a"/>
+  <rect x="72" y="168" width="8"  height="8" fill="#a05a28"/>
+
+  <!-- row 22 -->
+  <rect x="32" y="176" width="8"  height="8" fill="#a05a28"/>
+  <rect x="40" y="176" width="32" height="8" fill="#d4884a"/>
+  <rect x="72" y="176" width="8"  height="8" fill="#a05a28"/>
+
+  <!-- === FEET rows 23-24 === -->
+  <!-- row 23 -->
+  <rect x="24" y="184" width="8"  height="8" fill="#a05a28"/>
+  <rect x="32" y="184" width="16" height="8" fill="#b86830"/>
+  <rect x="56" y="184" width="16" height="8" fill="#b86830"/>
+  <rect x="72" y="184" width="8"  height="8" fill="#a05a28"/>
+
+  <!-- row 24 -->
+  <rect x="24" y="192" width="8"  height="8" fill="#a05a28"/>
+  <rect x="32" y="192" width="16" height="8" fill="#b86830"/>
+  <rect x="56" y="192" width="16" height="8" fill="#b86830"/>
+  <rect x="72" y="192" width="8"  height="8" fill="#a05a28"/>
 </svg>
