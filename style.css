@@ -1110,6 +1110,7 @@ html, body {
   width: min(380px, 90vw);
   max-height: 85vh;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -1252,11 +1253,11 @@ html, body {
   justify-content: space-between;
   align-items: center;
   position: sticky;
-  top: -20px;
+  top: 0;
   background: var(--px-panel);
-  margin: -20px -18px 0;
-  padding: 20px 18px 10px;
-  z-index: 1;
+  padding-bottom: 10px;
+  margin-bottom: 2px;
+  z-index: 10;
   border-bottom: 2px solid var(--snes-lo);
 }
 .icon-btn {
@@ -1515,5 +1516,72 @@ html, body {
 @supports (padding-top: env(safe-area-inset-top)) {
   #app-header {
     padding-top: max(8px, env(safe-area-inset-top));
+  }
+}
+
+/* ===== デスクトップレイアウト（768px以上） ===== */
+@media (min-width: 768px) {
+  html, body {
+    overflow: auto;
+  }
+
+  #app {
+    max-width: 960px;
+    height: 100svh;
+    display: grid;
+    grid-template-areas:
+      "header  header"
+      "char    chat"
+      "char    input";
+    grid-template-columns: 340px 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  #app-header {
+    grid-area: header;
+  }
+
+  #character-area {
+    grid-area: char;
+    flex: unset;
+    height: 100%;
+    border-right: 3px solid var(--snes-lo);
+    border-bottom: none;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 60px;
+  }
+
+  #chat-section {
+    grid-area: chat;
+  }
+
+  #input-area {
+    grid-area: input;
+    border-top: 3px solid var(--px-pink-l);
+  }
+
+  /* デスクトップでは吹き出しを右側に出す */
+  #speech-bubble {
+    left: unset;
+    right: 4px;
+    max-width: 110px;
+  }
+  #speech-bubble::after {
+    right: unset;
+    left: -9px;
+    border-left: none;
+    border-right: 9px solid #fff;
+  }
+  #speech-bubble::before {
+    right: unset;
+    left: -13px;
+    border-left: none;
+    border-right: 12px solid var(--snes-lo);
+  }
+
+  /* モーダルは横幅広く */
+  .modal-box {
+    width: min(480px, 90vw);
   }
 }
