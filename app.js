@@ -83,6 +83,7 @@ const App = (() => {
     });
     settingsSaveBtn.addEventListener('click', handleSettingsSave);
     settingsClearBtn.addEventListener('click', handleClearHistory);
+    $('settings-test-btn')?.addEventListener('click', handleApiTest);
     settingsCloseBtn.addEventListener('click', () => {
       settingsModal.classList.add('hidden');
     });
@@ -122,9 +123,8 @@ const App = (() => {
     sendBtn.disabled = true;
     userInput.value = '';
 
-    // ユーザーメッセージを表示・保存
+    // ユーザーメッセージをUIに表示（履歴保存はAPI成功後）
     addMessageToUI('user', text);
-    Memory.addMessage('user', text);
     scrollToBottom();
 
     // タイピングインジケーター表示 & 考え中
@@ -133,17 +133,12 @@ const App = (() => {
 
     try {
       const context = Memory.getContextMessages();
-      // 最後に追加したユーザーメッセージは getContextMessages() に含まれるので
-      // gemini.js 側では context + userMessage を結合して送る形に合わせる
-      // ただし context は Memory.addMessage 後に取得しているため末尾に user が含まれる
-      // → gemini.js の chat() はcontextMessagesにuserMessageを追加するので、
-      //   ここでは userMessage を除いたコンテキストを渡す
-      const contextWithoutLast = context.slice(0, -1);
-      const reply = await GeminiAPI.chat(apiKey, contextWithoutLast, text);
+      const reply = await GeminiAPI.chat(apiKey, context, text);
 
       hideTypingIndicator();
 
-      // 返答を表示・保存
+      // API成功後に両方を保存
+      Memory.addMessage('user', text);
       Memory.addMessage('assistant', reply);
       addMessageToUI('assistant', reply);
       scrollToBottom();
@@ -185,10 +180,9 @@ const App = (() => {
 
     } catch (err) {
       hideTypingIndicator();
-      // エラー時は保存したユーザーメッセージを取り消す（次回の連続user問題を防ぐ）
-      Memory.removeLastMessage();
-      const errMsg = friendlyError(err.message);
-      addMessageToUI('assistant', errMsg);
+      // 【診断モード】生のエラーを表示して根本原因を特定する
+      const rawError = err?.message || String(err) || '(エラーメッセージなし)';
+      addMessageToUI('assistant', '【診断】' + rawError);
       scrollToBottom();
       Character.glitch();
       setTimeout(() => Character.talk('うっ…うまく返せなかった', 3000), 800);
@@ -207,6 +201,22 @@ const App = (() => {
     settingsModal.classList.add('hidden');
     Character.happy();
     Character.talk('APIキー更新したよ！', 3000);
+  }
+
+  async function handleApiTest() {
+    const key = Memory.loadApiKey();
+    const resultEl = $('api-test-result');
+    if (!resultEl) return;
+    resultEl.style.display = 'block';
+    resultEl.textContent = '通信中...';
+    try {
+      const reply = await GeminiAPI.chat(key, [], 'テスト');
+      resultEl.style.color = '#0f0';
+      resultEl.textContent = '✅ 成功: ' + reply.slice(0, 80);
+    } catch (err) {
+      resultEl.style.color = '#f66';
+      resultEl.textContent = '❌ エラー: ' + (err?.message || String(err));
+    }
   }
 
   function handleClearHistory() {

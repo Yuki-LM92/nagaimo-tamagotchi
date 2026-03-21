@@ -39,13 +39,28 @@ const Memory = (() => {
   }
 
   // Geminiに渡す直近履歴（role: 'user' | 'model'）
+  // 連続同ロール問題（INVALID_ARGUMENT）を防ぐためsanitizeする
   function getContextMessages() {
-    return loadHistory()
-      .slice(-CONTEXT_LIMIT)
-      .map(m => ({
-        role: m.role === 'assistant' ? 'model' : 'user',
-        parts: [{ text: m.content }]
-      }));
+    const raw = loadHistory().slice(-CONTEXT_LIMIT);
+
+    // 連続する同ロールを除去（後のメッセージを優先して残す）
+    const sanitized = [];
+    for (const m of raw) {
+      const geminiRole = m.role === 'assistant' ? 'model' : 'user';
+      if (sanitized.length > 0 && sanitized[sanitized.length - 1].role === geminiRole) {
+        // 同ロールが連続 → 前のものを上書き（最新のみ残す）
+        sanitized[sanitized.length - 1] = { role: geminiRole, parts: [{ text: m.content }] };
+      } else {
+        sanitized.push({ role: geminiRole, parts: [{ text: m.content }] });
+      }
+    }
+
+    // Geminiは必ずuserで始まる必要がある
+    while (sanitized.length > 0 && sanitized[0].role !== 'user') {
+      sanitized.shift();
+    }
+
+    return sanitized;
   }
 
   // APIキー
