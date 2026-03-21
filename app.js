@@ -57,15 +57,67 @@ const App = (() => {
     scrollToBottom();
     initSceneSelector();
 
-    // 初回挨拶（履歴が空のとき）
+    // VTuberロードマップ初期化（初回のみ）
+    Memory.initRoadmap();
+
+    // 初回挨拶 or デイリーチェックイン
     if (Memory.loadHistory().length === 0) {
+      // 初めて開いた場合
       setTimeout(() => {
-        Character.talk('よっ、ながいもくんだ。なんでも話しかけてくれ。', 6000);
+        Character.excited();
+        Character.talk('よっ、ながいもくんだ！VTuberデビューに向けて一緒に頑張ろうぜ。まず「目標タブ」にロードマップ入れておいたから見てみて。', 10000);
       }, 600);
+    } else if (Memory.isFirstOpenToday()) {
+      // 今日初めて開いた場合（デイリーチェックイン）
+      Memory.markCheckinDone();
+      setTimeout(() => dailyCheckin(), 1500);
     }
 
     // 生活シミュレーター開始
     LifeSim.start();
+  }
+
+  function dailyCheckin() {
+    const goals   = Memory.loadGoals();
+    const done    = goals.filter(g => g.done).length;
+    const total   = goals.length;
+    const next    = goals.find(g => !g.done);
+    const profile = Memory.loadProfile();
+
+    let msg;
+    if (done === 0) {
+      const starters = [
+        'おはよ！今日はVTuberのコンセプト、考えてみよう。どんな配信者になりたい？',
+        'よっ、来たね！まず「どんなVTuberになりたいか」だけ考えてみて。',
+        'おれずっといるから、ゆっくり話してくれ。まず名前とかコンセプト決めてこ！',
+      ];
+      msg = starters[Math.floor(Math.random() * starters.length)];
+    } else if (done === total) {
+      msg = '全ステップ完了！あとはデビューを待つだけだな。楽しみすぎる！';
+    } else {
+      const profile_debutDate = profile.debutDate;
+      const daysLeft = profile_debutDate
+        ? Math.ceil((new Date(profile_debutDate) - new Date()) / 86400000)
+        : null;
+
+      const withDays = daysLeft && daysLeft > 0
+        ? `残り${daysLeft}日。`
+        : '';
+
+      const checkins = [
+        `${done}/${total}ステップ完了！${withDays}次は「${next?.text}」だよ。`,
+        `今日も来たね。${withDays}「${next?.text}」、進んだら✅押してね。`,
+        `${withDays}次は「${next?.text}」。できたら教えて、一緒に喜ぶから。`,
+      ];
+      msg = checkins[Math.floor(Math.random() * checkins.length)];
+    }
+
+    Character.talk(msg, 10000);
+    if (done > 0 && done === total) {
+      Character.happy();
+    } else {
+      Character.excited();
+    }
   }
 
   // ===== イベント =====

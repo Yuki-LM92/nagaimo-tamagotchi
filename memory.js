@@ -1,11 +1,29 @@
 // 会話履歴・プロフィール・記憶のローカルストレージ管理 + Supabase同期
 const Memory = (() => {
-  const HISTORY_KEY = 'nagaimo_history';
-  const PROFILE_KEY = 'nagaimo_profile';
-  const PINS_KEY    = 'nagaimo_pins';
-  const IDEAS_KEY   = 'nagaimo_ideas';
-  const LOG_KEY     = 'nagaimo_log';
-  const GOALS_KEY   = 'nagaimo_goals';
+  const HISTORY_KEY      = 'nagaimo_history';
+  const PROFILE_KEY      = 'nagaimo_profile';
+  const PINS_KEY         = 'nagaimo_pins';
+  const IDEAS_KEY        = 'nagaimo_ideas';
+  const LOG_KEY          = 'nagaimo_log';
+  const GOALS_KEY        = 'nagaimo_goals';
+  const ROADMAP_INIT_KEY = 'nagaimo_roadmap_inited';
+  const CHECKIN_DATE_KEY = 'nagaimo_checkin_date';
+
+  // VTuberデビューまでのデフォルトロードマップ
+  const VTUBER_ROADMAP = [
+    'コンセプトを決める（どんなVTuberになりたいか）',
+    'VTuber名・キャラクター名を決める',
+    'キャラクタービジュアルのイメージを固める',
+    'Live2Dモデルを依頼 or 自作するか決める',
+    'マイクを用意する',
+    'OBS Studioをインストール・設定する',
+    'YouTubeチャンネルを開設する',
+    'X（Twitter）アカウントを開設する',
+    'チャンネルアート・アイコンを作る',
+    'テスト配信を1回やってみる（非公開でOK）',
+    '初配信の告知をする',
+    '初配信をする！！',
+  ];
 
   const MAX_MESSAGES  = 60;
   const CONTEXT_LIMIT = 50;
@@ -131,6 +149,20 @@ const Memory = (() => {
     save(LOG_KEY, log); scheduleSyncToSupabase();
   }
 
+  // ===== VTuberロードマップ初期化 =====
+  function initRoadmap() {
+    if (localStorage.getItem(ROADMAP_INIT_KEY)) return; // 初期化済み
+    if (loadGoals().length > 0) return;                 // 既存の目標がある場合はスキップ
+    const goals = VTUBER_ROADMAP.map(text => ({ text, done: false, date: today(), roadmap: true }));
+    save(GOALS_KEY, goals);
+    localStorage.setItem(ROADMAP_INIT_KEY, '1');
+    scheduleSyncToSupabase();
+  }
+
+  // ===== デイリーチェックイン =====
+  function isFirstOpenToday() { return (localStorage.getItem(CHECKIN_DATE_KEY) || '') !== today(); }
+  function markCheckinDone()  { localStorage.setItem(CHECKIN_DATE_KEY, today()); }
+
   // ===== 目標管理 =====
   function loadGoals() { return load(GOALS_KEY, []); }
   function addGoal(text) {
@@ -152,8 +184,28 @@ const Memory = (() => {
   function buildSystemContext() {
     const profile = loadProfile();
     const pins    = loadPins();
-    const goals   = loadGoals().filter(g => !g.done);
+    const allGoals = loadGoals();
+    const doneGoals = allGoals.filter(g => g.done);
+    const pendingGoals = allGoals.filter(g => !g.done);
+    const nextTask = pendingGoals[0];
     let ctx = '';
+
+    // VTuberプロジェクト進捗（最重要コンテキスト）
+    if (allGoals.length > 0) {
+      ctx += `\n\n## VTuberプロジェクト進捗`;
+      ctx += `\n完了ステップ: ${doneGoals.length}/${allGoals.length}`;
+      if (nextTask) ctx += `\n次のタスク: ${nextTask.text}`;
+      if (doneGoals.length > 0) {
+        ctx += `\n最近完了したこと: ${doneGoals.slice(-3).map(g => g.text).join('、')}`;
+      }
+      if (profile.debutDate) {
+        const days = Math.ceil((new Date(profile.debutDate) - new Date()) / 86400000);
+        if (days > 0) ctx += `\nデビューまで残り${days}日`;
+        else if (days <= 0) ctx += `\nデビュー予定日を過ぎています！`;
+      }
+    }
+
+    // プロフィール
     const hasProfile = Object.values(profile).some(v => v && String(v).trim());
     if (hasProfile) {
       ctx += '\n\n## 飼い主のVTuber情報';
@@ -164,14 +216,12 @@ const Memory = (() => {
       if (profile.goal)      ctx += `\n目標: ${profile.goal}`;
       if (profile.notes)     ctx += `\nメモ: ${profile.notes}`;
     }
+
     if (pins.length > 0) {
       ctx += '\n\n## 必ず覚えておくこと';
       pins.forEach(p => { ctx += `\n・${p.text}`; });
     }
-    if (goals.length > 0) {
-      ctx += '\n\n## 飼い主の未達成の目標';
-      goals.forEach(g => { ctx += `\n・${g.text}`; });
-    }
+
     return ctx;
   }
 
@@ -182,6 +232,7 @@ const Memory = (() => {
     loadIdeas, addIdea, removeIdea,
     loadLog, addLog, removeLog,
     loadGoals, addGoal, toggleGoal, removeGoal,
-    buildSystemContext, loadFromSupabase
+    buildSystemContext, loadFromSupabase,
+    initRoadmap, isFirstOpenToday, markCheckinDone
   };
 })();
