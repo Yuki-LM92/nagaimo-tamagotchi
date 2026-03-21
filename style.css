@@ -207,9 +207,9 @@ html, body {
 
 #scene-bg::before,
 #scene-bg::after {
+  content: '';
   position: absolute;
   pointer-events: none;
-  line-height: 1;
   z-index: 1;
 }
 
@@ -217,64 +217,87 @@ html, body {
 .scene-farm {
   background: linear-gradient(
     to bottom,
-    #87CEEB 0%, #B8E0FF 44%,
-    #5DBB63 44%, #48A352 62%,
-    #8B6640 62%
+    #7ec8e3 0%, #b0ddf5 42%,
+    #5ab85c 42%, #459448 60%,
+    #8b6640 60%
   );
 }
+/* CSS sun */
 .scene-farm::before {
-  content: '☀️';
-  top: 7%; right: 11%;
-  font-size: 2.4rem;
-  filter: drop-shadow(0 0 6px rgba(255,220,0,0.6));
+  width: 48px; height: 48px;
+  top: 7%; right: 10%;
+  background: radial-gradient(circle, #ffe566 20%, #ffb800 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 22px 8px rgba(255,200,0,0.38), 0 0 60px 20px rgba(255,180,0,0.12);
+  animation: sun-glow 4s ease-in-out infinite;
 }
+/* CSS cloud */
 .scene-farm::after {
-  content: '☁️  ☁️';
-  top: 20%; left: 6%;
-  font-size: 1.5rem;
-  opacity: 0.9;
+  width: 66px; height: 22px;
+  top: 20%; left: 7%;
+  background: rgba(255,255,255,0.86);
+  border-radius: 50px;
+  box-shadow: 18px -12px 0 7px rgba(255,255,255,0.86), 38px -5px 0 3px rgba(255,255,255,0.80);
+  filter: blur(0.8px);
 }
 
 /* 🌸 お花畑 */
 .scene-flowers {
   background: linear-gradient(
     to bottom,
-    #FFE4F4 0%, #FFCCE8 44%,
-    #7DD87D 44%, #60C860 100%
+    #ffe0f4 0%, #ffc8e8 42%,
+    #72d472 42%, #58c258 100%
   );
 }
+/* CSS flowers row */
 .scene-flowers::before {
-  content: '🌸  🌼  🌺';
-  bottom: 34%; left: 3%;
-  font-size: 1.1rem;
-  letter-spacing: 2px;
+  width: 8px; height: 8px;
+  bottom: 38%; left: 5%;
+  background: #ff85c0;
+  border-radius: 50%;
+  box-shadow:
+    22px  0   0 4px #ffaad4,
+    46px -4px 0 5px #f06aa0,
+    70px  3px 0 3px #ffb3d9,
+    94px -3px 0 4px #ff85c0,
+    118px 4px 0 5px #ffaad4,
+    142px -4px 0 3px #f06aa0,
+    166px  2px 0 4px #ff85c0;
 }
+/* CSS butterfly */
 .scene-flowers::after {
-  content: '🦋';
-  top: 18%; right: 16%;
-  font-size: 1.9rem;
+  width: 14px; height: 9px;
+  top: 20%; right: 15%;
+  background: rgba(175,100,215,0.75);
+  border-radius: 100% 0 0 100% / 50%;
+  box-shadow: 18px 0 0 -1px rgba(175,100,215,0.65);
   animation: butterfly 5s ease-in-out infinite;
 }
 
-/* 🌌 宇宙 (sasakure.UK: ハロー、プラネット。) */
+/* 🌌 宇宙 */
 .scene-space {
   background: linear-gradient(
     to bottom,
     #06041a 0%, #120830 45%, #1c0f48 100%
   );
 }
+/* CSS stars (radial-gradient dots) */
 .scene-space::before {
-  content: '🌌';
-  top: 5%; left: 8%;
-  font-size: 3.4rem;
-  filter: drop-shadow(0 0 14px rgba(155,122,232,0.9));
+  inset: 0;
+  background:
+    radial-gradient(circle, rgba(255,255,255,0.90) 1px, transparent 1px) 8px  18px / 55px 48px,
+    radial-gradient(circle, rgba(200,180,255,0.80) 1px, transparent 1px) 32px  8px / 72px 60px,
+    radial-gradient(circle, rgba(255,255,255,0.75) 1px, transparent 1px) 52px 38px / 80px 68px,
+    radial-gradient(circle, rgba(180,210,255,0.70) 1px, transparent 1px) 18px 55px / 65px 54px;
+  animation: twinkle-stars 4s ease-in-out infinite;
 }
+/* CSS planet */
 .scene-space::after {
-  content: '✨  ⭐  💫';
-  top: 14%; right: 4%;
-  font-size: 1rem;
-  letter-spacing: 8px;
-  animation: twinkle-emoji 3s ease-in-out infinite;
+  width: 46px; height: 46px;
+  top: 7%; left: 10%;
+  background: radial-gradient(circle at 38% 35%, #a07ef0 0%, #4a1f7a 72%);
+  border-radius: 50%;
+  box-shadow: 0 0 20px 4px rgba(155,122,232,0.45), inset -8px -4px 0 rgba(0,0,0,0.32);
 }
 
 /* 🌙 夜空 */
@@ -284,21 +307,26 @@ html, body {
     #1a1040 0%, #2d1b69 55%, #3a2280 100%
   );
 }
+/* CSS moon */
 .scene-night::before {
-  content: '🌕';
-  top: 7%; right: 12%;
-  font-size: 2.6rem;
-  filter: drop-shadow(0 0 10px rgba(255,240,160,0.7));
+  width: 44px; height: 44px;
+  top: 7%; right: 10%;
+  background: radial-gradient(circle, #fff8d0 0%, #ffe066 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 22px 6px rgba(255,220,60,0.28), inset -10px -4px 0 rgba(200,160,20,0.25);
 }
+/* CSS stars */
 .scene-night::after {
-  content: '⭐  ✨  💫';
-  top: 18%; left: 6%;
-  font-size: 1.1rem;
-  letter-spacing: 6px;
-  animation: twinkle-emoji 2.5s ease-in-out infinite;
+  inset: 0;
+  background:
+    radial-gradient(circle, rgba(255,255,255,0.90) 1px, transparent 1px) 20px 25px / 60px 52px,
+    radial-gradient(circle, rgba(255,255,255,0.75) 1px, transparent 1px) 48px 12px / 80px 65px,
+    radial-gradient(circle, rgba(200,180,255,0.80) 1px, transparent 1px) 12px 60px / 70px 58px,
+    radial-gradient(circle, rgba(255,255,255,0.70) 1px, transparent 1px) 60px 42px / 90px 72px;
+  animation: twinkle-stars 3.5s ease-in-out infinite alternate;
 }
 
-/* 💻 サイバー空間 (sasakure.UK: データ・グリッド世界) */
+/* 💻 サイバー空間 */
 .scene-cyber {
   background:
     linear-gradient(rgba(43,196,212,0.10) 1px, transparent 1px),
@@ -306,39 +334,51 @@ html, body {
     linear-gradient(to bottom, #060e1e 0%, #0a1428 60%, #060e20 100%);
   background-size: 28px 28px, 28px 28px, 100% 100%;
 }
+/* CSS scanlines */
 .scene-cyber::before {
-  content: '💻';
-  top: 8%; left: 12%;
-  font-size: 2.4rem;
-  filter: drop-shadow(0 0 10px rgba(43,196,212,0.9));
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(43,196,212,0.04) 3px,
+    rgba(43,196,212,0.04) 4px
+  );
 }
+/* CSS terminal glow box */
 .scene-cyber::after {
-  content: '📡  🔷';
-  bottom: 36%; right: 6%;
-  font-size: 1.3rem;
-  letter-spacing: 10px;
-  filter: drop-shadow(0 0 6px rgba(43,196,212,0.7));
+  width: 54px; height: 38px;
+  top: 9%; left: 10%;
+  border: 1.5px solid rgba(43,196,212,0.60);
+  border-radius: 6px;
+  box-shadow: 0 0 16px rgba(43,196,212,0.35), inset 0 0 16px rgba(43,196,212,0.07);
 }
 
 /* 🌊 海辺 */
 .scene-beach {
   background: linear-gradient(
     to bottom,
-    #87CEEB 0%, #B8E0FF 37%,
-    #42A5F5 37%, #1E88E5 55%,
-    #FDE68A 55%, #FBC02D 100%
+    #7ec8e3 0%, #b0ddf5 36%,
+    #3a9ed8 36%, #1a78c2 54%,
+    #f5e090 54%, #e8c84a 100%
   );
 }
+/* CSS sun */
 .scene-beach::before {
-  content: '☀️';
-  top: 7%; right: 11%;
-  font-size: 2.4rem;
+  width: 48px; height: 48px;
+  top: 6%; right: 10%;
+  background: radial-gradient(circle, #ffe566 20%, #ffb800 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 22px 8px rgba(255,200,0,0.38);
+  animation: sun-glow 4s ease-in-out infinite;
 }
+/* CSS wave highlight */
 .scene-beach::after {
-  content: '🐚  🦀';
-  bottom: 6%; left: 6%;
-  font-size: 1.2rem;
-  letter-spacing: 14px;
+  width: 100%; height: 18px;
+  bottom: 44%; left: 0;
+  background: rgba(255,255,255,0.16);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  filter: blur(2px);
 }
 
 /* ===== 背景セレクター ===== */
@@ -622,27 +662,29 @@ html, body {
 }
 
 /* ===== 吹き出し ===== */
+/* character-area直下に配置 → キャラと重ならない */
 #speech-bubble {
   position: absolute;
-  top: -12px;
+  top: 8px;
   left: 50%;
   transform: translateX(-50%);
   background: white;
   color: var(--text);
   border: 2px solid var(--pink-l);
   border-radius: 18px;
-  padding: 10px 16px;
-  font-size: 0.88rem;
-  max-width: min(220px, 80vw);  /* 小型機種でもはみ出さない */
+  padding: 9px 16px;
+  font-size: 0.86rem;
+  max-width: min(240px, 82vw);
+  max-height: 70px;
+  overflow: hidden;
   font-family: 'Hachi Maru Pop', 'Hiragino Maru Gothic ProN', cursive;
-  max-width: 220px;
   min-width: 80px;
   text-align: center;
   line-height: 1.5;
-  box-shadow: 0 4px 16px var(--shadow);
+  box-shadow: 0 4px 20px var(--shadow);
   white-space: pre-wrap;
   word-break: break-word;
-  z-index: 10;
+  z-index: 8;
   animation: bubble-in 0.25s ease-out;
 }
 #speech-bubble::after {
@@ -1037,6 +1079,11 @@ html, body {
 @keyframes twinkle-emoji {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.3; }
+}
+@keyframes twinkle-stars {
+  0%   { opacity: 0.55; }
+  50%  { opacity: 1.0;  }
+  100% { opacity: 0.65; }
 }
 @keyframes sun-glow {
   0%, 100% { filter: drop-shadow(0 0 4px rgba(255,220,0,0.5)); }
