@@ -84,6 +84,10 @@ const App = (() => {
     settingsSaveBtn.addEventListener('click', handleSettingsSave);
     settingsClearBtn.addEventListener('click', handleClearHistory);
     $('settings-test-btn')?.addEventListener('click', handleApiTest);
+    $('api-test-copy-btn')?.addEventListener('click', () => {
+      const text = $('api-test-text')?.textContent || '';
+      copyMsg(text);
+    });
     settingsCloseBtn.addEventListener('click', () => {
       settingsModal.classList.add('hidden');
     });
