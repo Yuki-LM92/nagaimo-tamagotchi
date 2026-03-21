@@ -31,6 +31,13 @@ const Memory = (() => {
     localStorage.removeItem(HISTORY_KEY);
   }
 
+  // APIエラー時に追加したユーザーメッセージを取り消す
+  function removeLastMessage() {
+    const history = loadHistory();
+    if (history.length > 0) history.pop();
+    saveHistory(history);
+  }
+
   // Geminiに渡す直近履歴（role: 'user' | 'model'）
   function getContextMessages() {
     return loadHistory()
@@ -57,6 +64,7 @@ const Memory = (() => {
   return {
     loadHistory,
     addMessage,
+    removeLastMessage,
     clearHistory,
     getContextMessages,
     saveApiKey,

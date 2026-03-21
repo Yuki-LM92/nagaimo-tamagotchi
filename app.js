@@ -185,6 +185,8 @@ const App = (() => {
 
     } catch (err) {
       hideTypingIndicator();
+      // エラー時は保存したユーザーメッセージを取り消す（次回の連続user問題を防ぐ）
+      Memory.removeLastMessage();
       const errMsg = friendlyError(err.message);
       addMessageToUI('assistant', errMsg);
       scrollToBottom();
@@ -265,12 +267,16 @@ const App = (() => {
   }
 
   function friendlyError(msg) {
-    if (msg.includes('API_KEY') || msg.includes('401') || msg.includes('API key'))
+    if (!msg) return '…うまく答えられなかった。もう一回試してみて。';
+    const m = msg.toLowerCase();
+    if (m.includes('api_key') || m.includes('401') || m.includes('api key') || m.includes('invalid_api_key'))
       return '…APIキーが合ってないっぽい。設定で確認してみて。';
-    if (msg.includes('quota') || msg.includes('429'))
+    if (m.includes('quota') || m.includes('429') || m.includes('resource_exhausted'))
       return 'ちょっと疲れた。少ししてからもう一回話しかけて。';
-    if (msg.includes('network') || msg.toLowerCase().includes('fetch'))
+    if (m.includes('network') || m.includes('fetch') || m.includes('failed to fetch'))
       return 'ネット繋がってるか確認してくれる？';
+    if (m.includes('invalid_argument') || m.includes('invalid value') || m.includes('invalid json'))
+      return '…送り方がおかしかったみたい。もう一回試してみて。';
     return '…うまく答えられなかった。もう一回試してみて。';
   }
 
