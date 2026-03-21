@@ -1,5 +1,5 @@
 // ながいもくん Service Worker
-const CACHE = 'nagaimo-v20';
+const CACHE = 'nagaimo-v21';
 const FILES = [
   './',
   './index.html',
