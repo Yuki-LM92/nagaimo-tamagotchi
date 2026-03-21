@@ -12,31 +12,36 @@ const App = (() => {
 
   const setupScreen   = $('setup-screen');
   const appEl         = $('app');
-  const apiKeyInput   = $('api-key-input');
-  const saveApiKeyBtn = $('save-api-key-btn');
   const messagesEl    = $('messages');
   const userInput     = $('user-input');
   const sendBtn       = $('send-btn');
   const settingsBtn   = $('settings-btn');
   const settingsModal = $('settings-modal');
-  const settingsApiInput  = $('settings-api-input');
-  const settingsSaveBtn   = $('settings-save-btn');
   const settingsClearBtn  = $('settings-clear-btn');
   const settingsCloseBtn  = $('settings-close-btn');
 
   // ===== 初期化 =====
-  function init() {
-    const apiKey = Memory.loadApiKey();
-
-    if (apiKey) {
-      showApp();
-    } else {
-      showSetup();
-    }
-
+  async function init() {
     bindEvents();
     Character.idle();
     Character.setupTap();
+
+    const roomCode = SupabaseSync.getRoomCode();
+    if (roomCode) {
+      await syncAndShowApp(roomCode);
+    } else {
+      showSetup();
+    }
+  }
+
+  async function syncAndShowApp(roomCode) {
+    try {
+      const roomData = await SupabaseSync.fetchRoom(roomCode);
+      if (roomData) {
+        Memory.loadFromSupabase(roomData);
+      }
+    } catch { /* オフライン時はlocalStorageのデータを使用 */ }
+    showApp();
   }
 
   function showSetup() {
@@ -62,10 +67,10 @@ const App = (() => {
 
   // ===== イベント =====
   function bindEvents() {
-    // APIキー保存
-    saveApiKeyBtn.addEventListener('click', handleSaveApiKey);
-    apiKeyInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') handleSaveApiKey();
+    // ルームコード保存
+    $('save-room-code-btn')?.addEventListener('click', handleSaveRoomCode);
+    $('room-code-input')?.addEventListener('keydown', e => {
+      if (e.key === 'Enter') handleSaveRoomCode();
     });
 
     // メッセージ送信
@@ -136,19 +141,17 @@ const App = (() => {
     });
   }
 
-  function handleSaveApiKey() {
-    const key = apiKeyInput.value.trim();
-    if (!key) { shake(apiKeyInput); return; }
-    Memory.saveApiKey(key);
-    showApp();
+  async function handleSaveRoomCode() {
+    const input = $('room-code-input');
+    const code = input?.value.trim();
+    if (!code) { shake(input); return; }
+    SupabaseSync.saveRoomCode(code);
+    await syncAndShowApp(code);
   }
 
   async function handleSend() {
     const text = userInput.value.trim();
     if (!text || isSending) return;
-
-    const apiKey = Memory.loadApiKey();
-    if (!apiKey) { showSetup(); return; }
 
     isSending = true;
     sendBtn.disabled = true;
@@ -165,7 +168,7 @@ const App = (() => {
     try {
       const context = Memory.getContextMessages();
       const extraContext = Memory.buildSystemContext();
-      const reply = await GeminiAPI.chat(apiKey, context, text, extraContext);
+      const reply = await GeminiAPI.chat(null, context, text, extraContext);
 
       hideTypingIndicator();
 
@@ -224,26 +227,15 @@ const App = (() => {
     }
   }
 
-  function handleSettingsSave() {
-    const key = settingsApiInput.value.trim();
-    if (!key) { shake(settingsApiInput); return; }
-    Memory.saveApiKey(key);
-    settingsApiInput.value = '';
-    settingsModal.classList.add('hidden');
-    Character.happy();
-    Character.talk('APIキー更新したよ！', 3000);
-  }
-
   async function handleApiTest() {
-    const key = Memory.loadApiKey();
     const wrapEl = $('api-test-result');
     const textEl = $('api-test-text');
     if (!wrapEl || !textEl) return;
     wrapEl.style.display = 'block';
     textEl.style.color = '#aaa';
-    textEl.textContent = 'モデルを検索中...';
+    textEl.textContent = '接続テスト中...';
     try {
-      const { model, reply } = await GeminiAPI.test(key);
+      const { model, reply } = await GeminiAPI.test();
       textEl.style.color = '#0f0';
       textEl.textContent = '✅ 成功\nモデル: ' + model + '\n返答: ' + reply;
     } catch (err) {

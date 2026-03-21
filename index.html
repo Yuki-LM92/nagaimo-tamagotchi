@@ -17,7 +17,7 @@
              script-src 'self';
              style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
              img-src 'self' data: blob:;
-             connect-src https://generativelanguage.googleapis.com;
+             connect-src https://errdubdisscxliwaaiwv.supabase.co;
              font-src 'self' https://fonts.gstatic.com;">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,21 +26,21 @@
 </head>
 <body>
 
-  <!-- APIキー設定画面 -->
+  <!-- ルームコード設定画面 -->
   <div id="setup-screen">
     <div class="setup-box">
       <div class="setup-char">🌿</div>
-      <h2>はじめまして！</h2>
-      <p>おれ、ながいもくん。<br>話しかけてくれるとめちゃ嬉しい。</p>
-      <p class="setup-note">Gemini APIキーを入力してはじめよう</p>
+      <h2>はじめましょう！</h2>
+      <p>ながいもくんとお話するには<br>ルームコードを入力してね。</p>
+      <p class="setup-note">2人で同じコードを使うと<br>会話・記録が共有されるよ！</p>
       <input
-        type="password"
-        id="api-key-input"
-        placeholder="AIzaSy..."
+        type="text"
+        id="room-code-input"
+        placeholder="ルームコードを入力"
         autocomplete="off"
       />
-      <button id="save-api-key-btn">はじめる</button>
-      <p class="setup-hint">APIキーはこのブラウザにのみ保存されます</p>
+      <button id="save-room-code-btn">はじめる</button>
+      <p class="setup-hint">ルームコードはこのブラウザに保存されます</p>
     </div>
   </div>
 
@@ -232,11 +232,8 @@
           </div>
         </div>
         <div class="settings-divider"></div>
-        <label>APIキーを変更</label>
-        <input type="password" id="settings-api-input" placeholder="新しいAPIキー"/>
         <div class="modal-actions">
-          <button id="settings-save-btn">保存</button>
-          <button id="settings-test-btn" class="secondary">APIテスト</button>
+          <button id="settings-test-btn" class="secondary">🔌 接続テスト</button>
           <button id="settings-clear-btn" class="danger">会話履歴を消す</button>
         </div>
         <div id="api-test-result" style="display:none;margin-top:8px;">
@@ -252,6 +249,7 @@
   </div>
 
   <script src="particles.js"></script>
+  <script src="supabase.js"></script>
   <script src="memory.js"></script>
   <script src="character.js"></script>
   <script src="gemini.js"></script>

@@ -1,5 +1,5 @@
 // ながいもくん Service Worker
-const CACHE = 'nagaimo-v19';
+const CACHE = 'nagaimo-v20';
 const FILES = [
   './',
   './index.html',
@@ -7,6 +7,7 @@ const FILES = [
   './app.js',
   './gemini.js',
   './memory.js',
+  './supabase.js',
   './character.js',
   './particles.js',
   './manifest.json',
