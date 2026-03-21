@@ -180,9 +180,8 @@ const App = (() => {
 
     } catch (err) {
       hideTypingIndicator();
-      // 【診断モード】生のエラーを表示して根本原因を特定する
-      const rawError = err?.message || String(err) || '(エラーメッセージなし)';
-      addMessageToUI('assistant', '【診断】' + rawError);
+      const errMsg = friendlyError(err?.message || '');
+      addMessageToUI('assistant', errMsg);
       scrollToBottom();
       Character.glitch();
       setTimeout(() => Character.talk('うっ…うまく返せなかった', 3000), 800);
@@ -281,6 +280,8 @@ const App = (() => {
     const m = msg.toLowerCase();
     if (m.includes('api_key') || m.includes('401') || m.includes('api key') || m.includes('invalid_api_key'))
       return '…APIキーが合ってないっぽい。設定で確認してみて。';
+    if (m.includes('limit: 0') || (m.includes('resource_exhausted') && m.includes('limit: 0')))
+      return 'APIキーにクォータがないみたい。aistudio.google.com で新しいキーを作って設定してみて。';
     if (m.includes('quota') || m.includes('429') || m.includes('resource_exhausted'))
       return 'ちょっと疲れた。少ししてからもう一回話しかけて。';
     if (m.includes('network') || m.includes('fetch') || m.includes('failed to fetch'))
