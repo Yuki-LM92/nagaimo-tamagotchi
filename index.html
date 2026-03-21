@@ -143,10 +143,83 @@
   <!-- 設定モーダル -->
   <div id="settings-modal" class="hidden">
     <div class="modal-box">
-      <h3>設定</h3>
 
-      <!-- キャラ着せ替え -->
-      <div class="settings-char">
+      <!-- ヘッダー -->
+      <div class="modal-header">
+        <h3>設定</h3>
+        <button id="settings-close-btn" class="secondary icon-btn">✕</button>
+      </div>
+
+      <!-- タブナビ -->
+      <div class="modal-tabs" role="tablist">
+        <button class="modal-tab active" data-tab="tab-profile" role="tab">🌿<span>プロフ</span></button>
+        <button class="modal-tab" data-tab="tab-memory"  role="tab">📌<span>記憶</span></button>
+        <button class="modal-tab" data-tab="tab-ideas"   role="tab">💡<span>アイデア</span></button>
+        <button class="modal-tab" data-tab="tab-log"     role="tab">📅<span>ログ</span></button>
+        <button class="modal-tab" data-tab="tab-goals"   role="tab">✅<span>目標</span></button>
+        <button class="modal-tab" data-tab="tab-system"  role="tab">⚙️<span>システム</span></button>
+      </div>
+
+      <!-- ① プロフィール -->
+      <div id="tab-profile" class="tab-content">
+        <p class="tab-desc">長芋くんが毎回読む「あなたのVTuber情報」です。ここに書いたことは常に覚えています。</p>
+        <label>VTuber名（活動名）</label>
+        <input id="profile-name"    type="text" placeholder="例: 長芋ちゃん" autocomplete="off">
+        <label>チャンネルコンセプト</label>
+        <input id="profile-concept" type="text" placeholder="例: 長芋料理と日常雑談" autocomplete="off">
+        <label>配信ジャンル</label>
+        <input id="profile-genre"   type="text" placeholder="例: 料理・雑談・ゲーム" autocomplete="off">
+        <label>初配信予定日</label>
+        <input id="profile-debut"   type="date">
+        <label>大きな目標</label>
+        <input id="profile-goal"    type="text" placeholder="例: 半年で登録者1000人" autocomplete="off">
+        <label>長芋くんに伝えておきたいこと</label>
+        <input id="profile-notes"   type="text" placeholder="自由記入" autocomplete="off">
+        <button id="profile-save-btn">💾 保存する</button>
+      </div>
+
+      <!-- ② 記憶メモ -->
+      <div id="tab-memory" class="tab-content hidden">
+        <p class="tab-desc">長芋くんが常に覚えている重要メモ。毎回のAPIに含まれます。チャットの📌ボタンでも追加できます。</p>
+        <div class="list-input-row">
+          <input id="pin-input" type="text" placeholder="覚えておいてほしいこと" autocomplete="off">
+          <button id="pin-add-btn">追加</button>
+        </div>
+        <div id="pins-list" class="item-list"></div>
+      </div>
+
+      <!-- ③ アイデアメモ -->
+      <div id="tab-ideas" class="tab-content hidden">
+        <p class="tab-desc">動画・配信のアイデアをメモします。チャットの💡ボタンでも保存できます。</p>
+        <div class="list-input-row">
+          <input id="idea-input" type="text" placeholder="動画アイデアを入力" autocomplete="off">
+          <button id="idea-add-btn">追加</button>
+        </div>
+        <div id="ideas-list" class="item-list"></div>
+      </div>
+
+      <!-- ④ 活動ログ -->
+      <div id="tab-log" class="tab-content hidden">
+        <p class="tab-desc">日々の活動を日付付きで記録します。長芋くんとの振り返りに使えます。</p>
+        <div class="list-input-row">
+          <input id="log-input" type="text" placeholder="今日やったこと" autocomplete="off">
+          <button id="log-add-btn">📅 記録</button>
+        </div>
+        <div id="log-list" class="item-list"></div>
+      </div>
+
+      <!-- ⑤ 目標管理 -->
+      <div id="tab-goals" class="tab-content hidden">
+        <p class="tab-desc">VTuber準備のタスクを管理します。未達成の目標は長芋くんも把握しています。</p>
+        <div class="list-input-row">
+          <input id="goal-input" type="text" placeholder="目標・タスクを入力" autocomplete="off">
+          <button id="goal-add-btn">追加</button>
+        </div>
+        <div id="goals-list" class="item-list"></div>
+      </div>
+
+      <!-- ⑥ システム -->
+      <div id="tab-system" class="tab-content hidden">
         <label>キャラ画像を変更</label>
         <div class="char-upload-row">
           <img id="char-preview" src="assets/nagaimo.svg" alt="キャラプレビュー">
@@ -158,25 +231,23 @@
             <button id="char-reset-btn" class="secondary">リセット</button>
           </div>
         </div>
-      </div>
-
-      <div class="settings-divider"></div>
-
-      <label>APIキーを変更</label>
-      <input type="password" id="settings-api-input" placeholder="新しいAPIキー"/>
-      <div class="modal-actions">
-        <button id="settings-save-btn">保存</button>
-        <button id="settings-test-btn" class="secondary">APIテスト</button>
-        <button id="settings-clear-btn" class="danger">会話履歴を消す</button>
-        <button id="settings-close-btn" class="secondary">閉じる</button>
-      </div>
-      <div id="api-test-result" style="display:none;margin-top:8px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-          <span id="api-test-label" style="font-size:0.65rem;color:#aaa;">結果</span>
-          <button id="api-test-copy-btn" style="font-size:0.6rem;padding:2px 6px;">コピー</button>
+        <div class="settings-divider"></div>
+        <label>APIキーを変更</label>
+        <input type="password" id="settings-api-input" placeholder="新しいAPIキー"/>
+        <div class="modal-actions">
+          <button id="settings-save-btn">保存</button>
+          <button id="settings-test-btn" class="secondary">APIテスト</button>
+          <button id="settings-clear-btn" class="danger">会話履歴を消す</button>
         </div>
-        <div id="api-test-text" style="padding:8px;background:#111;color:#0f0;font-size:0.65rem;word-break:break-all;border:1px solid #333;max-height:120px;overflow-y:auto;border-radius:4px;white-space:pre-wrap;"></div>
+        <div id="api-test-result" style="display:none;margin-top:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <span style="font-size:0.65rem;color:#aaa;">結果</span>
+            <button id="api-test-copy-btn" style="font-size:0.6rem;padding:2px 6px;">コピー</button>
+          </div>
+          <div id="api-test-text" style="padding:8px;background:#111;color:#0f0;font-size:0.65rem;word-break:break-all;border:1px solid #333;max-height:120px;overflow-y:auto;border-radius:4px;white-space:pre-wrap;"></div>
+        </div>
       </div>
+
     </div>
   </div>
 

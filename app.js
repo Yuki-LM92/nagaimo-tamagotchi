@@ -77,24 +77,50 @@ const App = (() => {
       }
     });
 
-    // 設定
+    // 設定モーダルを開く
     settingsBtn.addEventListener('click', () => {
       settingsModal.classList.remove('hidden');
       updateCharPreview();
+      loadProfileToForm();
+      renderPins();
+      renderIdeas();
+      renderLog();
+      renderGoals();
     });
     settingsSaveBtn.addEventListener('click', handleSettingsSave);
     settingsClearBtn.addEventListener('click', handleClearHistory);
-    $('settings-test-btn')?.addEventListener('click', handleApiTest);
-    $('api-test-copy-btn')?.addEventListener('click', () => {
-      const text = $('api-test-text')?.textContent || '';
-      copyMsg(text);
-    });
-    settingsCloseBtn.addEventListener('click', () => {
-      settingsModal.classList.add('hidden');
-    });
+    settingsCloseBtn.addEventListener('click', () => settingsModal.classList.add('hidden'));
     settingsModal.addEventListener('click', e => {
       if (e.target === settingsModal) settingsModal.classList.add('hidden');
     });
+    $('settings-test-btn')?.addEventListener('click', handleApiTest);
+    $('api-test-copy-btn')?.addEventListener('click', () => {
+      copyMsg($('api-test-text')?.textContent || '');
+    });
+
+    // タブ切り替え
+    settingsModal.querySelectorAll('.modal-tab').forEach(btn => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+
+    // プロフィール保存
+    $('profile-save-btn')?.addEventListener('click', handleProfileSave);
+
+    // ピン留め記憶
+    $('pin-add-btn')?.addEventListener('click', handlePinAdd);
+    $('pin-input')?.addEventListener('keydown', e => { if (e.key === 'Enter') handlePinAdd(); });
+
+    // アイデアメモ
+    $('idea-add-btn')?.addEventListener('click', handleIdeaAdd);
+    $('idea-input')?.addEventListener('keydown', e => { if (e.key === 'Enter') handleIdeaAdd(); });
+
+    // 活動ログ
+    $('log-add-btn')?.addEventListener('click', handleLogAdd);
+    $('log-input')?.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogAdd(); });
+
+    // 目標管理
+    $('goal-add-btn')?.addEventListener('click', handleGoalAdd);
+    $('goal-input')?.addEventListener('keydown', e => { if (e.key === 'Enter') handleGoalAdd(); });
 
     // キャラ着せ替え
     $('char-file-input')?.addEventListener('change', handleCharFileChange);
@@ -138,7 +164,8 @@ const App = (() => {
 
     try {
       const context = Memory.getContextMessages();
-      const reply = await GeminiAPI.chat(apiKey, context, text);
+      const extraContext = Memory.buildSystemContext();
+      const reply = await GeminiAPI.chat(apiKey, context, text, extraContext);
 
       hideTypingIndicator();
 
@@ -256,6 +283,35 @@ const App = (() => {
 
     div.appendChild(sender);
     div.appendChild(body);
+
+    // アシスタントメッセージにアクションボタンを追加
+    if (role === 'assistant') {
+      const actions = document.createElement('div');
+      actions.classList.add('msg-actions');
+
+      const ideaBtn = document.createElement('button');
+      ideaBtn.classList.add('msg-action-btn');
+      ideaBtn.title = 'アイデアとして保存';
+      ideaBtn.textContent = '💡';
+      ideaBtn.addEventListener('click', () => {
+        Memory.addIdea(content);
+        showToast('💡 アイデアに保存した！');
+      });
+
+      const pinBtn = document.createElement('button');
+      pinBtn.classList.add('msg-action-btn');
+      pinBtn.title = '記憶メモに追加';
+      pinBtn.textContent = '📌';
+      pinBtn.addEventListener('click', () => {
+        Memory.addPin(content.slice(0, 100));
+        showToast('📌 記憶に追加した！');
+      });
+
+      actions.appendChild(ideaBtn);
+      actions.appendChild(pinBtn);
+      div.appendChild(actions);
+    }
+
     messagesEl.appendChild(div);
   }
 
@@ -396,6 +452,171 @@ const App = (() => {
     if (el) el.src = 'assets/nagaimo.svg';
     updateCharPreview();
     Character.talk('元の長芋に戻った！', 3000);
+  }
+
+  // ===== タブ切り替え =====
+  function switchTab(tabId) {
+    settingsModal.querySelectorAll('.modal-tab').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === tabId);
+    });
+    settingsModal.querySelectorAll('.tab-content').forEach(pane => {
+      pane.classList.toggle('hidden', pane.id !== tabId);
+    });
+  }
+
+  // ===== プロフィール =====
+  function loadProfileToForm() {
+    const p = Memory.loadProfile();
+    const set = (id, val) => { const el = $(id); if (el) el.value = val || ''; };
+    set('profile-name',    p.vtubeName);
+    set('profile-concept', p.concept);
+    set('profile-genre',   p.genre);
+    set('profile-debut',   p.debutDate);
+    set('profile-goal',    p.goal);
+    set('profile-notes',   p.notes);
+  }
+
+  function handleProfileSave() {
+    const get = id => $(id)?.value.trim() || '';
+    Memory.saveProfile({
+      vtubeName: get('profile-name'),
+      concept:   get('profile-concept'),
+      genre:     get('profile-genre'),
+      debutDate: get('profile-debut'),
+      goal:      get('profile-goal'),
+      notes:     get('profile-notes')
+    });
+    showToast('💾 プロフィールを保存した！');
+    Character.happy();
+    Character.talk('おれ、ちゃんと覚えたよ。任せて！', 4000);
+  }
+
+  // ===== 汎用リスト描画 =====
+  function renderItemList(containerId, items, renderFn) {
+    const el = $(containerId);
+    if (!el) return;
+    el.innerHTML = '';
+    if (items.length === 0) {
+      el.innerHTML = '<div class="list-empty">まだ何もない</div>';
+      return;
+    }
+    items.forEach((item, i) => el.appendChild(renderFn(item, i)));
+  }
+
+  function makeDelBtn(onClick) {
+    const btn = document.createElement('button');
+    btn.classList.add('item-del');
+    btn.textContent = '✕';
+    btn.addEventListener('click', onClick);
+    return btn;
+  }
+
+  function makeItemRow(text, date, delFn) {
+    const row = document.createElement('div');
+    row.classList.add('item-row');
+    const span = document.createElement('span');
+    span.classList.add('item-text');
+    span.textContent = text;
+    const dateEl = document.createElement('span');
+    dateEl.classList.add('item-date');
+    dateEl.textContent = date || '';
+    row.appendChild(span);
+    row.appendChild(dateEl);
+    row.appendChild(makeDelBtn(delFn));
+    return row;
+  }
+
+  // ===== ピン留め =====
+  function renderPins() {
+    renderItemList('pins-list', Memory.loadPins(), (item, i) =>
+      makeItemRow(item.text, item.date, () => { Memory.removePin(i); renderPins(); })
+    );
+  }
+  function handlePinAdd() {
+    const input = $('pin-input');
+    const text = input?.value.trim();
+    if (!text) return;
+    Memory.addPin(text);
+    input.value = '';
+    renderPins();
+    showToast('📌 記憶に追加した！');
+  }
+
+  // ===== アイデアメモ =====
+  function renderIdeas() {
+    renderItemList('ideas-list', Memory.loadIdeas(), (item, i) =>
+      makeItemRow(item.text, item.date, () => { Memory.removeIdea(i); renderIdeas(); })
+    );
+  }
+  function handleIdeaAdd() {
+    const input = $('idea-input');
+    const text = input?.value.trim();
+    if (!text) return;
+    Memory.addIdea(text);
+    input.value = '';
+    renderIdeas();
+    showToast('💡 アイデアを保存した！');
+  }
+
+  // ===== 活動ログ =====
+  function renderLog() {
+    renderItemList('log-list', Memory.loadLog(), (item, i) =>
+      makeItemRow(item.text, item.date, () => { Memory.removeLog(i); renderLog(); })
+    );
+  }
+  function handleLogAdd() {
+    const input = $('log-input');
+    const text = input?.value.trim();
+    if (!text) return;
+    Memory.addLog(text);
+    input.value = '';
+    renderLog();
+    showToast('📅 ログを記録した！');
+  }
+
+  // ===== 目標管理 =====
+  function renderGoals() {
+    renderItemList('goals-list', Memory.loadGoals(), (item, i) => {
+      const row = document.createElement('div');
+      row.classList.add('item-row');
+      if (item.done) row.classList.add('done');
+
+      const check = document.createElement('button');
+      check.classList.add('goal-check');
+      check.textContent = item.done ? '✅' : '⬜';
+      check.addEventListener('click', () => {
+        const wasDone = item.done;
+        Memory.toggleGoal(i);
+        renderGoals();
+        if (!wasDone) {
+          Character.happy();
+          Character.talk('やった！達成じゃん！', 4000);
+        }
+      });
+
+      const span = document.createElement('span');
+      span.classList.add('item-text');
+      span.textContent = item.text;
+
+      const dateEl = document.createElement('span');
+      dateEl.classList.add('item-date');
+      dateEl.textContent = item.date || '';
+
+      row.appendChild(check);
+      row.appendChild(span);
+      row.appendChild(dateEl);
+      row.appendChild(makeDelBtn(() => { Memory.removeGoal(i); renderGoals(); }));
+      return row;
+    });
+  }
+  function handleGoalAdd() {
+    const input = $('goal-input');
+    const text = input?.value.trim();
+    if (!text) return;
+    Memory.addGoal(text);
+    input.value = '';
+    renderGoals();
+    showToast('✅ 目標を追加した！');
   }
 
   // ===== コピー =====
