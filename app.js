@@ -92,7 +92,6 @@ const App = (() => {
       renderLog();
       renderGoals();
     });
-    settingsSaveBtn.addEventListener('click', handleSettingsSave);
     settingsClearBtn.addEventListener('click', handleClearHistory);
     settingsCloseBtn.addEventListener('click', () => settingsModal.classList.add('hidden'));
     settingsModal.addEventListener('click', e => {
