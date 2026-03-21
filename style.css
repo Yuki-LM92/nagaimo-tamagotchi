@@ -1023,8 +1023,8 @@ html, body {
 /* ===== パーティクルキャンバス ===== */
 #particles-canvas { z-index: 0; }
 
-/* #settings-modal は position:fixed なのでここに含めない */
-#setup-screen, #app {
+/* #setup-screen と #settings-modal は position:fixed なのでここに含めない */
+#app {
   position: relative;
   z-index: 1;
 }
