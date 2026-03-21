@@ -838,20 +838,18 @@ html, body {
 #speech-bubble {
   position: absolute;
   left: 4px;
-  top: 28%;
+  top: 20%;
   background: #fff;
   color: var(--px-white);
   border: 3px solid;
   border-color: var(--snes-hi) var(--snes-lo) var(--snes-lo) var(--snes-hi);
-  padding: 5px 8px;
-  font-size: 0.58rem;
-  max-width: 86px;
-  max-height: 110px;
-  overflow: hidden;
+  padding: 6px 10px;
+  font-size: 0.62rem;
+  max-width: min(160px, 52%);
   font-family: 'DotGothic16', sans-serif;
   min-width: 52px;
   text-align: left;
-  line-height: 1.6;
+  line-height: 1.7;
   box-shadow: 3px 3px 0 var(--snes-lo);
   white-space: pre-wrap;
   word-break: break-word;
@@ -1636,7 +1634,8 @@ html, body {
   #speech-bubble {
     left: unset;
     right: 4px;
-    max-width: 110px;
+    max-width: min(200px, 55%);
+    font-size: 0.68rem;
   }
   #speech-bubble::after {
     right: unset;
