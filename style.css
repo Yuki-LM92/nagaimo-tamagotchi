@@ -828,22 +828,22 @@ html, body {
 /* ===== 吹き出し（ピクセルボックス） ===== */
 #speech-bubble {
   position: absolute;
-  top: 8px;
+  top: 6px;
   left: 50%;
   transform: translateX(-50%);
   background: var(--px-white);
   color: var(--px-bg);
   border: 4px solid;
   border-color: white #888888 #888888 white;
-  padding: 8px 14px;
-  font-size: 0.82rem;
-  max-width: min(220px, 80vw);
-  max-height: 66px;
+  padding: 6px 12px;
+  font-size: 0.68rem;
+  max-width: min(230px, 84vw);
+  max-height: 82px;
   overflow: hidden;
   font-family: 'DotGothic16', 'BIZ UDPGothic', sans-serif;
-  min-width: 80px;
+  min-width: 72px;
   text-align: center;
-  line-height: 1.6;
+  line-height: 1.55;
   box-shadow: 3px 3px 0 var(--snes-lo);
   white-space: pre-wrap;
   word-break: break-word;
@@ -924,9 +924,9 @@ html, body {
 
 .message {
   max-width: 84%;
-  padding: 8px 12px;
-  font-size: 0.88rem;
-  line-height: 1.7;
+  padding: 7px 11px;
+  font-size: 0.82rem;
+  line-height: 1.65;
   word-break: break-word;
   font-family: 'DotGothic16', 'BIZ UDPGothic', sans-serif;
   animation: msg-in 0.1s step-end;
@@ -956,10 +956,10 @@ html, body {
 }
 
 .message .sender {
-  font-size: 0.65rem;
+  font-size: 0.58rem;
   font-family: 'Press Start 2P', monospace;
   font-weight: normal;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   opacity: 0.75;
   letter-spacing: 0;
 }
@@ -1301,9 +1301,9 @@ html, body {
 }
 
 @media (max-width: 380px) {
-  #speech-bubble { max-width: 180px; font-size: 0.78rem; }
-  .message { font-size: 0.84rem; }
-  #send-btn { padding: 10px 12px; font-size: 0.8rem; }
+  #speech-bubble { max-width: 185px; font-size: 0.64rem; }
+  .message { font-size: 0.78rem; }
+  #send-btn { padding: 10px 12px; font-size: 0.78rem; }
   .px-stat-bar { width: 36px; }
   .px-stat-label { font-size: 5px; }
 }

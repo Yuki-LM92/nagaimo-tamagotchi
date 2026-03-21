@@ -253,7 +253,7 @@ const App = (() => {
     if (section) section.scrollTop = section.scrollHeight;
   }
 
-  function truncateForBubble(text, max = 45) {
+  function truncateForBubble(text, max = 38) {
     return text.length > max ? text.slice(0, max) + '…' : text;
   }
 
