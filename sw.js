@@ -1,5 +1,5 @@
 // ながいもくん Service Worker
-const CACHE = 'nagaimo-v4';
+const CACHE = 'nagaimo-v5';
 const FILES = [
   './',
   './index.html',
@@ -32,9 +32,18 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  // Gemini API はキャッシュしない
-  if (e.request.url.includes('generativelanguage.googleapis.com')) return;
+  // Gemini API・外部リソースはSWを通さない
+  if (!e.request.url.startsWith(self.location.origin)) return;
+
   e.respondWith(
-    caches.match(e.request).then(r => r || fetch(e.request))
+    // ネットワーク優先：常に最新ファイルを取得し、キャッシュを更新
+    // オフライン時のみキャッシュにフォールバック
+    fetch(e.request)
+      .then(response => {
+        const copy = response.clone();
+        caches.open(CACHE).then(cache => cache.put(e.request, copy));
+        return response;
+      })
+      .catch(() => caches.match(e.request))
   );
 });
