@@ -132,8 +132,20 @@ const Character = (() => {
     const bubble = speechBubble();
     const st = speechText();
     if (!bubble || !st) return;
+
+    // フォントサイズをリセットしてテキストをセット
+    st.style.fontSize = '';
     st.textContent = text;
     bubble.classList.remove('hidden');
+
+    // シュリンクトゥフィット: max-heightに収まるまで文字を縮小
+    const maxH = parseInt(getComputedStyle(bubble).maxHeight) || 120;
+    const BASE_PX = parseFloat(getComputedStyle(st).fontSize) || 9.9;
+    let size = BASE_PX;
+    while (bubble.scrollHeight > maxH && size > 6) {
+      size -= 0.5;
+      st.style.fontSize = size + 'px';
+    }
   }
 
   function hideBubble() {
