@@ -178,3 +178,83 @@ const Character = (() => {
 
   return { idle, think, talk, happy, sleepy, excited, blush, glitch, love, dancing, surprised, showBubble, hideBubble, setupTap };
 })();
+
+// ===== 生活シミュレーター =====
+const LifeSim = (() => {
+  let running   = false;
+  let nextTimer = null;
+  let endTimer  = null;
+
+  const ACTS = [
+    { name:'eat',   dur:10000, item:'🍠',    msg:'もぐもぐ…長芋うまっ',   anim:'happy'   },
+    { name:'sleep', dur:18000, item:'💤',    msg:'zzz…すやすや…',         anim:'sleepy'  },
+    { name:'dance', dur:7000,  item:'🎵',    msg:'踊るぜ〜♪',             anim:'dancing' },
+    { name:'water', dur:9000,  item:'🪴💧',  msg:'長芋に水やり中…',        anim:'happy'   },
+    { name:'read',  dur:11000, item:'📚',    msg:'VTuberの研究してる…',    anim:'blush'   },
+    { name:'watch', dur:9000,  item:'📺',    msg:'配信見てる〜',            anim:'excited' },
+    { name:'cook',  dur:10000, item:'🍲',    msg:'長芋料理つくってるぞ',    anim:'happy'   },
+    { name:'nap',   dur:12000, item:'🛏️',   msg:'ちょっと昼寝…',          anim:'sleepy'  },
+  ];
+
+  function setItem(text) {
+    const el = document.getElementById('activity-item');
+    if (el) el.textContent = text || '';
+  }
+
+  function pick() {
+    const h = new Date().getHours();
+    let names;
+    if      (h >= 23 || h < 6)  names = ['sleep','sleep','sleep','nap','eat'];
+    else if (h >= 6  && h < 10) names = ['eat','eat','cook','water','dance'];
+    else if (h >= 10 && h < 12) names = ['read','water','dance','watch'];
+    else if (h >= 12 && h < 14) names = ['eat','cook','nap','nap'];
+    else if (h >= 14 && h < 18) names = ['watch','read','water','dance','cook'];
+    else if (h >= 18 && h < 20) names = ['eat','cook','watch','dance'];
+    else                         names = ['watch','read','dance','sleep'];
+    const name = names[Math.floor(Math.random() * names.length)];
+    return ACTS.find(a => a.name === name) || ACTS[0];
+  }
+
+  function run() {
+    if (!running) return;
+    const act = pick();
+    Character.talk(act.msg, act.dur - 1500);
+    // sleepyは自動でidle復帰するので複数回呼ぶ
+    if (act.anim === 'sleepy') {
+      Character.sleepy();
+      setTimeout(() => running && Character.sleepy(), 4500);
+      setTimeout(() => running && Character.sleepy(), 9000);
+    } else {
+      Character[act.anim]?.();
+    }
+    setItem(act.item);
+    endTimer = setTimeout(() => {
+      setItem('');
+      Character.idle();
+      schedule();
+    }, act.dur);
+  }
+
+  function schedule() {
+    if (!running) return;
+    // 2〜5分後に次のアクティビティ
+    const delay = 120000 + Math.random() * 180000;
+    nextTimer = setTimeout(run, delay);
+  }
+
+  function start() {
+    if (running) return;
+    running = true;
+    // 最初は30秒後
+    nextTimer = setTimeout(run, 30000);
+  }
+
+  function stop() {
+    running = false;
+    clearTimeout(nextTimer);
+    clearTimeout(endTimer);
+    setItem('');
+  }
+
+  return { start, stop };
+})();

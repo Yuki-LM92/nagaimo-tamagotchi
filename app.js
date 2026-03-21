@@ -63,6 +63,9 @@ const App = (() => {
         Character.talk('よっ、ながいもくんだ。なんでも話しかけてくれ。', 6000);
       }, 600);
     }
+
+    // 生活シミュレーター開始
+    LifeSim.start();
   }
 
   // ===== イベント =====
@@ -371,10 +374,14 @@ const App = (() => {
   const SCENE_KEY = 'nagaimo_scene';
   const DEFAULT_SCENE = 'scene-farm';
 
-  const VALID_SCENES = ['scene-farm', 'scene-flowers', 'scene-space', 'scene-night', 'scene-cyber', 'scene-beach'];
+  const VALID_SCENES = ['scene-room', 'scene-farm', 'scene-flowers', 'scene-space', 'scene-night', 'scene-cyber', 'scene-beach'];
 
   function initSceneSelector() {
-    let saved = localStorage.getItem(SCENE_KEY) || DEFAULT_SCENE;
+    let saved = localStorage.getItem(SCENE_KEY);
+    if (!saved) {
+      // デスクトップはおうちシーンをデフォルトに
+      saved = window.innerWidth >= 768 ? 'scene-room' : DEFAULT_SCENE;
+    }
     if (!VALID_SCENES.includes(saved)) saved = DEFAULT_SCENE;
     setScene(saved);
 
@@ -389,6 +396,10 @@ const App = (() => {
     if (!bg) return;
     bg.className = scene;
     localStorage.setItem(SCENE_KEY, scene);
+
+    // 室内家具の表示切り替え
+    const furniture = $('room-furniture');
+    if (furniture) furniture.classList.toggle('visible', scene === 'scene-room');
 
     // アクティブボタンを強調
     document.querySelectorAll('.bg-btn').forEach(b => {

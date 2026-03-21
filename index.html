@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DotGothic16&family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260321-2">
+  <link rel="stylesheet" href="style.css?v=20260321-3">
 </head>
 <body>
 
@@ -59,6 +59,7 @@
       <div id="scene-bg" class="scene-farm"></div>
       <!-- 背景セレクター -->
       <div id="bg-selector" role="group" aria-label="背景を選ぶ">
+        <button class="bg-btn" data-scene="scene-room"    title="おうち">🏠</button>
         <button class="bg-btn" data-scene="scene-farm"    title="機械都市">⚙️</button>
         <button class="bg-btn" data-scene="scene-flowers" title="廃墟の雨">🌧️</button>
         <button class="bg-btn" data-scene="scene-space"   title="深宇宙">🌌</button>
@@ -93,6 +94,14 @@
         <span id="speech-text"></span>
       </div>
 
+      <!-- 室内家具（おうちシーン用） -->
+      <div id="room-furniture" aria-hidden="true">
+        <span class="rf-item rf-window">🪟</span>
+        <span class="rf-item rf-clock">🕰️</span>
+        <span class="rf-item rf-plant">🌱</span>
+        <span class="rf-item rf-picture">🖼️</span>
+      </div>
+
       <div id="character-stage">
         <!-- キャラ本体 -->
         <div id="character-wrapper">
@@ -104,6 +113,8 @@
         <div id="thinking-dots" class="hidden">
           <span></span><span></span><span></span>
         </div>
+        <!-- たまごっちアクティビティアイテム -->
+        <div id="activity-item" aria-hidden="true"></div>
       </div>
     </section>
 
