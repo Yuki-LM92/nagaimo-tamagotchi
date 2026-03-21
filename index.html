@@ -15,10 +15,13 @@
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'self';
              script-src 'self';
-             style-src 'self' 'unsafe-inline';
+             style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
              img-src 'self' data: blob:;
              connect-src https://generativelanguage.googleapis.com;
-             font-src 'self';">
+             font-src 'self' https://fonts.gstatic.com;">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -52,6 +55,17 @@
 
     <!-- キャラクターエリア -->
     <section id="character-area">
+      <!-- シーン背景 -->
+      <div id="scene-bg" class="scene-farm"></div>
+      <!-- 背景セレクター -->
+      <div id="bg-selector" role="group" aria-label="背景を選ぶ">
+        <button class="bg-btn" data-scene="scene-farm"  title="畑">🌾</button>
+        <button class="bg-btn" data-scene="scene-flowers" title="お花畑">🌸</button>
+        <button class="bg-btn" data-scene="scene-sky"   title="空">☀️</button>
+        <button class="bg-btn" data-scene="scene-night" title="夜">🌙</button>
+        <button class="bg-btn" data-scene="scene-room"  title="お部屋">🏠</button>
+        <button class="bg-btn" data-scene="scene-beach" title="ビーチ">🌊</button>
+      </div>
       <!-- VTuberフレーム -->
       <div id="vtube-frame" aria-hidden="true">
         <div class="vf-corner tl"></div>

@@ -9,26 +9,26 @@ const Particles = (() => {
   // ===== 時刻テーマ定義 =====
   const THEMES = {
     morning: {
-      bgDeep: '#150c1e', bgMid: '#2a1540',
-      accent: '#FFB7C5', accent2: '#f5c6e0',
+      bgDeep: '#ffe0f0', bgMid: '#ffc9e3',
+      accent: '#ff6eb4', accent2: '#ffadd4',
       particleType: 'sakura', count: 18,
       label: '🌸 朝'
     },
     afternoon: {
-      bgDeep: '#0c1420', bgMid: '#152038',
-      accent: '#90caf9', accent2: '#b0d4ff',
+      bgDeep: '#e0f4ff', bgMid: '#c8ebff',
+      accent: '#5ec8ff', accent2: '#a8d8ff',
       particleType: 'sparkle', count: 22,
       label: '✨ 昼'
     },
     evening: {
-      bgDeep: '#1a0a0c', bgMid: '#2a1018',
-      accent: '#FF9A5C', accent2: '#FFB77A',
+      bgDeep: '#ffe8d6', bgMid: '#ffd0b0',
+      accent: '#ff9b6a', accent2: '#ffbf8a',
       particleType: 'firefly', count: 16,
-      label: '🔥 夕'
+      label: '🌅 夕'
     },
     night: {
-      bgDeep: '#0f0c1a', bgMid: '#1a1630',
-      accent: '#b48ef0', accent2: '#f0a8d0',
+      bgDeep: '#e8e0ff', bgMid: '#d4c8ff',
+      accent: '#c77dff', accent2: '#f0a8d0',
       particleType: 'star', count: 28,
       label: '🌙 夜'
     }

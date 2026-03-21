@@ -6,33 +6,60 @@
 }
 
 :root {
-  --bg-deep:    #0f0c1a;
-  --bg-mid:     #1a1630;
-  --bg-card:    #221e3a;
-  --accent:     #b48ef0;
-  --accent2:    #f0a8d0;
-  --text:       #e8e0f8;
-  --text-dim:   #9990b8;
-  --bubble-me:  #6b4fa8;
-  --bubble-him: #2d2650;
-  --border:     #3a3460;
+  /* === カラーパレット === */
+  --pink:       #ff6eb4;
+  --pink-l:     #ffb3d9;
+  --pink-p:     #fff0f8;
+  --purple:     #c77dff;
+  --purple-l:   #ddb8ff;
+  --purple-p:   #f8f0ff;
+  --mint:       #5ec89b;
+  --mint-l:     #aadfca;
+  --peach:      #ff9b6a;
+  --yellow:     #ffd966;
+  --sky-col:    #64b5f6;
+  --coral:      #ff7070;
+
+  /* === UIトークン === */
+  --bg:         #fff5fb;
+  --bg-card:    #ffffff;
+  --bg-input:   #fff8fc;
+  --text:       #5c2060;
+  --text-dim:   #c090b8;
+  --border:     #f0b8dc;
+  --shadow:     rgba(200, 80, 160, 0.14);
+
+  /* particles.jsが時刻に応じて更新 */
+  --accent:     #ff6eb4;
+  --accent2:    #c77dff;
+  --bg-deep:    #fff5fb;
+  --bg-mid:     #fce4f5;
+
+  /* チャット */
+  --bubble-me:  #ff6eb4;
+  --bubble-him: #f8eeff;
+
+  /* 旧互換 */
+  --bg-card-dark: #fce4f5;
   --danger:     #e05555;
-  --radius:     16px;
+  --radius:     20px;
 }
 
 html, body {
   height: 100%;
-  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-  background: var(--bg-deep);
+  font-family: 'M PLUS Rounded 1c', 'Hiragino Maru Gothic ProN', 'BIZ UDPGothic', sans-serif;
+  background: var(--bg);
   color: var(--text);
   overflow: hidden;
+  background-image: radial-gradient(circle, rgba(255,182,217,0.45) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
 }
 
 /* ===== セットアップ画面 ===== */
 #setup-screen {
   position: fixed;
   inset: 0;
-  background: linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-mid) 50%, var(--bg-deep) 100%);
+  background: linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-mid) 60%, var(--bg-deep) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,22 +68,23 @@ html, body {
 
 .setup-box {
   background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 24px;
+  border: 2px solid var(--border);
+  border-radius: 28px;
   padding: 40px 32px;
   width: min(420px, 90vw);
   text-align: center;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  box-shadow: 0 8px 48px rgba(80,50,160,0.4);
+  box-shadow: 0 8px 40px var(--shadow);
 }
 
-.setup-char { font-size: 56px; line-height: 1; }
+.setup-char { font-size: 60px; line-height: 1; }
 
 .setup-box h2 {
   font-size: 1.6rem;
-  color: var(--accent);
+  color: var(--pink);
+  font-family: 'Hachi Maru Pop', 'Hiragino Maru Gothic ProN', cursive;
 }
 
 .setup-box p {
@@ -71,29 +99,32 @@ html, body {
 }
 
 .setup-box input {
-  background: var(--bg-mid);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  background: var(--bg-input);
+  border: 2px solid var(--border);
+  border-radius: 14px;
   color: var(--text);
   padding: 12px 16px;
-  font-size: 0.95rem;
+  font-size: max(16px, 0.95rem);
   outline: none;
   transition: border-color 0.2s;
+  font-family: inherit;
 }
-.setup-box input:focus { border-color: var(--accent); }
+.setup-box input:focus { border-color: var(--pink); }
 
 .setup-box button {
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  background: linear-gradient(135deg, var(--pink), var(--purple));
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   color: white;
   font-size: 1rem;
   font-weight: bold;
-  padding: 13px;
+  padding: 14px;
   cursor: pointer;
+  min-height: 48px;
   transition: opacity 0.2s, transform 0.1s;
+  box-shadow: 0 4px 16px rgba(255,110,180,0.35);
 }
-.setup-box button:hover { opacity: 0.9; }
+.setup-box button:hover  { opacity: 0.9; }
 .setup-box button:active { transform: scale(0.97); }
 
 .setup-hint {
@@ -106,77 +137,336 @@ html, body {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  max-width: 560px;
+  height: 100dvh;
+  max-width: 500px;
   margin: 0 auto;
-  background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 100%);
+  background: var(--bg-card);
+  box-shadow: 0 0 48px var(--shadow);
 }
 
-/* ヘッダー */
+/* ===== ヘッダー ===== */
 #app-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 12px 20px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(15,12,26,0.8);
-  backdrop-filter: blur(8px);
+  padding-top: max(12px, env(safe-area-inset-top, 0px));
+  background: linear-gradient(135deg, var(--pink), var(--purple));
   flex-shrink: 0;
 }
 
 .header-title {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: bold;
-  color: var(--accent);
+  color: white;
   letter-spacing: 0.05em;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  font-family: 'Hachi Maru Pop', 'Hiragino Maru Gothic ProN', cursive;
 }
 
 #settings-btn {
-  background: none;
+  background: rgba(255,255,255,0.25);
   border: none;
-  font-size: 1.3rem;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 1.1rem;
   cursor: pointer;
-  opacity: 0.7;
-  transition: opacity 0.2s;
-}
-#settings-btn:hover { opacity: 1; }
-
-/* キャラクターエリア */
-#character-area {
-  flex: 0 0 auto;
+  transition: background 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px 0 10px;
+}
+#settings-btn:hover { background: rgba(255,255,255,0.4); }
+
+/* ===== キャラクターエリア ===== */
+#character-area {
+  flex: 0 0 min(42vh, 290px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 44px;
   position: relative;
-  min-height: 240px;
+  overflow: hidden;
 }
 
+/* ===== シーン背景 ===== */
+#scene-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  transition: background 0.8s;
+}
+
+#scene-bg::before,
+#scene-bg::after {
+  position: absolute;
+  pointer-events: none;
+  line-height: 1;
+  z-index: 1;
+}
+
+/* 🌾 畑 */
+.scene-farm {
+  background: linear-gradient(
+    to bottom,
+    #87CEEB 0%, #B8E0FF 44%,
+    #5DBB63 44%, #48A352 62%,
+    #8B6640 62%
+  );
+}
+.scene-farm::before {
+  content: '☀️';
+  top: 7%; right: 11%;
+  font-size: 2.4rem;
+  filter: drop-shadow(0 0 6px rgba(255,220,0,0.6));
+}
+.scene-farm::after {
+  content: '☁️  ☁️';
+  top: 20%; left: 6%;
+  font-size: 1.5rem;
+  opacity: 0.9;
+}
+
+/* 🌸 お花畑 */
+.scene-flowers {
+  background: linear-gradient(
+    to bottom,
+    #FFE4F4 0%, #FFCCE8 44%,
+    #7DD87D 44%, #60C860 100%
+  );
+}
+.scene-flowers::before {
+  content: '🌸  🌼  🌺';
+  bottom: 34%; left: 3%;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+}
+.scene-flowers::after {
+  content: '🦋';
+  top: 18%; right: 16%;
+  font-size: 1.9rem;
+  animation: butterfly 5s ease-in-out infinite;
+}
+
+/* ☀️ 晴れ空 */
+.scene-sky {
+  background: linear-gradient(
+    to bottom,
+    #4FC3F7 0%, #81D4FA 45%,
+    #B3E5FC 75%, #E1F5FE 100%
+  );
+}
+.scene-sky::before {
+  content: '☀️';
+  top: 7%; left: 11%;
+  font-size: 3rem;
+  filter: drop-shadow(0 0 8px rgba(255,220,0,0.5));
+}
+.scene-sky::after {
+  content: '🌈';
+  bottom: 14%; right: 5%;
+  font-size: 2.8rem;
+}
+
+/* 🌙 夜空 */
+.scene-night {
+  background: linear-gradient(
+    to bottom,
+    #1a1040 0%, #2d1b69 55%, #3a2280 100%
+  );
+}
+.scene-night::before {
+  content: '🌕';
+  top: 7%; right: 12%;
+  font-size: 2.6rem;
+  filter: drop-shadow(0 0 10px rgba(255,240,160,0.7));
+}
+.scene-night::after {
+  content: '⭐  ✨  💫';
+  top: 18%; left: 6%;
+  font-size: 1.1rem;
+  letter-spacing: 6px;
+  animation: twinkle-emoji 2.5s ease-in-out infinite;
+}
+
+/* 🏠 お部屋 */
+.scene-room {
+  background:
+    linear-gradient(transparent 60%, #F0C880 60%, #E8B860 100%),
+    repeating-linear-gradient(
+      90deg,
+      #FFD0EA 0px,  #FFD0EA 40px,
+      #FFBBDE 40px, #FFBBDE 80px
+    );
+}
+.scene-room::before {
+  content: '🪟';
+  top: 7%; left: 14%;
+  font-size: 2.4rem;
+}
+.scene-room::after {
+  content: '🌷';
+  bottom: 37%; right: 10%;
+  font-size: 2rem;
+}
+
+/* 🌊 海辺 */
+.scene-beach {
+  background: linear-gradient(
+    to bottom,
+    #87CEEB 0%, #B8E0FF 37%,
+    #42A5F5 37%, #1E88E5 55%,
+    #FDE68A 55%, #FBC02D 100%
+  );
+}
+.scene-beach::before {
+  content: '☀️';
+  top: 7%; right: 11%;
+  font-size: 2.4rem;
+}
+.scene-beach::after {
+  content: '🐚  🦀';
+  bottom: 6%; left: 6%;
+  font-size: 1.2rem;
+  letter-spacing: 14px;
+}
+
+/* ===== 背景セレクター ===== */
+#bg-selector {
+  position: absolute;
+  bottom: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  z-index: 10;
+  background: rgba(255,255,255,0.88);
+  border: 1.5px solid var(--border);
+  border-radius: 24px;
+  padding: 4px 8px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.bg-btn {
+  background: none;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s, background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.bg-btn:hover  { transform: scale(1.15); background: var(--pink-p); }
+.bg-btn.active {
+  border-color: var(--pink);
+  background: var(--pink-p);
+  transform: scale(1.1);
+}
+
+/* ===== VTuberフレーム ===== */
+#vtube-frame {
+  position: absolute;
+  inset: 4px;
+  pointer-events: none;
+  z-index: 6;
+}
+
+.vf-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-color: var(--pink);
+  border-style: solid;
+  opacity: 0.7;
+  transition: border-color 0.5s;
+}
+.vf-corner.tl { top: 0; left: 0;  border-width: 2.5px 0 0 2.5px; border-radius: 6px 0 0 0; }
+.vf-corner.tr { top: 0; right: 0; border-width: 2.5px 2.5px 0 0; border-radius: 0 6px 0 0; }
+.vf-corner.bl { bottom: 0; left: 0;  border-width: 0 0 2.5px 2.5px; border-radius: 0 0 0 6px; }
+.vf-corner.br { bottom: 0; right: 0; border-width: 0 2.5px 2.5px 0; border-radius: 0 0 6px 0; }
+
+#live-badge {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  border: none;
+  border-radius: 8px;
+  padding: 3px 9px;
+  font-size: 0.66rem;
+  font-weight: bold;
+  letter-spacing: 0.14em;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 2px 8px rgba(255,110,180,0.4);
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  animation: live-pulse 1.6s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes live-pulse {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%       { opacity: 0.3; transform: scale(0.75); }
+}
+
+#theme-label {
+  position: absolute;
+  bottom: 7px;
+  left: 9px;
+  font-size: 0.66rem;
+  color: var(--pink);
+  opacity: 0.85;
+  letter-spacing: 0.05em;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+  transition: color 0.5s;
+}
+
+/* テーマ別コーナー */
+[data-theme="morning"]   .vf-corner { border-color: #ff85b3; }
+[data-theme="afternoon"] .vf-corner { border-color: #5ec89b; }
+[data-theme="evening"]   .vf-corner { border-color: #ff9b6a; }
+[data-theme="night"]     .vf-corner { border-color: #c77dff; }
+
+/* ===== キャラクターステージ ===== */
 #character-stage {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  z-index: 2;
 }
 
-/* キャラ本体 */
-#character-wrapper {
-  position: relative;
-}
+#character-wrapper { position: relative; }
 
 #character {
-  width: 130px;
+  width: 120px;
   height: auto;
   display: block;
-  filter: drop-shadow(0 8px 24px rgba(180,142,240,0.3));
+  filter: drop-shadow(0 6px 16px rgba(255,110,180,0.35));
   transform-origin: center bottom;
 }
 
-/* アニメーション: idle（ゆらゆら） */
+/* ===== アニメーション ===== */
 #character.idle {
   animation: idle-float 3s ease-in-out infinite;
 }
-
 @keyframes idle-float {
   0%   { transform: translateY(0) rotate(-1.5deg); }
   30%  { transform: translateY(-8px) rotate(0deg); }
@@ -184,11 +474,9 @@ html, body {
   100% { transform: translateY(0) rotate(-1.5deg); }
 }
 
-/* アニメーション: talking（ぴょこぴょこ） */
 #character.talking {
   animation: talking-bounce 0.4s ease-in-out infinite;
 }
-
 @keyframes talking-bounce {
   0%   { transform: translateY(0) scaleX(1); }
   25%  { transform: translateY(-10px) scaleX(0.97); }
@@ -197,11 +485,9 @@ html, body {
   100% { transform: translateY(0) scaleX(1); }
 }
 
-/* アニメーション: happy（はしゃぐ） */
 #character.happy {
   animation: happy-dance 0.5s ease-in-out 3;
 }
-
 @keyframes happy-dance {
   0%   { transform: translateY(0) rotate(0deg) scale(1); }
   20%  { transform: translateY(-16px) rotate(-8deg) scale(1.05); }
@@ -210,11 +496,9 @@ html, body {
   100% { transform: translateY(0) rotate(0deg) scale(1); }
 }
 
-/* アニメーション: thinking（こてん） */
 #character.thinking {
   animation: thinking-tilt 1.5s ease-in-out infinite;
 }
-
 @keyframes thinking-tilt {
   0%   { transform: rotate(0deg) translateY(0); }
   40%  { transform: rotate(-6deg) translateY(-4px); }
@@ -222,75 +506,174 @@ html, body {
   100% { transform: rotate(0deg) translateY(0); }
 }
 
-/* 吹き出し */
-#speech-bubble {
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: white;
-  color: #333;
-  border-radius: 16px;
-  padding: 10px 16px;
-  font-size: 0.88rem;
-  max-width: 240px;
-  min-width: 80px;
-  text-align: center;
-  line-height: 1.5;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-  white-space: pre-wrap;
-  word-break: break-word;
-  z-index: 10;
-  animation: bubble-in 0.25s ease-out;
+#character.sleepy {
+  animation: sleepy-nod 2.8s ease-in-out infinite;
+  filter: brightness(0.9) saturate(0.75) drop-shadow(0 4px 10px rgba(180,100,200,0.3));
+}
+@keyframes sleepy-nod {
+  0%   { transform: translateY(0)   rotate(0deg); }
+  35%  { transform: translateY(3px) rotate(-9deg); }
+  65%  { transform: translateY(4px) rotate(-11deg); }
+  85%  { transform: translateY(2px) rotate(-7deg); }
+  100% { transform: translateY(0)   rotate(0deg); }
 }
 
-#speech-bubble::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 6px solid transparent;
-  border-top-color: white;
+#character.excited {
+  animation: excited-jump 0.28s ease-in-out infinite;
+  filter: brightness(1.2) saturate(1.5) drop-shadow(0 0 10px var(--pink));
+}
+@keyframes excited-jump {
+  0%   { transform: translateY(0)    scale(1)    rotate(-2deg); }
+  25%  { transform: translateY(-20px) scale(1.07) rotate(4deg); }
+  50%  { transform: translateY(-13px) scale(1.04) rotate(-3deg); }
+  75%  { transform: translateY(-22px) scale(1.08) rotate(5deg); }
+  100% { transform: translateY(0)    scale(1)    rotate(-2deg); }
 }
 
-@keyframes bubble-in {
-  from { opacity: 0; transform: translateX(-50%) scale(0.8) translateY(8px); }
-  to   { opacity: 1; transform: translateX(-50%) scale(1) translateY(0); }
+#character.blush {
+  animation: blush-shy 0.55s ease-in-out 3;
+  filter: saturate(1.6) hue-rotate(-10deg) brightness(1.1);
+}
+@keyframes blush-shy {
+  0%   { transform: translateY(0)    rotate(0deg); }
+  30%  { transform: translateY(-5px) rotate(-5deg); }
+  70%  { transform: translateY(-5px) rotate(5deg); }
+  100% { transform: translateY(0)    rotate(0deg); }
+}
+
+/* ===== 追加キャラ状態 ===== */
+#character.love {
+  animation: love-pulse 0.6s ease-in-out 4;
+  filter: hue-rotate(330deg) saturate(1.8) brightness(1.15) drop-shadow(0 0 14px #ff69b4);
+}
+@keyframes love-pulse {
+  0%   { transform: scale(1)    translateY(0); }
+  35%  { transform: scale(1.14) translateY(-10px); }
+  65%  { transform: scale(1.07) translateY(-5px); }
+  100% { transform: scale(1)    translateY(0); }
+}
+
+#character.dancing {
+  animation: dancing-sway 0.45s ease-in-out infinite;
+  filter: drop-shadow(0 0 12px var(--mint));
+}
+@keyframes dancing-sway {
+  0%   { transform: translateY(0)    rotate(-9deg) scaleX(1); }
+  25%  { transform: translateY(-16px) rotate(0deg)  scaleX(0.94); }
+  50%  { transform: translateY(0)    rotate(9deg)  scaleX(1); }
+  75%  { transform: translateY(-16px) rotate(0deg)  scaleX(0.94); }
+  100% { transform: translateY(0)    rotate(-9deg) scaleX(1); }
+}
+
+#character.surprised {
+  animation: surprised-pop 0.22s ease-out 2;
+  filter: brightness(1.3) drop-shadow(0 0 16px var(--yellow));
+}
+@keyframes surprised-pop {
+  0%   { transform: scale(1)    translateY(0); }
+  35%  { transform: scale(1.28) translateY(-20px); }
+  70%  { transform: scale(0.94) translateY(-5px); }
+  100% { transform: scale(1)    translateY(0); }
 }
 
 /* 考え中ドット */
 #thinking-dots {
   display: flex;
   gap: 5px;
-  margin-top: 4px;
 }
-
 #thinking-dots span {
   width: 8px;
   height: 8px;
-  background: var(--accent);
+  background: var(--pink);
   border-radius: 50%;
   animation: dot-pulse 1.2s ease-in-out infinite;
 }
 #thinking-dots span:nth-child(2) { animation-delay: 0.2s; }
 #thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
-
 @keyframes dot-pulse {
   0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
   40%           { transform: scale(1.1); opacity: 1; }
+}
+
+/* ===== 吹き出し ===== */
+#speech-bubble {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  color: var(--text);
+  border: 2px solid var(--pink-l);
+  border-radius: 18px;
+  padding: 10px 16px;
+  font-size: 0.88rem;
+  font-family: 'Hachi Maru Pop', 'Hiragino Maru Gothic ProN', cursive;
+  max-width: 220px;
+  min-width: 80px;
+  text-align: center;
+  line-height: 1.5;
+  box-shadow: 0 4px 16px var(--shadow);
+  white-space: pre-wrap;
+  word-break: break-word;
+  z-index: 10;
+  animation: bubble-in 0.25s ease-out;
+}
+#speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 7px solid transparent;
+  border-top-color: var(--pink-l);
+}
+#speech-bubble::before {
+  content: '';
+  position: absolute;
+  bottom: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: white;
+  z-index: 1;
+}
+@keyframes bubble-in {
+  from { opacity: 0; transform: translateX(-50%) scale(0.8) translateY(8px); }
+  to   { opacity: 1; transform: translateX(-50%) scale(1) translateY(0); }
+}
+
+/* ===== 感情オーバーレイ ===== */
+#emotion-overlay {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 5;
+}
+#emotion-overlay.show {
+  animation: emotion-float 2.4s ease-out forwards;
+}
+@keyframes emotion-float {
+  0%   { opacity: 1;   transform: translateX(-50%) translateY(0) scale(1); }
+  25%  { opacity: 1;   transform: translateX(-50%) translateY(-20px) scale(1.2); }
+  80%  { opacity: 0.5; transform: translateX(-50%) translateY(-48px) scale(0.9); }
+  100% { opacity: 0;   transform: translateX(-50%) translateY(-58px) scale(0.8); }
 }
 
 /* ===== チャット履歴 ===== */
 #chat-section {
   flex: 1 1 auto;
   overflow-y: auto;
-  padding: 12px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  -webkit-overflow-scrolling: touch;
+  padding: 14px 16px 4px;
+  background: var(--bg);
+  background-image: radial-gradient(circle, rgba(255,182,217,0.3) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
   scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
+  scrollbar-color: var(--pink-l) transparent;
 }
 
 #messages {
@@ -300,11 +683,11 @@ html, body {
 }
 
 .message {
-  max-width: 80%;
+  max-width: 82%;
   padding: 10px 14px;
-  border-radius: 18px;
+  border-radius: 20px;
   font-size: 0.92rem;
-  line-height: 1.55;
+  line-height: 1.6;
   word-break: break-word;
   animation: msg-in 0.2s ease-out;
 }
@@ -316,35 +699,68 @@ html, body {
 
 .message.user {
   align-self: flex-end;
-  background: var(--bubble-me);
-  color: #f0e8ff;
-  border-bottom-right-radius: 4px;
+  background: linear-gradient(135deg, var(--pink), #e855a0);
+  color: white;
+  border-bottom-right-radius: 5px;
+  box-shadow: 0 3px 12px rgba(255,110,180,0.35);
 }
 
 .message.assistant {
   align-self: flex-start;
   background: var(--bubble-him);
   color: var(--text);
-  border-bottom-left-radius: 4px;
-  border: 1px solid var(--border);
+  border-bottom-left-radius: 5px;
+  border: 1.5px solid var(--purple-l);
+  box-shadow: 0 2px 8px rgba(199,125,255,0.15);
 }
 
 .message .sender {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: bold;
   margin-bottom: 4px;
-  opacity: 0.7;
+  opacity: 0.75;
+}
+
+/* ===== タイピングインジケーター ===== */
+.typing-msg {
+  align-self: flex-start;
+  background: var(--bubble-him);
+  border: 1.5px solid var(--purple-l);
+  border-bottom-left-radius: 5px;
+  max-width: 82%;
+  padding: 10px 14px;
+  border-radius: 20px;
+  animation: msg-in 0.2s ease-out;
+  box-shadow: 0 2px 8px rgba(199,125,255,0.15);
+}
+.typing-dots {
+  display: flex;
+  gap: 5px;
+  padding: 3px 0;
+}
+.typing-dots span {
+  width: 7px;
+  height: 7px;
+  background: var(--pink);
+  border-radius: 50%;
+  animation: dot-bounce 1s ease-in-out infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: 0.16s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.32s; }
+@keyframes dot-bounce {
+  0%, 60%, 100% { transform: translateY(0);    opacity: 0.4; }
+  30%            { transform: translateY(-8px); opacity: 1; }
 }
 
 /* ===== 入力エリア ===== */
 #input-area {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 8px 16px 12px;
-  border-top: 1px solid var(--border);
-  background: rgba(15,12,26,0.9);
-  backdrop-filter: blur(8px);
+  gap: 7px;
+  padding: 10px 14px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom, 12px));
+  border-top: 1.5px solid var(--border);
+  background: var(--bg-card);
   flex-shrink: 0;
 }
 
@@ -353,89 +769,99 @@ html, body {
   display: flex;
   gap: 6px;
   overflow-x: auto;
-  padding: 2px 0 2px;
+  padding: 2px 0;
   scrollbar-width: none;
 }
 #stamps-bar::-webkit-scrollbar { display: none; }
 
 .stamp {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  background: var(--pink-p);
+  border: 1.5px solid var(--pink-l);
+  border-radius: 12px;
   font-size: 1.25rem;
-  padding: 5px 9px;
+  padding: 5px 8px;
   cursor: pointer;
   flex-shrink: 0;
   line-height: 1;
-  transition: transform 0.1s, background 0.15s;
+  min-height: 40px;
+  min-width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.12s, background 0.15s;
 }
-.stamp:hover  { background: var(--bg-mid); }
-.stamp:active { transform: scale(0.85); }
+.stamp:hover  { background: var(--purple-p); border-color: var(--purple-l); }
+.stamp:active { transform: scale(0.84); }
 
 /* 入力行 */
 #input-row {
   display: flex;
-  gap: 10px;
+  gap: 9px;
 }
 
 #user-input {
   flex: 1;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: var(--bg-input);
+  border: 2px solid var(--border);
   border-radius: 24px;
   color: var(--text);
   padding: 11px 18px;
-  font-size: 0.95rem;
+  font-size: max(16px, 0.92rem);
   outline: none;
   transition: border-color 0.2s;
   font-family: inherit;
+  min-height: 46px;
 }
-#user-input:focus { border-color: var(--accent); }
+#user-input:focus { border-color: var(--pink); }
 #user-input::placeholder { color: var(--text-dim); }
 
 #send-btn {
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  background: linear-gradient(135deg, var(--pink), var(--purple));
   border: none;
   border-radius: 24px;
   color: white;
   font-size: 0.9rem;
   font-weight: bold;
-  padding: 11px 22px;
+  padding: 11px 20px;
   cursor: pointer;
+  min-height: 46px;
   transition: opacity 0.2s, transform 0.1s;
   white-space: nowrap;
+  box-shadow: 0 3px 12px rgba(255,110,180,0.35);
 }
-#send-btn:hover { opacity: 0.9; }
-#send-btn:active { transform: scale(0.95); }
-#send-btn:disabled { opacity: 0.5; cursor: default; }
+#send-btn:hover   { opacity: 0.9; }
+#send-btn:active  { transform: scale(0.95); }
+#send-btn:disabled { opacity: 0.45; cursor: default; box-shadow: none; }
 
 /* ===== 設定モーダル ===== */
 #settings-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(255,220,240,0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 200;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .modal-box {
   background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
+  border: 2px solid var(--border);
+  border-radius: 24px;
   padding: 28px 24px;
   width: min(380px, 90vw);
   display: flex;
   flex-direction: column;
   gap: 12px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 40px var(--shadow);
 }
 
 .modal-box h3 {
   font-size: 1.1rem;
-  color: var(--accent);
+  color: var(--pink);
+  font-weight: bold;
 }
 
 .modal-box label {
@@ -444,15 +870,16 @@ html, body {
 }
 
 .modal-box input {
-  background: var(--bg-mid);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  background: var(--bg-input);
+  border: 2px solid var(--border);
+  border-radius: 12px;
   color: var(--text);
   padding: 10px 14px;
-  font-size: 0.9rem;
+  font-size: max(16px, 0.9rem);
   outline: none;
+  font-family: inherit;
 }
-.modal-box input:focus { border-color: var(--accent); }
+.modal-box input:focus { border-color: var(--pink); }
 
 .modal-actions {
   display: flex;
@@ -463,203 +890,28 @@ html, body {
 
 .modal-actions button {
   border: none;
-  border-radius: 10px;
-  padding: 11px;
+  border-radius: 12px;
+  padding: 12px;
   font-size: 0.9rem;
   font-weight: bold;
   cursor: pointer;
+  min-height: 46px;
   transition: opacity 0.2s;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  background: linear-gradient(135deg, var(--pink), var(--purple));
   color: white;
 }
 .modal-actions button:hover { opacity: 0.9; }
 
 .modal-actions button.secondary {
-  background: var(--bg-mid);
+  background: var(--pink-p);
   color: var(--text-dim);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
 }
 
 .modal-actions button.danger {
   background: none;
-  border: 1px solid var(--danger);
+  border: 1.5px solid var(--danger);
   color: var(--danger);
-}
-
-/* ===== ユーティリティ ===== */
-.hidden { display: none !important; }
-
-/* ===== パーティクルキャンバス（z-index: 0, JS で挿入） ===== */
-#particles-canvas { z-index: 0; }
-
-/* z-index レイヤー管理 */
-#setup-screen, #app, #settings-modal {
-  position: relative;
-  z-index: 1;
-}
-
-/* ===== VTuberフレーム ===== */
-#vtube-frame {
-  position: absolute;
-  inset: 4px;
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* コーナーブラケット */
-.vf-corner {
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  border-color: var(--accent);
-  border-style: solid;
-  opacity: 0.55;
-  transition: border-color 0.6s, opacity 0.3s;
-}
-.vf-corner.tl { top: 0; left: 0;  border-width: 2px 0 0 2px; border-radius: 5px 0 0 0; }
-.vf-corner.tr { top: 0; right: 0; border-width: 2px 2px 0 0; border-radius: 0 5px 0 0; }
-.vf-corner.bl { bottom: 0; left: 0;  border-width: 0 0 2px 2px; border-radius: 0 0 0 5px; }
-.vf-corner.br { bottom: 0; right: 0; border-width: 0 2px 2px 0; border-radius: 0 0 5px 0; }
-
-/* LIVEバッジ */
-#live-badge {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  background: rgba(0,0,0,0.55);
-  border: 1px solid rgba(255,80,80,0.5);
-  border-radius: 6px;
-  padding: 3px 9px;
-  font-size: 0.68rem;
-  font-weight: bold;
-  letter-spacing: 0.12em;
-  color: #ff6060;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.live-dot {
-  width: 6px;
-  height: 6px;
-  background: #ff4040;
-  border-radius: 50%;
-  animation: live-pulse 1.6s ease-in-out infinite;
-  flex-shrink: 0;
-}
-
-@keyframes live-pulse {
-  0%, 100% { opacity: 1;   transform: scale(1); }
-  50%       { opacity: 0.3; transform: scale(0.75); }
-}
-
-/* 時刻テーマラベル */
-#theme-label {
-  position: absolute;
-  bottom: 6px;
-  left: 8px;
-  font-size: 0.68rem;
-  color: var(--accent);
-  opacity: 0.7;
-  letter-spacing: 0.05em;
-  transition: color 0.6s;
-}
-
-/* テーマ別コーナー色アニメーション */
-[data-theme="morning"]   .vf-corner { border-color: #FFB7C5; opacity: 0.6; }
-[data-theme="afternoon"] .vf-corner { border-color: #90caf9; opacity: 0.55; }
-[data-theme="evening"]   .vf-corner { border-color: #FF9A5C; opacity: 0.6; }
-[data-theme="night"]     .vf-corner { border-color: #b48ef0; opacity: 0.55; }
-
-/* ===== 感情オーバーレイ ===== */
-#emotion-overlay {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 1.9rem;
-  pointer-events: none;
-  opacity: 0;
-  z-index: 5;
-}
-#emotion-overlay.show {
-  animation: emotion-float 2.4s ease-out forwards;
-}
-@keyframes emotion-float {
-  0%   { opacity: 1;   transform: translateX(-50%) translateY(0)     scale(1); }
-  25%  { opacity: 1;   transform: translateX(-50%) translateY(-18px)  scale(1.2); }
-  75%  { opacity: 0.5; transform: translateX(-50%) translateY(-44px)  scale(0.9); }
-  100% { opacity: 0;   transform: translateX(-50%) translateY(-56px)  scale(0.8); }
-}
-
-/* ===== 新キャラアニメーション ===== */
-
-/* sleepy: うとうと */
-#character.sleepy {
-  animation: sleepy-nod 2.8s ease-in-out infinite;
-  filter: brightness(0.82) saturate(0.6);
-}
-@keyframes sleepy-nod {
-  0%   { transform: translateY(0)   rotate(0deg); }
-  35%  { transform: translateY(3px) rotate(-9deg); }
-  65%  { transform: translateY(4px) rotate(-11deg); }
-  85%  { transform: translateY(2px) rotate(-7deg); }
-  100% { transform: translateY(0)   rotate(0deg); }
-}
-
-/* excited: めちゃ興奮 */
-#character.excited {
-  animation: excited-jump 0.28s ease-in-out infinite;
-  filter: brightness(1.3) saturate(1.7) drop-shadow(0 0 10px var(--accent));
-}
-@keyframes excited-jump {
-  0%   { transform: translateY(0)    scale(1)    rotate(-2deg); }
-  25%  { transform: translateY(-20px) scale(1.07) rotate(4deg); }
-  50%  { transform: translateY(-13px) scale(1.04) rotate(-3deg); }
-  75%  { transform: translateY(-22px) scale(1.08) rotate(5deg); }
-  100% { transform: translateY(0)    scale(1)    rotate(-2deg); }
-}
-
-/* blush: 照れ照れ */
-#character.blush {
-  animation: blush-shy 0.55s ease-in-out 3;
-  filter: saturate(1.6) hue-rotate(-12deg) brightness(1.1);
-}
-@keyframes blush-shy {
-  0%   { transform: translateY(0)    rotate(0deg); }
-  30%  { transform: translateY(-5px) rotate(-5deg); }
-  70%  { transform: translateY(-5px) rotate(5deg); }
-  100% { transform: translateY(0)    rotate(0deg); }
-}
-
-/* ===== タイピングインジケーター ===== */
-.typing-msg {
-  align-self: flex-start;
-  background: var(--bubble-him);
-  border: 1px solid var(--border);
-  border-bottom-left-radius: 4px;
-  max-width: 80%;
-  padding: 10px 14px;
-  border-radius: 18px;
-  animation: msg-in 0.2s ease-out;
-}
-.typing-dots {
-  display: flex;
-  gap: 4px;
-  padding: 3px 0;
-}
-.typing-dots span {
-  width: 7px;
-  height: 7px;
-  background: var(--accent);
-  border-radius: 50%;
-  animation: dot-bounce 1s ease-in-out infinite;
-}
-.typing-dots span:nth-child(2) { animation-delay: 0.16s; }
-.typing-dots span:nth-child(3) { animation-delay: 0.32s; }
-@keyframes dot-bounce {
-  0%, 60%, 100% { transform: translateY(0);    opacity: 0.45; }
-  30%            { transform: translateY(-8px); opacity: 1; }
 }
 
 /* ===== キャラ着せ替えUI ===== */
@@ -668,29 +920,27 @@ html, body {
   flex-direction: column;
   gap: 10px;
 }
-.settings-char > label {
-  font-size: 0.85rem;
-  color: var(--text-dim);
-}
+.settings-char > label { font-size: 0.85rem; color: var(--text-dim); }
+
 .char-upload-row {
   display: flex;
   align-items: center;
   gap: 14px;
 }
 #char-preview {
-  width: 62px;
-  height: 62px;
+  width: 64px;
+  height: 64px;
   object-fit: contain;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--bg-mid);
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  background: var(--bg-input);
   padding: 4px;
   flex-shrink: 0;
 }
 .char-upload-actions {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 7px;
   flex: 1;
 }
 .btn-upload {
@@ -698,54 +948,90 @@ html, body {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  border-radius: 10px;
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  border-radius: 12px;
   color: white;
   font-size: 0.85rem;
   font-weight: bold;
-  padding: 9px 12px;
+  padding: 10px 14px;
   cursor: pointer;
+  min-height: 42px;
   transition: opacity 0.2s;
   text-align: center;
 }
 .btn-upload:hover { opacity: 0.88; }
 
 .settings-divider {
-  height: 1px;
+  height: 1.5px;
   background: var(--border);
   margin: 2px 0;
+  border-radius: 2px;
 }
 
 /* ===== コピートースト ===== */
 #copy-toast {
   position: fixed;
-  bottom: 80px;
+  bottom: 90px;
   left: 50%;
   transform: translateX(-50%) translateY(10px);
-  background: rgba(40,35,65,0.95);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  color: var(--text);
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  color: white;
+  border-radius: 22px;
   font-size: 0.82rem;
-  padding: 7px 16px;
+  font-weight: bold;
+  padding: 8px 18px;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.2s, transform 0.2s;
   z-index: 300;
   white-space: nowrap;
+  box-shadow: 0 4px 16px var(--shadow);
 }
 #copy-toast.show {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
 
-/* ===== レスポンシブ ===== */
-@media (max-height: 700px) {
-  #character-area { min-height: 180px; }
-  #character { width: 100px !important; }
+/* ===== パーティクルキャンバス ===== */
+#particles-canvas { z-index: 0; }
+
+#setup-screen, #app, #settings-modal {
+  position: relative;
+  z-index: 1;
 }
 
-@media (max-width: 400px) {
-  #speech-bubble { max-width: 200px; font-size: 0.82rem; }
+/* ===== シーンアニメーション ===== */
+@keyframes butterfly {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50%       { transform: translateY(-12px) rotate(5deg); }
+}
+@keyframes twinkle-emoji {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+@keyframes sun-glow {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(255,220,0,0.5)); }
+  50%       { filter: drop-shadow(0 0 12px rgba(255,220,0,0.9)); }
+}
+
+/* ===== ユーティリティ ===== */
+.hidden { display: none !important; }
+
+/* ===== レスポンシブ（スマホ最適化） ===== */
+@media (max-height: 680px) {
+  #character-area { flex: 0 0 min(38vh, 230px); }
+  #character { width: 95px !important; }
+}
+
+@media (max-width: 380px) {
+  #speech-bubble { max-width: 190px; font-size: 0.82rem; }
   .message { font-size: 0.88rem; }
+  #send-btn { padding: 11px 14px; font-size: 0.85rem; }
+}
+
+/* iOS safe area for header */
+@supports (padding-top: env(safe-area-inset-top)) {
+  #app-header {
+    padding-top: max(12px, env(safe-area-inset-top));
+  }
 }

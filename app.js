@@ -5,7 +5,7 @@ const App = (() => {
   let isSending  = false;
   let convCount  = 0;
   const CHAR_SRC_KEY  = 'nagaimo_char_src';
-  const RARE_STATES   = ['sleepy', 'excited', 'blush'];
+  const RARE_STATES   = ['sleepy', 'excited', 'blush', 'dancing', 'surprised', 'love'];
 
   // ===== DOM要素 =====
   const $ = id => document.getElementById(id);
@@ -49,6 +49,7 @@ const App = (() => {
     applyCustomChar();
     renderHistory();
     scrollToBottom();
+    initSceneSelector();
 
     // 初回挨拶（履歴が空のとき）
     if (Memory.loadHistory().length === 0) {
@@ -150,8 +151,10 @@ const App = (() => {
       // キャラのリアクション
       Character.talk(truncateForBubble(reply), 6000);
 
-      // 長芋ワードが含まれたらはしゃいでハートをバースト
-      if (/長芋|ながいも|やま芋|やまいも/i.test(text + reply)) {
+      // キャラのリアクション（優先度順）
+      const combined = text + reply;
+      if (/長芋|ながいも|やま芋|やまいも/i.test(combined)) {
+        // 長芋ワード → はしゃいでハートバースト
         setTimeout(() => {
           Character.happy();
           const charEl = document.getElementById('character');
@@ -164,10 +167,16 @@ const App = (() => {
             );
           }
         }, 200);
+      } else if (/好き|大好き|ありがとう|かわいい|すき|嬉しい|うれしい/i.test(combined)) {
+        setTimeout(() => Character.love(), 300);
+      } else if (/踊|ダンス|音楽|歌|うた|ライブ|配信|VTuber|vtuber/i.test(combined)) {
+        setTimeout(() => Character.dancing(), 300);
+      } else if (/びっくり|驚|まじか|えー|うそ|マジ|まじ|なんと|信じられない/i.test(combined)) {
+        setTimeout(() => Character.surprised(), 300);
       } else {
         // レアリアクション（数回に一度ランダム発動）
         convCount++;
-        if (convCount >= 4 && Math.random() < 0.28) {
+        if (convCount >= 3 && Math.random() < 0.30) {
           convCount = 0;
           const r = RARE_STATES[Math.floor(Math.random() * RARE_STATES.length)];
           setTimeout(() => Character[r]?.(), 1400);
@@ -284,6 +293,32 @@ const App = (() => {
 
   function hideTypingIndicator() {
     $('typing-indicator')?.remove();
+  }
+
+  // ===== シーン背景 =====
+  const SCENE_KEY = 'nagaimo_scene';
+  const DEFAULT_SCENE = 'scene-farm';
+
+  function initSceneSelector() {
+    const saved = localStorage.getItem(SCENE_KEY) || DEFAULT_SCENE;
+    setScene(saved);
+
+    $('bg-selector')?.addEventListener('click', e => {
+      const btn = e.target.closest('.bg-btn');
+      if (btn?.dataset.scene) setScene(btn.dataset.scene);
+    });
+  }
+
+  function setScene(scene) {
+    const bg = $('scene-bg');
+    if (!bg) return;
+    bg.className = scene;
+    localStorage.setItem(SCENE_KEY, scene);
+
+    // アクティブボタンを強調
+    document.querySelectorAll('.bg-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.scene === scene);
+    });
   }
 
   // ===== キャラ着せ替え =====

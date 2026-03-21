@@ -12,7 +12,7 @@ const Character = (() => {
     const c = el();
     if (!c) return;
     // 既存のアニメーションクラスを全て除去
-    c.classList.remove('idle', 'talking', 'happy', 'thinking');
+    c.classList.remove('idle', 'talking', 'happy', 'thinking', 'love', 'dancing', 'surprised');
     // 一度外して再付与することでアニメーションをリセット
     void c.offsetWidth;
     c.classList.add(state);
@@ -87,6 +87,30 @@ const Character = (() => {
     idleTimer = setTimeout(() => idle(), 2000);
   }
 
+  function love() {
+    clearIdleTimer();
+    thinkingDots()?.classList.add('hidden');
+    setState('love');
+    showEmotion('💖');
+    idleTimer = setTimeout(() => idle(), 2600);
+  }
+
+  function dancing() {
+    clearIdleTimer();
+    thinkingDots()?.classList.add('hidden');
+    setState('dancing');
+    showEmotion('🎵');
+    idleTimer = setTimeout(() => idle(), 3200);
+  }
+
+  function surprised() {
+    clearIdleTimer();
+    thinkingDots()?.classList.add('hidden');
+    setState('surprised');
+    showEmotion('😲');
+    idleTimer = setTimeout(() => idle(), 1400);
+  }
+
   function showEmotion(emoji) {
     const ov = document.getElementById('emotion-overlay');
     if (!ov) return;
@@ -109,5 +133,5 @@ const Character = (() => {
     thinkingDots()?.classList.add('hidden');
   }
 
-  return { idle, think, talk, happy, sleepy, excited, blush, showBubble, hideBubble };
+  return { idle, think, talk, happy, sleepy, excited, blush, love, dancing, surprised, showBubble, hideBubble };
 })();
