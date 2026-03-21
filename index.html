@@ -12,6 +12,13 @@
   <meta name="apple-mobile-web-app-title" content="ながいもくん">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="assets/nagaimo.svg">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self';
+             script-src 'self';
+             style-src 'self' 'unsafe-inline';
+             img-src 'self' data: blob:;
+             connect-src https://generativelanguage.googleapis.com;
+             font-src 'self';">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>

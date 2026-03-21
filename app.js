@@ -298,11 +298,19 @@ const App = (() => {
     if (p) p.src = localStorage.getItem(CHAR_SRC_KEY) || 'assets/nagaimo.svg';
   }
 
+  const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
   function handleCharFileChange(e) {
     const file = e.target.files[0];
     if (!file) return;
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      alert('対応形式はJPEG・PNG・GIF・WebPのみです');
+      e.target.value = '';
+      return;
+    }
     if (file.size > 5 * 1024 * 1024) {
       alert('画像は5MB以下にしてください');
+      e.target.value = '';
       return;
     }
     const reader = new FileReader();
