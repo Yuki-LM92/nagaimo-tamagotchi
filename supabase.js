@@ -40,15 +40,26 @@ const SupabaseSync = (() => {
   }
 
   async function callGemini(payload) {
-    const res = await fetch(`${SUPABASE_URL}/functions/v1/gemini-proxy`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${ANON_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
-    return res.json();
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 20000); // 20秒タイムアウト
+    try {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/gemini-proxy`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${ANON_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload),
+        signal: controller.signal
+      });
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      if (err.name === 'AbortError') throw new Error('タイムアウト: 応答に時間がかかりすぎました');
+      throw err;
+    } finally {
+      clearTimeout(timer);
+    }
   }
 
   return { getRoomCode, saveRoomCode, fetchRoom, saveRoom, callGemini };
