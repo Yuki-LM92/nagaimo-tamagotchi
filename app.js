@@ -204,17 +204,19 @@ const App = (() => {
 
   async function handleApiTest() {
     const key = Memory.loadApiKey();
-    const resultEl = $('api-test-result');
-    if (!resultEl) return;
-    resultEl.style.display = 'block';
-    resultEl.textContent = '通信中...';
+    const wrapEl = $('api-test-result');
+    const textEl = $('api-test-text');
+    if (!wrapEl || !textEl) return;
+    wrapEl.style.display = 'block';
+    textEl.style.color = '#aaa';
+    textEl.textContent = '通信中...';
     try {
       const reply = await GeminiAPI.chat(key, [], 'テスト');
-      resultEl.style.color = '#0f0';
-      resultEl.textContent = '✅ 成功: ' + reply.slice(0, 80);
+      textEl.style.color = '#0f0';
+      textEl.textContent = '✅ 成功:\n' + reply;
     } catch (err) {
-      resultEl.style.color = '#f66';
-      resultEl.textContent = '❌ エラー: ' + (err?.message || String(err));
+      textEl.style.color = '#f66';
+      textEl.textContent = '❌ エラー:\n' + (err?.message || String(err));
     }
   }
 

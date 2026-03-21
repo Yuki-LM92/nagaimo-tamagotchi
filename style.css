@@ -1114,6 +1114,8 @@ html, body {
   border-color: var(--snes-hi) var(--snes-lo) var(--snes-lo) var(--snes-hi);
   padding: 24px 20px;
   width: min(380px, 90vw);
+  max-height: 85vh;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 12px;
