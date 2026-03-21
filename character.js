@@ -12,7 +12,7 @@ const Character = (() => {
     const c = el();
     if (!c) return;
     // 既存のアニメーションクラスを全て除去
-    c.classList.remove('idle', 'talking', 'happy', 'thinking', 'love', 'dancing', 'surprised');
+    c.classList.remove('idle', 'talking', 'happy', 'thinking', 'love', 'dancing', 'surprised', 'glitch');
     // 一度外して再付与することでアニメーションをリセット
     void c.offsetWidth;
     c.classList.add(state);
@@ -87,6 +87,14 @@ const Character = (() => {
     idleTimer = setTimeout(() => idle(), 2000);
   }
 
+  function glitch() {
+    clearIdleTimer();
+    thinkingDots()?.classList.add('hidden');
+    setState('glitch');
+    showEmotion('⚡');
+    idleTimer = setTimeout(() => idle(), 700);
+  }
+
   function love() {
     clearIdleTimer();
     thinkingDots()?.classList.add('hidden');
@@ -133,5 +141,5 @@ const Character = (() => {
     thinkingDots()?.classList.add('hidden');
   }
 
-  return { idle, think, talk, happy, sleepy, excited, blush, love, dancing, surprised, showBubble, hideBubble };
+  return { idle, think, talk, happy, sleepy, excited, blush, glitch, love, dancing, surprised, showBubble, hideBubble };
 })();

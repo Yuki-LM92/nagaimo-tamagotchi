@@ -5,7 +5,7 @@ const App = (() => {
   let isSending  = false;
   let convCount  = 0;
   const CHAR_SRC_KEY  = 'nagaimo_char_src';
-  const RARE_STATES   = ['sleepy', 'excited', 'blush', 'dancing', 'surprised', 'love'];
+  const RARE_STATES   = ['sleepy', 'excited', 'blush', 'dancing', 'surprised', 'love', 'glitch'];
 
   // ===== DOM要素 =====
   const $ = id => document.getElementById(id);
@@ -188,7 +188,8 @@ const App = (() => {
       const errMsg = friendlyError(err.message);
       addMessageToUI('assistant', errMsg);
       scrollToBottom();
-      Character.talk('うっ…うまく返せなかった', 3000);
+      Character.glitch();
+      setTimeout(() => Character.talk('うっ…うまく返せなかった', 3000), 800);
     } finally {
       isSending = false;
       sendBtn.disabled = false;
@@ -299,8 +300,11 @@ const App = (() => {
   const SCENE_KEY = 'nagaimo_scene';
   const DEFAULT_SCENE = 'scene-farm';
 
+  const VALID_SCENES = ['scene-farm', 'scene-flowers', 'scene-space', 'scene-night', 'scene-cyber', 'scene-beach'];
+
   function initSceneSelector() {
-    const saved = localStorage.getItem(SCENE_KEY) || DEFAULT_SCENE;
+    let saved = localStorage.getItem(SCENE_KEY) || DEFAULT_SCENE;
+    if (!VALID_SCENES.includes(saved)) saved = DEFAULT_SCENE;
     setScene(saved);
 
     $('bg-selector')?.addEventListener('click', e => {

@@ -7,12 +7,15 @@
 
 :root {
   /* === カラーパレット === */
-  --pink:       #ff6eb4;
+  --pink:       #f06aa0;
   --pink-l:     #ffb3d9;
   --pink-p:     #fff0f8;
-  --purple:     #c77dff;
-  --purple-l:   #ddb8ff;
-  --purple-p:   #f8f0ff;
+  --purple:     #9b7ae8;
+  --purple-l:   #c8b4f8;
+  --purple-p:   #f0ecff;
+  --cyan:       #2bc4d4;
+  --cyan-l:     #82e4ee;
+  --cyan-p:     #e0f8fc;
   --mint:       #5ec89b;
   --mint-l:     #aadfca;
   --peach:      #ff9b6a;
@@ -21,26 +24,26 @@
   --coral:      #ff7070;
 
   /* === UIトークン === */
-  --bg:         #fff5fb;
-  --bg-card:    #ffffff;
-  --bg-input:   #fff8fc;
-  --text:       #5c2060;
-  --text-dim:   #c090b8;
-  --border:     #f0b8dc;
-  --shadow:     rgba(200, 80, 160, 0.14);
+  --bg:         #f2f0ff;
+  --bg-card:    #fdfcff;
+  --bg-input:   #f8f6ff;
+  --text:       #3a2260;
+  --text-dim:   #a898c8;
+  --border:     #d8ccf8;
+  --shadow:     rgba(100, 60, 200, 0.14);
 
   /* particles.jsが時刻に応じて更新 */
-  --accent:     #ff6eb4;
-  --accent2:    #c77dff;
-  --bg-deep:    #fff5fb;
-  --bg-mid:     #fce4f5;
+  --accent:     #2bc4d4;
+  --accent2:    #9b7ae8;
+  --bg-deep:    #f2f0ff;
+  --bg-mid:     #e6e0ff;
 
   /* チャット */
-  --bubble-me:  #ff6eb4;
-  --bubble-him: #f8eeff;
+  --bubble-me:  #f06aa0;
+  --bubble-him: #f0ecff;
 
   /* 旧互換 */
-  --bg-card-dark: #fce4f5;
+  --bg-card-dark: #e6e0ff;
   --danger:     #e05555;
   --radius:     20px;
 }
@@ -51,7 +54,7 @@ html, body {
   background: var(--bg);
   color: var(--text);
   overflow: hidden;
-  background-image: radial-gradient(circle, rgba(255,182,217,0.45) 1.5px, transparent 1.5px);
+  background-image: radial-gradient(circle, rgba(155,122,232,0.28) 1.5px, transparent 1.5px);
   background-size: 22px 22px;
 }
 
@@ -151,7 +154,7 @@ html, body {
   justify-content: space-between;
   padding: 12px 20px;
   padding-top: max(12px, env(safe-area-inset-top, 0px));
-  background: linear-gradient(135deg, var(--pink), var(--purple));
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
   flex-shrink: 0;
 }
 
@@ -250,24 +253,25 @@ html, body {
   animation: butterfly 5s ease-in-out infinite;
 }
 
-/* ☀️ 晴れ空 */
-.scene-sky {
+/* 🌌 宇宙 (sasakure.UK: ハロー、プラネット。) */
+.scene-space {
   background: linear-gradient(
     to bottom,
-    #4FC3F7 0%, #81D4FA 45%,
-    #B3E5FC 75%, #E1F5FE 100%
+    #06041a 0%, #120830 45%, #1c0f48 100%
   );
 }
-.scene-sky::before {
-  content: '☀️';
-  top: 7%; left: 11%;
-  font-size: 3rem;
-  filter: drop-shadow(0 0 8px rgba(255,220,0,0.5));
+.scene-space::before {
+  content: '🌌';
+  top: 5%; left: 8%;
+  font-size: 3.4rem;
+  filter: drop-shadow(0 0 14px rgba(155,122,232,0.9));
 }
-.scene-sky::after {
-  content: '🌈';
-  bottom: 14%; right: 5%;
-  font-size: 2.8rem;
+.scene-space::after {
+  content: '✨  ⭐  💫';
+  top: 14%; right: 4%;
+  font-size: 1rem;
+  letter-spacing: 8px;
+  animation: twinkle-emoji 3s ease-in-out infinite;
 }
 
 /* 🌙 夜空 */
@@ -291,25 +295,26 @@ html, body {
   animation: twinkle-emoji 2.5s ease-in-out infinite;
 }
 
-/* 🏠 お部屋 */
-.scene-room {
+/* 💻 サイバー空間 (sasakure.UK: データ・グリッド世界) */
+.scene-cyber {
   background:
-    linear-gradient(transparent 60%, #F0C880 60%, #E8B860 100%),
-    repeating-linear-gradient(
-      90deg,
-      #FFD0EA 0px,  #FFD0EA 40px,
-      #FFBBDE 40px, #FFBBDE 80px
-    );
+    linear-gradient(rgba(43,196,212,0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(43,196,212,0.10) 1px, transparent 1px),
+    linear-gradient(to bottom, #060e1e 0%, #0a1428 60%, #060e20 100%);
+  background-size: 28px 28px, 28px 28px, 100% 100%;
 }
-.scene-room::before {
-  content: '🪟';
-  top: 7%; left: 14%;
+.scene-cyber::before {
+  content: '💻';
+  top: 8%; left: 12%;
   font-size: 2.4rem;
+  filter: drop-shadow(0 0 10px rgba(43,196,212,0.9));
 }
-.scene-room::after {
-  content: '🌷';
-  bottom: 37%; right: 10%;
-  font-size: 2rem;
+.scene-cyber::after {
+  content: '📡  🔷';
+  bottom: 36%; right: 6%;
+  font-size: 1.3rem;
+  letter-spacing: 10px;
+  filter: drop-shadow(0 0 6px rgba(43,196,212,0.7));
 }
 
 /* 🌊 海辺 */
@@ -383,9 +388,9 @@ html, body {
   position: absolute;
   width: 22px;
   height: 22px;
-  border-color: var(--pink);
+  border-color: var(--cyan);
   border-style: solid;
-  opacity: 0.7;
+  opacity: 0.8;
   transition: border-color 0.5s;
 }
 .vf-corner.tl { top: 0; left: 0;  border-width: 2.5px 0 0 2.5px; border-radius: 6px 0 0 0; }
@@ -397,7 +402,7 @@ html, body {
   position: absolute;
   top: 7px;
   right: 7px;
-  background: linear-gradient(135deg, var(--pink), var(--purple));
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
   border: none;
   border-radius: 8px;
   padding: 3px 9px;
@@ -408,7 +413,7 @@ html, body {
   display: flex;
   align-items: center;
   gap: 5px;
-  box-shadow: 0 2px 8px rgba(255,110,180,0.4);
+  box-shadow: 0 2px 8px rgba(43,196,212,0.5);
 }
 
 .live-dot {
@@ -466,6 +471,7 @@ html, body {
 /* ===== アニメーション ===== */
 #character.idle {
   animation: idle-float 3s ease-in-out infinite;
+  filter: drop-shadow(0 6px 22px rgba(43,196,212,0.32)) drop-shadow(0 2px 8px rgba(155,122,232,0.2));
 }
 @keyframes idle-float {
   0%   { transform: translateY(0) rotate(-1.5deg); }
@@ -539,6 +545,21 @@ html, body {
   30%  { transform: translateY(-5px) rotate(-5deg); }
   70%  { transform: translateY(-5px) rotate(5deg); }
   100% { transform: translateY(0)    rotate(0deg); }
+}
+
+/* ===== グリッチ状態 (sasakure.UK: データ崩壊) ===== */
+#character.glitch {
+  animation: glitch-anim 0.10s step-end 5;
+}
+@keyframes glitch-anim {
+  0%   { transform: translate(0);          filter: drop-shadow( 4px 0 var(--cyan)) drop-shadow(-4px 0 var(--pink)) brightness(1.2); }
+  15%  { transform: translate(-6px,  2px); filter: brightness(1.5) hue-rotate(30deg); }
+  30%  { transform: translate( 6px, -2px); filter: drop-shadow(-4px 0 var(--cyan)) drop-shadow( 4px 0 var(--pink)); }
+  45%  { transform: translate(-3px,  3px); filter: brightness(1.8) saturate(2); }
+  60%  { transform: translate( 4px, -3px); filter: brightness(1.2); }
+  75%  { transform: translate(-2px,  1px); filter: drop-shadow( 3px 0 var(--cyan)) brightness(1.3); }
+  90%  { transform: translate( 2px, -1px); }
+  100% { transform: translate(0);          filter: none; }
 }
 
 /* ===== 追加キャラ状態 ===== */
