@@ -73,15 +73,9 @@ img, canvas, svg {
 html, body {
   height: 100%;
   font-family: 'DotGothic16', 'M PLUS Rounded 1c', 'BIZ UDPGothic', sans-serif;
-  background: var(--px-bg);
+  background: #000;
   color: var(--text);
   overflow: hidden;
-  /* 明るい水玉ドット */
-  background-image:
-    radial-gradient(circle, rgba(255, 180, 220, 0.18) 1px, transparent 1px),
-    radial-gradient(circle, rgba(100, 180, 255, 0.12) 1px, transparent 1px);
-  background-size: 20px 20px, 30px 30px;
-  background-position: 0 0, 10px 10px;
 }
 
 /* ===== セットアップ画面 ===== */
