@@ -846,10 +846,12 @@ html, body {
   text-align: left;
   line-height: 1.7;
   box-shadow: 3px 3px 0 var(--snes-lo);
-  white-space: pre-wrap;
   word-break: break-word;
   z-index: 8;
   animation: bubble-in 0.1s step-end;
+}
+#speech-text {
+  white-space: pre-wrap;
 }
 #speech-bubble::after {
   content: '';
