@@ -36,6 +36,7 @@ const App = (() => {
 
     bindEvents();
     Character.idle();
+    Character.setupTap();
   }
 
   function showSetup() {

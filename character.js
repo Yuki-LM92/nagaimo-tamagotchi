@@ -141,5 +141,40 @@ const Character = (() => {
     thinkingDots()?.classList.add('hidden');
   }
 
-  return { idle, think, talk, happy, sleepy, excited, blush, glitch, love, dancing, surprised, showBubble, hideBubble };
+  // タップ反応
+  const TAP_REACTIONS = [
+    { fn: () => happy(),    text: 'なんだい、元気？' },
+    { fn: () => love(),     text: 'タップしてくれると嬉しい…' },
+    { fn: () => excited(),  text: 'おっ！' },
+    { fn: () => surprised(),text: 'わっ、びっくりした！' },
+    { fn: () => dancing(),  text: 'テンション上がってきた〜' },
+    { fn: () => blush(),    text: 'そんなに見つめないでくれ…' },
+    { fn: () => sleepy(),   text: 'うーん…ちょっと眠い' },
+    { fn: () => happy(),    text: '長芋最高だろ？' },
+    { fn: () => love(),     text: 'おれのこと好き？' },
+    { fn: () => excited(),  text: 'なんか用？' },
+  ];
+
+  let lastTapIndex = -1;
+
+  function onTap() {
+    // 直前と同じリアクションを連続させない
+    let idx;
+    do { idx = Math.floor(Math.random() * TAP_REACTIONS.length); }
+    while (idx === lastTapIndex && TAP_REACTIONS.length > 1);
+    lastTapIndex = idx;
+
+    const { fn, text } = TAP_REACTIONS[idx];
+    fn();
+    talk(text, 3000);
+  }
+
+  function setupTap() {
+    const wrapper = document.getElementById('character-wrapper');
+    if (!wrapper) return;
+    wrapper.style.cursor = 'pointer';
+    wrapper.addEventListener('click', onTap);
+  }
+
+  return { idle, think, talk, happy, sleepy, excited, blush, glitch, love, dancing, surprised, showBubble, hideBubble, setupTap };
 })();
