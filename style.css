@@ -5,64 +5,94 @@
   padding: 0;
 }
 
+/* 16-bit: ピクセルレンダリング */
+img, canvas, svg {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
 :root {
-  /* === カラーパレット === */
-  --pink:       #f06aa0;
-  --pink-l:     #ffb3d9;
-  --pink-p:     #fff0f8;
-  --purple:     #9b7ae8;
-  --purple-l:   #c8b4f8;
-  --purple-p:   #f0ecff;
-  --cyan:       #2bc4d4;
-  --cyan-l:     #82e4ee;
-  --cyan-p:     #e0f8fc;
-  --mint:       #5ec89b;
-  --mint-l:     #aadfca;
-  --peach:      #ff9b6a;
-  --yellow:     #ffd966;
-  --sky-col:    #64b5f6;
-  --coral:      #ff7070;
+  /* === 16-bit カラーパレット === */
+  --px-black:   #080518;
+  --px-bg:      #1a0a2e;
+  --px-panel:   #2d1560;
+  --px-panel2:  #3d2078;
+  --px-pink:    #ff6eb4;
+  --px-pink-d:  #cc1177;
+  --px-pink-l:  #ffaacc;
+  --px-purple:  #9b5de5;
+  --px-yellow:  #ffd166;
+  --px-cyan:    #44eedd;
+  --px-green:   #55ee99;
+  --px-white:   #e8e0ff;
+  --px-gray:    #776699;
+  --px-red:     #ff4466;
 
-  /* === UIトークン === */
-  --bg:         #f2f0ff;
-  --bg-card:    #fdfcff;
-  --bg-input:   #f8f6ff;
-  --text:       #3a2260;
-  --text-dim:   #a898c8;
-  --border:     #d8ccf8;
-  --shadow:     rgba(100, 60, 200, 0.14);
+  /* SNES 3Dボーダー */
+  --snes-hi:    #cc99ff;   /* 左上ハイライト */
+  --snes-lo:    #0d0022;   /* 右下シャドウ */
+  --snes-mid:   #6633aa;   /* ミッドトーン */
 
-  /* particles.jsが時刻に応じて更新 */
-  --accent:     #2bc4d4;
-  --accent2:    #9b7ae8;
-  --bg-deep:    #f2f0ff;
-  --bg-mid:     #e6e0ff;
+  /* UIトークン */
+  --bg:         var(--px-bg);
+  --bg-card:    var(--px-panel);
+  --bg-input:   var(--px-black);
+  --text:       var(--px-white);
+  --text-dim:   var(--px-gray);
+  --border:     var(--snes-mid);
+  --shadow:     rgba(0, 0, 0, 0.7);
+  --danger:     var(--px-red);
 
-  /* チャット */
-  --bubble-me:  #f06aa0;
-  --bubble-him: #f0ecff;
+  /* チャット泡 */
+  --bubble-me:  #881155;
+  --bubble-him: #1e0840;
 
-  /* 旧互換 */
-  --bg-card-dark: #e6e0ff;
-  --danger:     #e05555;
-  --radius:     20px;
+  /* 旧互換（particles.jsが更新する変数） */
+  --accent:     var(--px-cyan);
+  --accent2:    var(--px-purple);
+  --bg-deep:    var(--px-bg);
+  --bg-mid:     var(--px-panel);
+
+  /* 旧変数マッピング（CSS内参照用） */
+  --pink:       var(--px-pink);
+  --purple:     var(--px-purple);
+  --cyan:       var(--px-cyan);
+  --yellow:     var(--px-yellow);
+  --mint:       var(--px-green);
+  --pink-l:     var(--px-pink-l);
+  --pink-p:     #3d1040;
+  --purple-l:   var(--snes-mid);
+  --purple-p:   var(--px-panel);
+  --cyan-l:     #66ddcc;
+  --cyan-p:     #1a2840;
+  --coral:      var(--px-red);
+  --peach:      #ffaa66;
+  --sky-col:    #4488ff;
+  --radius:     0px;
 }
 
 html, body {
   height: 100%;
-  font-family: 'M PLUS Rounded 1c', 'Hiragino Maru Gothic ProN', 'BIZ UDPGothic', sans-serif;
-  background: var(--bg);
+  font-family: 'DotGothic16', 'M PLUS Rounded 1c', 'BIZ UDPGothic', sans-serif;
+  background: var(--px-bg);
   color: var(--text);
   overflow: hidden;
-  background-image: radial-gradient(circle, rgba(155,122,232,0.28) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
+  /* ピクセルグリッド背景 */
+  background-image:
+    linear-gradient(rgba(155, 93, 229, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(155, 93, 229, 0.07) 1px, transparent 1px);
+  background-size: 8px 8px;
 }
 
 /* ===== セットアップ画面 ===== */
 #setup-screen {
   position: fixed;
   inset: 0;
-  background: linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-mid) 60%, var(--bg-deep) 100%);
+  background: var(--px-bg);
+  background-image:
+    linear-gradient(rgba(155, 93, 229, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(155, 93, 229, 0.07) 1px, transparent 1px);
+  background-size: 8px 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -70,81 +100,94 @@ html, body {
 }
 
 .setup-box {
-  background: var(--bg-card);
-  border: 2px solid var(--border);
-  border-radius: 28px;
-  padding: 40px 32px;
+  background: var(--px-panel);
+  border: 4px solid;
+  border-color: var(--snes-hi) var(--snes-lo) var(--snes-lo) var(--snes-hi);
+  padding: 36px 28px;
   width: min(420px, 90vw);
   text-align: center;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  box-shadow: 0 8px 40px var(--shadow);
+  box-shadow: 4px 4px 0 var(--snes-lo);
 }
 
-.setup-char { font-size: 60px; line-height: 1; }
+.setup-char { font-size: 56px; line-height: 1; }
 
 .setup-box h2 {
-  font-size: 1.6rem;
-  color: var(--pink);
-  font-family: 'Hachi Maru Pop', 'Hiragino Maru Gothic ProN', cursive;
+  font-size: 1.4rem;
+  color: var(--px-yellow);
+  font-family: 'DotGothic16', 'BIZ UDPGothic', sans-serif;
+  text-shadow: 2px 2px 0 var(--snes-lo);
 }
 
 .setup-box p {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--text-dim);
-  line-height: 1.6;
+  line-height: 1.8;
 }
 
 .setup-note {
-  color: var(--text) !important;
+  color: var(--px-white) !important;
   font-weight: bold;
 }
 
 .setup-box input {
-  background: var(--bg-input);
-  border: 2px solid var(--border);
-  border-radius: 14px;
-  color: var(--text);
-  padding: 12px 16px;
-  font-size: max(16px, 0.95rem);
+  background: var(--px-black);
+  border: 4px solid;
+  border-color: var(--snes-lo) var(--snes-hi) var(--snes-hi) var(--snes-lo); /* inset */
+  color: var(--px-cyan);
+  padding: 12px 14px;
+  font-size: max(16px, 0.9rem);
   outline: none;
-  transition: border-color 0.2s;
-  font-family: inherit;
+  font-family: 'DotGothic16', monospace;
+  caret-color: var(--px-pink);
 }
-.setup-box input:focus { border-color: var(--pink); }
+.setup-box input:focus {
+  border-color: var(--snes-lo) var(--px-pink) var(--px-pink) var(--snes-lo);
+}
+.setup-box input::placeholder { color: var(--px-gray); }
 
 .setup-box button {
-  background: linear-gradient(135deg, var(--pink), var(--purple));
-  border: none;
-  border-radius: 14px;
+  background: var(--px-pink-d);
+  border: 4px solid;
+  border-color: var(--px-pink-l) var(--px-bg) var(--px-bg) var(--px-pink-l);
   color: white;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  font-family: 'DotGothic16', sans-serif;
   font-weight: bold;
   padding: 14px;
   cursor: pointer;
   min-height: 48px;
-  transition: opacity 0.2s, transform 0.1s;
-  box-shadow: 0 4px 16px rgba(255,110,180,0.35);
+  box-shadow: 3px 3px 0 var(--snes-lo);
+  transition: transform 0.05s step-end, box-shadow 0.05s step-end;
+  letter-spacing: 0.1em;
 }
-.setup-box button:hover  { opacity: 0.9; }
-.setup-box button:active { transform: scale(0.97); }
+.setup-box button:hover { filter: brightness(1.15); }
+.setup-box button:active {
+  border-color: var(--px-bg) var(--px-pink-l) var(--px-pink-l) var(--px-bg);
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--snes-lo);
+}
 
 .setup-hint {
-  font-size: 0.78rem !important;
-  color: var(--text-dim) !important;
+  font-size: 0.72rem !important;
+  color: var(--px-gray) !important;
 }
 
 /* ===== メインアプリ ===== */
 #app {
   display: flex;
   flex-direction: column;
-  height: 100svh; /* svh = small viewport height: iOS Safariでアドレスバーを考慮した最小値 */
+  height: 100svh;
   max-width: 500px;
   margin: 0 auto;
-  background: var(--bg-card);
-  box-shadow: 0 0 48px var(--shadow);
+  background: var(--px-panel);
+  border-left: 4px solid var(--snes-hi);
+  border-right: 4px solid var(--snes-lo);
   overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
 /* ===== ヘッダー ===== */
@@ -152,57 +195,89 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 20px;
-  padding-top: max(12px, env(safe-area-inset-top, 0px));
-  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  padding: 10px 16px;
+  padding-top: max(10px, env(safe-area-inset-top, 0px));
+  background: var(--px-bg);
+  border-bottom: 4px solid var(--px-purple);
   flex-shrink: 0;
+  /* ピクセルスキャンライン */
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(155, 93, 229, 0.08) 3px,
+      rgba(155, 93, 229, 0.08) 4px
+    );
 }
 
 .header-title {
-  font-size: 1.05rem;
-  font-weight: bold;
-  color: white;
-  letter-spacing: 0.05em;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.2);
-  font-family: 'Hachi Maru Pop', 'Hiragino Maru Gothic ProN', cursive;
+  font-size: 0.95rem;
+  color: var(--px-yellow);
+  letter-spacing: 0.08em;
+  font-family: 'DotGothic16', sans-serif;
+  text-shadow: 2px 2px 0 var(--snes-lo);
 }
 
 #settings-btn {
-  background: rgba(255,255,255,0.25);
-  border: none;
-  border-radius: 50%;
+  background: var(--px-panel);
+  border: 3px solid;
+  border-color: var(--snes-hi) var(--snes-lo) var(--snes-lo) var(--snes-hi);
   width: 44px;
   height: 44px;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   cursor: pointer;
-  transition: background 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   -webkit-tap-highlight-color: transparent;
+  box-shadow: 2px 2px 0 var(--snes-lo);
+  transition: transform 0.05s step-end, box-shadow 0.05s step-end;
 }
-#settings-btn:hover  { background: rgba(255,255,255,0.4); }
-#settings-btn:active { background: rgba(255,255,255,0.55); transform: scale(0.93); }
+#settings-btn:hover { filter: brightness(1.2); }
+#settings-btn:active {
+  border-color: var(--snes-lo) var(--snes-hi) var(--snes-hi) var(--snes-lo);
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--snes-lo);
+}
 
-/* ===== キャラクターエリア ===== */
+/* ===== キャラクターエリア（ゲームスクリーン） ===== */
 #character-area {
   flex: 0 0 min(36svh, 240px);
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding-bottom: 44px;
+  padding-bottom: 40px;
   position: relative;
   overflow: hidden;
+  /* スクリーン外枠（SNES inset） */
+  border: 4px solid;
+  border-color: var(--snes-lo) var(--snes-hi) var(--snes-hi) var(--snes-lo);
 }
 
-/* ===== シーン背景 ===== */
+/* スキャンライン効果 */
+#character-area::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.10) 3px,
+    rgba(0, 0, 0, 0.10) 4px
+  );
+  pointer-events: none;
+  z-index: 11;
+}
+
+/* ===== シーン背景（16-bit ピクセルアート） ===== */
 #scene-bg {
   position: absolute;
   inset: 0;
   overflow: hidden;
   z-index: 0;
-  transition: background 0.8s;
 }
 
 #scene-bg::before,
@@ -213,212 +288,236 @@ html, body {
   z-index: 1;
 }
 
-/* 🌾 畑 */
+/* 🌾 畑 (16-bit) */
 .scene-farm {
+  /* ハードストップ = ピクセルアート平面色 */
   background: linear-gradient(
     to bottom,
-    #7ec8e3 0%, #b0ddf5 42%,
-    #5ab85c 42%, #459448 60%,
-    #8b6640 60%
+    #4488ff 0%, #4488ff 44%,
+    #33aa33 44%, #33aa33 62%,
+    #885522 62%
   );
 }
-/* CSS sun */
+/* ピクセル太陽 */
 .scene-farm::before {
-  width: 48px; height: 48px;
-  top: 7%; right: 10%;
-  background: radial-gradient(circle, #ffe566 20%, #ffb800 100%);
-  border-radius: 50%;
-  box-shadow: 0 0 22px 8px rgba(255,200,0,0.38), 0 0 60px 20px rgba(255,180,0,0.12);
-  animation: sun-glow 4s ease-in-out infinite;
+  width: 14px; height: 14px;
+  top: 8%; right: 12%;
+  background: #ffee00;
+  box-shadow:
+    0 -4px 0 0 #ffee00,
+    0  4px 0 0 #ffee00,
+   -4px 0 0 0 #ffee00,
+    4px 0 0 0 #ffee00;
 }
-/* CSS cloud */
+/* ピクセル雲 */
 .scene-farm::after {
-  width: 66px; height: 22px;
-  top: 20%; left: 7%;
-  background: rgba(255,255,255,0.86);
-  border-radius: 50px;
-  box-shadow: 18px -12px 0 7px rgba(255,255,255,0.86), 38px -5px 0 3px rgba(255,255,255,0.80);
-  filter: blur(0.8px);
+  width: 32px; height: 8px;
+  top: 22%; left: 8%;
+  background: white;
+  box-shadow:
+    4px -4px 0 0 white,
+    8px -4px 0 0 white,
+   12px -4px 0 0 white,
+   16px -4px 0 0 white,
+   36px 0  0 0 white,
+   40px 0  0 0 white,
+   44px 0  0 0 white,
+   40px -4px 0 0 white,
+   44px -4px 0 0 white;
 }
 
-/* 🌸 お花畑 */
+/* 🌸 お花畑 (16-bit) */
 .scene-flowers {
   background: linear-gradient(
     to bottom,
-    #ffe0f4 0%, #ffc8e8 42%,
-    #72d472 42%, #58c258 100%
+    #ffbbdd 0%, #ffbbdd 44%,
+    #44cc44 44%, #44cc44 100%
   );
 }
-/* CSS flowers row */
 .scene-flowers::before {
-  width: 8px; height: 8px;
-  bottom: 38%; left: 5%;
-  background: #ff85c0;
-  border-radius: 50%;
+  width: 4px; height: 4px;
+  bottom: 36%; left: 8%;
+  background: #ff44aa;
   box-shadow:
-    22px  0   0 4px #ffaad4,
-    46px -4px 0 5px #f06aa0,
-    70px  3px 0 3px #ffb3d9,
-    94px -3px 0 4px #ff85c0,
-    118px 4px 0 5px #ffaad4,
-    142px -4px 0 3px #f06aa0,
-    166px  2px 0 4px #ff85c0;
+    10px  2px 0 0 #ff88cc,
+    20px -2px 0 0 #cc44aa,
+    30px  1px 0 0 #ff44aa,
+    40px -1px 0 0 #ff88cc,
+    50px  2px 0 0 #cc44aa,
+    60px  0   0 0 #ff44aa,
+    70px -2px 0 0 #ff88cc,
+    80px  2px 0 0 #cc44aa,
+    90px  0   0 0 #ff44aa,
+   100px -1px 0 0 #ff88cc,
+   110px  2px 0 0 #cc44aa,
+   120px -2px 0 0 #ff44aa;
 }
-/* CSS butterfly */
 .scene-flowers::after {
-  width: 14px; height: 9px;
-  top: 20%; right: 15%;
-  background: rgba(175,100,215,0.75);
-  border-radius: 100% 0 0 100% / 50%;
-  box-shadow: 18px 0 0 -1px rgba(175,100,215,0.65);
-  animation: butterfly 5s ease-in-out infinite;
+  width: 8px; height: 6px;
+  top: 22%; right: 16%;
+  background: #aa66ff;
+  box-shadow: 12px 2px 0 0 #9955ee;
+  animation: butterfly 4s step-end infinite;
 }
 
-/* 🌌 宇宙 */
+/* 🌌 宇宙 (16-bit) */
 .scene-space {
-  background: linear-gradient(
-    to bottom,
-    #06041a 0%, #120830 45%, #1c0f48 100%
-  );
+  background: #000011;
 }
-/* CSS stars (radial-gradient dots) */
+/* ピクセル星 */
 .scene-space::before {
-  inset: 0;
-  background:
-    radial-gradient(circle, rgba(255,255,255,0.90) 1px, transparent 1px) 8px  18px / 55px 48px,
-    radial-gradient(circle, rgba(200,180,255,0.80) 1px, transparent 1px) 32px  8px / 72px 60px,
-    radial-gradient(circle, rgba(255,255,255,0.75) 1px, transparent 1px) 52px 38px / 80px 68px,
-    radial-gradient(circle, rgba(180,210,255,0.70) 1px, transparent 1px) 18px 55px / 65px 54px;
-  animation: twinkle-stars 4s ease-in-out infinite;
+  width: 2px; height: 2px;
+  top: 0; left: 0;
+  background: white;
+  box-shadow:
+    15px 10px 0 white, 32px 22px 0 white,
+    48px  8px 0 rgba(255,220,220,0.9),
+    67px 35px 0 white, 82px 15px 0 rgba(200,180,255,0.9),
+    98px 42px 0 white, 113px  6px 0 rgba(255,255,255,0.7),
+   128px 28px 0 white, 143px 18px 0 rgba(200,220,255,0.8),
+   158px 45px 0 white, 175px 12px 0 white,
+   192px 38px 0 rgba(255,255,255,0.6),
+   210px 25px 0 white, 225px  5px 0 rgba(200,180,255,0.9),
+   240px 48px 0 white,  25px 58px 0 white,
+    58px 68px 0 rgba(255,255,255,0.7), 90px 55px 0 white,
+   122px 72px 0 white, 155px 62px 0 rgba(200,220,255,0.8);
+  animation: twinkle-stars 3s step-end infinite;
 }
-/* CSS planet */
+/* ピクセル惑星 */
 .scene-space::after {
-  width: 46px; height: 46px;
-  top: 7%; left: 10%;
-  background: radial-gradient(circle at 38% 35%, #a07ef0 0%, #4a1f7a 72%);
-  border-radius: 50%;
-  box-shadow: 0 0 20px 4px rgba(155,122,232,0.45), inset -8px -4px 0 rgba(0,0,0,0.32);
+  width: 20px; height: 20px;
+  top: 10%; left: 10%;
+  background: #aa66ff;
+  box-shadow:
+     4px 0 0 0 #9955ee,
+    -4px 0 0 0 #bb77ff,
+     0  4px 0 0 #8844dd,
+     0 -4px 0 0 #cc88ff;
 }
 
-/* 🌙 夜空 */
+/* 🌙 夜空 (16-bit) */
 .scene-night {
   background: linear-gradient(
     to bottom,
-    #1a1040 0%, #2d1b69 55%, #3a2280 100%
+    #110033 0%, #1a0044 55%, #220055 100%
   );
 }
-/* CSS moon */
+/* ピクセル月 */
 .scene-night::before {
-  width: 44px; height: 44px;
-  top: 7%; right: 10%;
-  background: radial-gradient(circle, #fff8d0 0%, #ffe066 100%);
-  border-radius: 50%;
-  box-shadow: 0 0 22px 6px rgba(255,220,60,0.28), inset -10px -4px 0 rgba(200,160,20,0.25);
+  width: 14px; height: 14px;
+  top: 8%; right: 12%;
+  background: #ffee88;
+  box-shadow:
+    0 -2px 0 0 #ffee88,
+    0  2px 0 0 #ffee88,
+   -2px 0 0 0 #ffee88,
+    2px 0 0 0 #ffee88;
 }
-/* CSS stars */
+/* ピクセル星 */
 .scene-night::after {
-  inset: 0;
-  background:
-    radial-gradient(circle, rgba(255,255,255,0.90) 1px, transparent 1px) 20px 25px / 60px 52px,
-    radial-gradient(circle, rgba(255,255,255,0.75) 1px, transparent 1px) 48px 12px / 80px 65px,
-    radial-gradient(circle, rgba(200,180,255,0.80) 1px, transparent 1px) 12px 60px / 70px 58px,
-    radial-gradient(circle, rgba(255,255,255,0.70) 1px, transparent 1px) 60px 42px / 90px 72px;
-  animation: twinkle-stars 3.5s ease-in-out infinite alternate;
+  width: 2px; height: 2px;
+  top: 0; left: 0;
+  background: white;
+  box-shadow:
+    20px 18px 0 white, 42px 12px 0 rgba(255,255,255,0.8),
+    65px 30px 0 white, 88px  8px 0 white,
+   110px 24px 0 rgba(220,200,255,0.9),
+   132px 40px 0 white, 158px 16px 0 white,
+   180px 35px 0 rgba(255,255,255,0.7),
+   205px 10px 0 white, 225px 42px 0 white,
+    35px 55px 0 white,  72px 65px 0 rgba(255,255,255,0.8),
+   108px 58px 0 white, 145px 70px 0 white;
+  animation: twinkle-stars 2.4s step-end infinite;
 }
 
-/* 💻 サイバー空間 */
+/* 💻 サイバー (16-bit) */
 .scene-cyber {
-  background:
-    linear-gradient(rgba(43,196,212,0.10) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(43,196,212,0.10) 1px, transparent 1px),
-    linear-gradient(to bottom, #060e1e 0%, #0a1428 60%, #060e20 100%);
-  background-size: 28px 28px, 28px 28px, 100% 100%;
+  background: #001122;
+  background-image:
+    linear-gradient(rgba(68,238,221,0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(68,238,221,0.12) 1px, transparent 1px);
+  background-size: 16px 16px, 16px 16px;
 }
-/* CSS scanlines */
 .scene-cyber::before {
   inset: 0;
   background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 3px,
-    rgba(43,196,212,0.04) 3px,
-    rgba(43,196,212,0.04) 4px
+    0deg, transparent, transparent 3px,
+    rgba(68,238,221,0.04) 3px, rgba(68,238,221,0.04) 4px
   );
 }
-/* CSS terminal glow box */
 .scene-cyber::after {
-  width: 54px; height: 38px;
-  top: 9%; left: 10%;
-  border: 1.5px solid rgba(43,196,212,0.60);
-  border-radius: 6px;
-  box-shadow: 0 0 16px rgba(43,196,212,0.35), inset 0 0 16px rgba(43,196,212,0.07);
+  width: 40px; height: 24px;
+  top: 12%; left: 10%;
+  border: 2px solid rgba(68,238,221,0.7);
+  box-shadow: 0 0 0 2px rgba(68,238,221,0.2);
 }
 
-/* 🌊 海辺 */
+/* 🌊 ビーチ (16-bit) */
 .scene-beach {
   background: linear-gradient(
     to bottom,
-    #7ec8e3 0%, #b0ddf5 36%,
-    #3a9ed8 36%, #1a78c2 54%,
-    #f5e090 54%, #e8c84a 100%
+    #5599ff 0%, #5599ff 38%,
+    #2266cc 38%, #2266cc 54%,
+    #ffdd66 54%
   );
 }
-/* CSS sun */
 .scene-beach::before {
-  width: 48px; height: 48px;
-  top: 6%; right: 10%;
-  background: radial-gradient(circle, #ffe566 20%, #ffb800 100%);
-  border-radius: 50%;
-  box-shadow: 0 0 22px 8px rgba(255,200,0,0.38);
-  animation: sun-glow 4s ease-in-out infinite;
+  width: 14px; height: 14px;
+  top: 6%; right: 12%;
+  background: #ffee00;
+  box-shadow:
+    0 -4px 0 0 #ffee00,
+    0  4px 0 0 #ffee00,
+   -4px 0 0 0 #ffee00,
+    4px 0 0 0 #ffee00;
 }
-/* CSS wave highlight */
 .scene-beach::after {
-  width: 100%; height: 18px;
-  bottom: 44%; left: 0;
-  background: rgba(255,255,255,0.16);
-  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-  filter: blur(2px);
+  width: 100%; height: 4px;
+  bottom: 46%;
+  left: 0;
+  background: rgba(255,255,255,0.35);
+  box-shadow: 0 4px 0 0 rgba(255,255,255,0.15);
 }
 
 /* ===== 背景セレクター ===== */
 #bg-selector {
   position: absolute;
-  bottom: 7px;
+  bottom: 6px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 4px;
+  gap: 3px;
   z-index: 10;
-  background: rgba(255,255,255,0.88);
-  border: 1.5px solid var(--border);
-  border-radius: 24px;
-  padding: 4px 8px;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: var(--px-bg);
+  border: 3px solid;
+  border-color: var(--snes-hi) var(--snes-lo) var(--snes-lo) var(--snes-hi);
+  padding: 3px 6px;
 }
 
 .bg-btn {
-  background: none;
-  border: 2px solid transparent;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  min-width: 36px;
-  font-size: 1.1rem;
+  background: var(--px-panel);
+  border: 2px solid;
+  border-color: var(--snes-hi) var(--snes-lo) var(--snes-lo) var(--snes-hi);
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: transform 0.15s, border-color 0.15s, background 0.15s;
   display: flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
   -webkit-tap-highlight-color: transparent;
+  transition: transform 0.05s step-end;
 }
-.bg-btn:hover  { transform: scale(1.15); background: var(--pink-p); }
+.bg-btn:hover { filter: brightness(1.3); }
+.bg-btn:active {
+  border-color: var(--snes-lo) var(--snes-hi) var(--snes-hi) var(--snes-lo);
+  transform: translate(1px, 1px);
+}
 .bg-btn.active {
-  border-color: var(--pink);
-  background: var(--pink-p);
-  transform: scale(1.1);
+  border-color: var(--snes-lo) var(--snes-hi) var(--snes-hi) var(--snes-lo);
+  background: var(--px-purple);
 }
 
 /* ===== VTuberフレーム ===== */
@@ -431,67 +530,130 @@ html, body {
 
 .vf-corner {
   position: absolute;
-  width: 22px;
-  height: 22px;
-  border-color: var(--cyan);
+  width: 16px;
+  height: 16px;
+  border-color: var(--px-cyan);
   border-style: solid;
-  opacity: 0.8;
-  transition: border-color 0.5s;
+  opacity: 0.9;
 }
-.vf-corner.tl { top: 0; left: 0;  border-width: 2.5px 0 0 2.5px; border-radius: 6px 0 0 0; }
-.vf-corner.tr { top: 0; right: 0; border-width: 2.5px 2.5px 0 0; border-radius: 0 6px 0 0; }
-.vf-corner.bl { bottom: 0; left: 0;  border-width: 0 0 2.5px 2.5px; border-radius: 0 0 0 6px; }
-.vf-corner.br { bottom: 0; right: 0; border-width: 0 2.5px 2.5px 0; border-radius: 0 0 6px 0; }
+.vf-corner.tl { top: 0; left: 0;  border-width: 2px 0 0 2px; }
+.vf-corner.tr { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.vf-corner.bl { bottom: 0; left: 0;  border-width: 0 0 2px 2px; }
+.vf-corner.br { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
 
 #live-badge {
   position: absolute;
-  top: 7px;
-  right: 7px;
-  background: linear-gradient(135deg, var(--cyan), var(--purple));
-  border: none;
-  border-radius: 8px;
-  padding: 3px 9px;
-  font-size: 0.66rem;
-  font-weight: bold;
-  letter-spacing: 0.14em;
+  top: 5px;
+  right: 5px;
+  background: var(--px-red);
+  border: 2px solid;
+  border-color: #ff8888 #880000 #880000 #ff8888;
+  padding: 2px 7px;
+  font-size: 0.55rem;
+  font-family: 'Press Start 2P', monospace;
   color: white;
   display: flex;
   align-items: center;
-  gap: 5px;
-  box-shadow: 0 2px 8px rgba(43,196,212,0.5);
+  gap: 4px;
+  letter-spacing: 0.08em;
+  box-shadow: 2px 2px 0 #440000;
 }
 
 .live-dot {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
   background: white;
-  border-radius: 50%;
-  animation: live-pulse 1.6s ease-in-out infinite;
+  animation: live-pulse 1s step-end infinite;
   flex-shrink: 0;
 }
 
 @keyframes live-pulse {
-  0%, 100% { opacity: 1;   transform: scale(1); }
-  50%       { opacity: 0.3; transform: scale(0.75); }
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
 }
 
 #theme-label {
   position: absolute;
-  bottom: 7px;
-  left: 9px;
-  font-size: 0.66rem;
-  color: var(--pink);
-  opacity: 0.85;
+  bottom: 5px;
+  left: 7px;
+  font-size: 0.55rem;
+  font-family: 'Press Start 2P', monospace;
+  color: var(--px-yellow);
+  opacity: 0.9;
   letter-spacing: 0.05em;
-  text-shadow: 0 1px 2px rgba(255,255,255,0.8);
-  transition: color 0.5s;
+  text-shadow: 1px 1px 0 var(--snes-lo);
 }
 
 /* テーマ別コーナー */
-[data-theme="morning"]   .vf-corner { border-color: #ff85b3; }
-[data-theme="afternoon"] .vf-corner { border-color: #5ec89b; }
-[data-theme="evening"]   .vf-corner { border-color: #ff9b6a; }
-[data-theme="night"]     .vf-corner { border-color: #c77dff; }
+[data-theme="morning"]   .vf-corner { border-color: #ff88bb; }
+[data-theme="afternoon"] .vf-corner { border-color: #55eebb; }
+[data-theme="evening"]   .vf-corner { border-color: #ffaa44; }
+[data-theme="night"]     .vf-corner { border-color: #aa88ff; }
+
+/* ===== ステータスバー (NEW: Tamagotchi HP/MP) ===== */
+#status-bar {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 7;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.px-stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.px-stat-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 5px;
+  color: var(--px-white);
+  width: 14px;
+  text-align: right;
+  letter-spacing: 0;
+  text-shadow: 1px 1px 0 var(--snes-lo);
+}
+
+.px-stat-bar {
+  width: 44px;
+  height: 6px;
+  background: var(--px-black);
+  border: 2px solid;
+  border-color: var(--snes-lo) var(--snes-hi) var(--snes-hi) var(--snes-lo);
+  overflow: hidden;
+}
+
+.px-stat-fill {
+  height: 100%;
+}
+
+.hp-fill {
+  background: var(--px-pink);
+  width: 92%;
+  animation: hp-pulse 4s step-end infinite;
+}
+
+.mp-fill {
+  background: var(--px-cyan);
+  width: 78%;
+  animation: mp-pulse 6s step-end infinite;
+}
+
+@keyframes hp-pulse {
+  0%, 100% { width: 92%; }
+  25%       { width: 96%; }
+  60%       { width: 88%; }
+}
+
+@keyframes mp-pulse {
+  0%, 100% { width: 78%; }
+  30%       { width: 82%; }
+  65%       { width: 72%; }
+}
 
 /* ===== キャラクターステージ ===== */
 #character-stage {
@@ -509,206 +671,211 @@ html, body {
   width: 120px;
   height: auto;
   display: block;
-  filter: drop-shadow(0 6px 16px rgba(255,110,180,0.35));
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
   transform-origin: center bottom;
+  filter: drop-shadow(0 4px 0 rgba(0,0,0,0.5));
 }
 
-/* ===== アニメーション ===== */
+/* ===== キャラクターアニメーション（16-bit ステップ） ===== */
 #character.idle {
-  animation: idle-float 3s ease-in-out infinite;
-  filter: drop-shadow(0 6px 22px rgba(43,196,212,0.32)) drop-shadow(0 2px 8px rgba(155,122,232,0.2));
+  animation: idle-float 1.6s steps(4) infinite;
+  filter: drop-shadow(0 4px 0 rgba(68,238,221,0.5))
+          drop-shadow(0 0 8px rgba(68,238,221,0.3));
 }
 @keyframes idle-float {
-  0%   { transform: translateY(0) rotate(-1.5deg); }
-  30%  { transform: translateY(-8px) rotate(0deg); }
-  60%  { transform: translateY(-4px) rotate(1.5deg); }
-  100% { transform: translateY(0) rotate(-1.5deg); }
+  0%   { transform: translateY(0); }
+  25%  { transform: translateY(-8px); }
+  50%  { transform: translateY(-4px); }
+  75%  { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
 }
 
 #character.talking {
-  animation: talking-bounce 0.4s ease-in-out infinite;
+  animation: talking-bounce 0.3s steps(2) infinite;
 }
 @keyframes talking-bounce {
-  0%   { transform: translateY(0) scaleX(1); }
-  25%  { transform: translateY(-10px) scaleX(0.97); }
-  50%  { transform: translateY(0) scaleX(1.02); }
-  75%  { transform: translateY(-6px) scaleX(0.99); }
-  100% { transform: translateY(0) scaleX(1); }
+  0%   { transform: translateY(0) scaleY(1); }
+  50%  { transform: translateY(-10px) scaleY(0.94); }
+  100% { transform: translateY(0) scaleY(1); }
 }
 
 #character.happy {
-  animation: happy-dance 0.5s ease-in-out 3;
+  animation: happy-dance 0.4s steps(4) 4;
+  filter: drop-shadow(0 0 10px var(--px-yellow));
 }
 @keyframes happy-dance {
-  0%   { transform: translateY(0) rotate(0deg) scale(1); }
-  20%  { transform: translateY(-16px) rotate(-8deg) scale(1.05); }
-  50%  { transform: translateY(-8px) rotate(8deg) scale(1.08); }
-  80%  { transform: translateY(-12px) rotate(-4deg) scale(1.05); }
-  100% { transform: translateY(0) rotate(0deg) scale(1); }
+  0%   { transform: translateY(0) rotate(0deg) scaleX(1); }
+  25%  { transform: translateY(-16px) rotate(-10deg) scaleX(0.92); }
+  50%  { transform: translateY(-8px) rotate(10deg) scaleX(1.08); }
+  75%  { transform: translateY(-18px) rotate(-6deg) scaleX(0.94); }
+  100% { transform: translateY(0) rotate(0deg) scaleX(1); }
 }
 
 #character.thinking {
-  animation: thinking-tilt 1.5s ease-in-out infinite;
+  animation: thinking-tilt 1.2s steps(3) infinite;
 }
 @keyframes thinking-tilt {
   0%   { transform: rotate(0deg) translateY(0); }
-  40%  { transform: rotate(-6deg) translateY(-4px); }
-  60%  { transform: rotate(-6deg) translateY(-4px); }
+  33%  { transform: rotate(-8deg) translateY(-4px); }
+  67%  { transform: rotate(-8deg) translateY(-6px); }
   100% { transform: rotate(0deg) translateY(0); }
 }
 
 #character.sleepy {
-  animation: sleepy-nod 2.8s ease-in-out infinite;
-  filter: brightness(0.9) saturate(0.75) drop-shadow(0 4px 10px rgba(180,100,200,0.3));
+  animation: sleepy-nod 2s steps(3) infinite;
+  filter: brightness(0.8) saturate(0.5) drop-shadow(0 4px 0 rgba(180,100,200,0.4));
 }
 @keyframes sleepy-nod {
   0%   { transform: translateY(0)   rotate(0deg); }
-  35%  { transform: translateY(3px) rotate(-9deg); }
-  65%  { transform: translateY(4px) rotate(-11deg); }
-  85%  { transform: translateY(2px) rotate(-7deg); }
+  33%  { transform: translateY(3px) rotate(-10deg); }
+  67%  { transform: translateY(4px) rotate(-12deg); }
   100% { transform: translateY(0)   rotate(0deg); }
 }
 
 #character.excited {
-  animation: excited-jump 0.28s ease-in-out infinite;
-  filter: brightness(1.2) saturate(1.5) drop-shadow(0 0 10px var(--pink));
+  animation: excited-jump 0.24s steps(4) infinite;
+  filter: brightness(1.3) drop-shadow(0 0 12px var(--px-pink));
 }
 @keyframes excited-jump {
-  0%   { transform: translateY(0)    scale(1)    rotate(-2deg); }
-  25%  { transform: translateY(-20px) scale(1.07) rotate(4deg); }
-  50%  { transform: translateY(-13px) scale(1.04) rotate(-3deg); }
-  75%  { transform: translateY(-22px) scale(1.08) rotate(5deg); }
-  100% { transform: translateY(0)    scale(1)    rotate(-2deg); }
+  0%   { transform: translateY(0) scale(1); }
+  25%  { transform: translateY(-20px) scale(1.08); }
+  50%  { transform: translateY(-10px) scale(1.03); }
+  75%  { transform: translateY(-22px) scale(1.1); }
+  100% { transform: translateY(0) scale(1); }
 }
 
 #character.blush {
-  animation: blush-shy 0.55s ease-in-out 3;
-  filter: saturate(1.6) hue-rotate(-10deg) brightness(1.1);
+  animation: blush-shy 0.5s steps(2) 4;
+  filter: hue-rotate(-15deg) saturate(1.8) brightness(1.1);
 }
 @keyframes blush-shy {
-  0%   { transform: translateY(0)    rotate(0deg); }
-  30%  { transform: translateY(-5px) rotate(-5deg); }
-  70%  { transform: translateY(-5px) rotate(5deg); }
-  100% { transform: translateY(0)    rotate(0deg); }
+  0%   { transform: translateY(0) rotate(0deg); }
+  50%  { transform: translateY(-5px) rotate(-6deg); }
+  100% { transform: translateY(0) rotate(0deg); }
 }
 
-/* ===== グリッチ状態 (sasakure.UK: データ崩壊) ===== */
+/* ===== グリッチ（16-bit データ崩壊） ===== */
 #character.glitch {
-  animation: glitch-anim 0.10s step-end 5;
+  animation: glitch-anim 0.08s step-end 6;
 }
 @keyframes glitch-anim {
-  0%   { transform: translate(0);          filter: drop-shadow( 4px 0 var(--cyan)) drop-shadow(-4px 0 var(--pink)) brightness(1.2); }
-  15%  { transform: translate(-6px,  2px); filter: brightness(1.5) hue-rotate(30deg); }
-  30%  { transform: translate( 6px, -2px); filter: drop-shadow(-4px 0 var(--cyan)) drop-shadow( 4px 0 var(--pink)); }
-  45%  { transform: translate(-3px,  3px); filter: brightness(1.8) saturate(2); }
-  60%  { transform: translate( 4px, -3px); filter: brightness(1.2); }
-  75%  { transform: translate(-2px,  1px); filter: drop-shadow( 3px 0 var(--cyan)) brightness(1.3); }
-  90%  { transform: translate( 2px, -1px); }
+  0%   { transform: translate(0);          filter: none; }
+  15%  { transform: translate(-8px,  2px); filter: drop-shadow(6px 0 var(--px-cyan)) brightness(2); }
+  30%  { transform: translate( 8px, -2px); filter: drop-shadow(-6px 0 var(--px-pink)) brightness(1.5); }
+  45%  { transform: translate(-4px,  4px); filter: hue-rotate(90deg) brightness(2) saturate(3); }
+  60%  { transform: translate( 6px, -3px); filter: drop-shadow(4px 0 var(--px-cyan)) brightness(1.8); }
+  75%  { transform: translate(-2px,  1px); filter: drop-shadow(-4px 0 var(--px-pink)); }
+  90%  { transform: translate( 3px, -1px); filter: brightness(1.5); }
   100% { transform: translate(0);          filter: none; }
 }
 
 /* ===== 追加キャラ状態 ===== */
 #character.love {
-  animation: love-pulse 0.6s ease-in-out 4;
-  filter: hue-rotate(330deg) saturate(1.8) brightness(1.15) drop-shadow(0 0 14px #ff69b4);
+  animation: love-pulse 0.5s steps(4) 4;
+  filter: hue-rotate(320deg) saturate(2) brightness(1.2)
+          drop-shadow(0 0 12px #ff69b4);
 }
 @keyframes love-pulse {
   0%   { transform: scale(1)    translateY(0); }
-  35%  { transform: scale(1.14) translateY(-10px); }
-  65%  { transform: scale(1.07) translateY(-5px); }
+  25%  { transform: scale(1.16) translateY(-12px); }
+  50%  { transform: scale(1.08) translateY(-6px); }
+  75%  { transform: scale(1.14) translateY(-10px); }
   100% { transform: scale(1)    translateY(0); }
 }
 
 #character.dancing {
-  animation: dancing-sway 0.45s ease-in-out infinite;
-  filter: drop-shadow(0 0 12px var(--mint));
+  animation: dancing-sway 0.4s steps(4) infinite;
+  filter: drop-shadow(0 0 10px var(--px-green));
 }
 @keyframes dancing-sway {
-  0%   { transform: translateY(0)    rotate(-9deg) scaleX(1); }
-  25%  { transform: translateY(-16px) rotate(0deg)  scaleX(0.94); }
-  50%  { transform: translateY(0)    rotate(9deg)  scaleX(1); }
-  75%  { transform: translateY(-16px) rotate(0deg)  scaleX(0.94); }
-  100% { transform: translateY(0)    rotate(-9deg) scaleX(1); }
+  0%   { transform: translateY(0)    rotate(-10deg) scaleX(1); }
+  25%  { transform: translateY(-16px) rotate(0deg)  scaleX(0.92); }
+  50%  { transform: translateY(0)    rotate(10deg)  scaleX(1); }
+  75%  { transform: translateY(-16px) rotate(0deg)  scaleX(0.92); }
+  100% { transform: translateY(0)    rotate(-10deg) scaleX(1); }
 }
 
 #character.surprised {
-  animation: surprised-pop 0.22s ease-out 2;
-  filter: brightness(1.3) drop-shadow(0 0 16px var(--yellow));
+  animation: surprised-pop 0.16s steps(2) 3;
+  filter: brightness(1.5) drop-shadow(0 0 14px var(--px-yellow));
 }
 @keyframes surprised-pop {
   0%   { transform: scale(1)    translateY(0); }
-  35%  { transform: scale(1.28) translateY(-20px); }
-  70%  { transform: scale(0.94) translateY(-5px); }
+  50%  { transform: scale(1.32) translateY(-22px); }
   100% { transform: scale(1)    translateY(0); }
 }
 
-/* 考え中ドット */
+/* 考え中ドット（ピクセル四角） */
 #thinking-dots {
   display: flex;
   gap: 5px;
 }
 #thinking-dots span {
-  width: 8px;
-  height: 8px;
-  background: var(--pink);
-  border-radius: 50%;
-  animation: dot-pulse 1.2s ease-in-out infinite;
+  width: 6px;
+  height: 6px;
+  background: var(--px-pink);
+  /* 四角いまま（border-radius なし）*/
+  animation: dot-blink 0.9s step-end infinite;
 }
-#thinking-dots span:nth-child(2) { animation-delay: 0.2s; }
-#thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes dot-pulse {
-  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-  40%           { transform: scale(1.1); opacity: 1; }
+#thinking-dots span:nth-child(2) { animation-delay: 0.3s; }
+#thinking-dots span:nth-child(3) { animation-delay: 0.6s; }
+@keyframes dot-blink {
+  0%, 49% { opacity: 0.2; transform: scaleY(0.5); }
+  50%, 100% { opacity: 1; transform: scaleY(1); }
 }
 
-/* ===== 吹き出し ===== */
-/* character-area直下に配置 → キャラと重ならない */
+/* ===== 吹き出し（ピクセルボックス） ===== */
 #speech-bubble {
   position: absolute;
   top: 8px;
   left: 50%;
   transform: translateX(-50%);
-  background: white;
-  color: var(--text);
-  border: 2px solid var(--pink-l);
-  border-radius: 18px;
-  padding: 9px 16px;
-  font-size: 0.86rem;
-  max-width: min(240px, 82vw);
-  max-height: 70px;
+  background: var(--px-white);
+  color: var(--px-bg);
+  border: 4px solid;
+  border-color: white #888888 #888888 white;
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  max-width: min(220px, 80vw);
+  max-height: 66px;
   overflow: hidden;
-  font-family: 'Hachi Maru Pop', 'Hiragino Maru Gothic ProN', cursive;
+  font-family: 'DotGothic16', 'BIZ UDPGothic', sans-serif;
   min-width: 80px;
   text-align: center;
-  line-height: 1.5;
-  box-shadow: 0 4px 20px var(--shadow);
+  line-height: 1.6;
+  box-shadow: 3px 3px 0 var(--snes-lo);
   white-space: pre-wrap;
   word-break: break-word;
   z-index: 8;
-  animation: bubble-in 0.25s ease-out;
+  animation: bubble-in 0.1s step-end;
 }
+/* ピクセルしっぽ（▼） */
 #speech-bubble::after {
   content: '';
   position: absolute;
-  bottom: -12px;
+  bottom: -10px;
   left: 50%;
   transform: translateX(-50%);
-  border: 7px solid transparent;
-  border-top-color: var(--pink-l);
+  width: 10px;
+  height: 6px;
+  background: var(--px-white);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
 }
 #speech-bubble::before {
   content: '';
   position: absolute;
-  bottom: -9px;
+  bottom: -14px;
   left: 50%;
   transform: translateX(-50%);
-  border: 6px solid transparent;
-  border-top-color: white;
-  z-index: 1;
+  width: 12px;
+  height: 7px;
+  background: #888888;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
 }
 @keyframes bubble-in {
-  from { opacity: 0; transform: translateX(-50%) scale(0.8) translateY(8px); }
-  to   { opacity: 1; transform: translateX(-50%) scale(1) translateY(0); }
+  from { opacity: 0; transform: translateX(-50%) scale(0.5); }
+  to   { opacity: 1; transform: translateX(-50%) scale(1); }
 }
 
 /* ===== 感情オーバーレイ ===== */
@@ -717,33 +884,36 @@ html, body {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 2rem;
+  font-size: 1.8rem;
   pointer-events: none;
   opacity: 0;
   z-index: 5;
 }
 #emotion-overlay.show {
-  animation: emotion-float 2.4s ease-out forwards;
+  animation: emotion-float 2s steps(8) forwards;
 }
 @keyframes emotion-float {
-  0%   { opacity: 1;   transform: translateX(-50%) translateY(0) scale(1); }
-  25%  { opacity: 1;   transform: translateX(-50%) translateY(-20px) scale(1.2); }
-  80%  { opacity: 0.5; transform: translateX(-50%) translateY(-48px) scale(0.9); }
-  100% { opacity: 0;   transform: translateX(-50%) translateY(-58px) scale(0.8); }
+  0%   { opacity: 1;   transform: translateX(-50%) translateY(0); }
+  50%  { opacity: 1;   transform: translateX(-50%) translateY(-30px); }
+  75%  { opacity: 0.5; transform: translateX(-50%) translateY(-48px); }
+  100% { opacity: 0;   transform: translateX(-50%) translateY(-60px); }
 }
 
 /* ===== チャット履歴 ===== */
 #chat-section {
-  flex: 1 1 0;     /* min-height:0 相当。flexアイテムが正しく縮小できる */
-  min-height: 0;   /* Safariで必要 */
+  flex: 1 1 0;
+  min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 14px 16px 8px;
-  background: var(--bg);
-  background-image: radial-gradient(circle, rgba(155,122,232,0.18) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
+  padding: 12px 12px 8px;
+  background: var(--px-bg);
+  /* ピクセルグリッド */
+  background-image:
+    linear-gradient(rgba(155, 93, 229, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(155, 93, 229, 0.06) 1px, transparent 1px);
+  background-size: 8px 8px;
   scrollbar-width: thin;
-  scrollbar-color: var(--purple-l) transparent;
+  scrollbar-color: var(--px-purple) var(--px-bg);
 }
 
 #messages {
@@ -753,55 +923,57 @@ html, body {
 }
 
 .message {
-  max-width: 82%;
-  padding: 10px 14px;
-  border-radius: 20px;
-  font-size: 0.92rem;
-  line-height: 1.6;
+  max-width: 84%;
+  padding: 8px 12px;
+  font-size: 0.88rem;
+  line-height: 1.7;
   word-break: break-word;
-  animation: msg-in 0.2s ease-out;
+  font-family: 'DotGothic16', 'BIZ UDPGothic', sans-serif;
+  animation: msg-in 0.1s step-end;
 }
 
 @keyframes msg-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .message.user {
   align-self: flex-end;
-  background: linear-gradient(135deg, var(--pink), #e855a0);
-  color: white;
-  border-bottom-right-radius: 5px;
-  box-shadow: 0 3px 12px rgba(255,110,180,0.35);
+  background: var(--bubble-me);
+  color: var(--px-white);
+  border: 3px solid;
+  border-color: #ff88cc #550033 #550033 #ff88cc;
+  box-shadow: 3px 3px 0 #330022;
 }
 
 .message.assistant {
   align-self: flex-start;
   background: var(--bubble-him);
-  color: var(--text);
-  border-bottom-left-radius: 5px;
-  border: 1.5px solid var(--purple-l);
-  box-shadow: 0 2px 8px rgba(199,125,255,0.15);
+  color: var(--px-white);
+  border: 3px solid;
+  border-color: var(--snes-hi) var(--snes-lo) var(--snes-lo) var(--snes-hi);
+  box-shadow: 3px 3px 0 var(--snes-lo);
 }
 
 .message .sender {
-  font-size: 0.72rem;
-  font-weight: bold;
+  font-size: 0.65rem;
+  font-family: 'Press Start 2P', monospace;
+  font-weight: normal;
   margin-bottom: 4px;
   opacity: 0.75;
+  letter-spacing: 0;
 }
 
 /* ===== タイピングインジケーター ===== */
 .typing-msg {
   align-self: flex-start;
   background: var(--bubble-him);
-  border: 1.5px solid var(--purple-l);
-  border-bottom-left-radius: 5px;
-  max-width: 82%;
-  padding: 10px 14px;
-  border-radius: 20px;
-  animation: msg-in 0.2s ease-out;
-  box-shadow: 0 2px 8px rgba(199,125,255,0.15);
+  border: 3px solid;
+  border-color: var(--snes-hi) var(--snes-lo) var(--snes-lo) var(--snes-hi);
+  max-width: 84%;
+  padding: 8px 12px;
+  animation: msg-in 0.1s step-end;
+  box-shadow: 3px 3px 0 var(--snes-lo);
 }
 .typing-dots {
   display: flex;
@@ -809,35 +981,32 @@ html, body {
   padding: 3px 0;
 }
 .typing-dots span {
-  width: 7px;
-  height: 7px;
-  background: var(--pink);
-  border-radius: 50%;
-  animation: dot-bounce 1s ease-in-out infinite;
+  width: 6px;
+  height: 6px;
+  background: var(--px-pink);
+  /* 四角いまま */
+  animation: dot-blink 0.8s step-end infinite;
 }
-.typing-dots span:nth-child(2) { animation-delay: 0.16s; }
-.typing-dots span:nth-child(3) { animation-delay: 0.32s; }
-@keyframes dot-bounce {
-  0%, 60%, 100% { transform: translateY(0);    opacity: 0.4; }
-  30%            { transform: translateY(-8px); opacity: 1; }
-}
+.typing-dots span:nth-child(2) { animation-delay: 0.27s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.54s; }
 
 /* ===== 入力エリア ===== */
 #input-area {
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  padding: 10px 14px;
-  padding-bottom: max(12px, env(safe-area-inset-bottom, 12px));
-  border-top: 1.5px solid var(--border);
-  background: var(--bg-card);
+  gap: 6px;
+  padding: 8px 12px;
+  padding-bottom: max(10px, env(safe-area-inset-bottom, 10px));
+  border-top: 4px solid;
+  border-color: var(--snes-hi) transparent transparent var(--snes-hi);
+  background: var(--px-panel);
   flex-shrink: 0;
 }
 
 /* スタンプバー */
 #stamps-bar {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   overflow-x: auto;
   padding: 2px 0;
   scrollbar-width: none;
@@ -845,143 +1014,174 @@ html, body {
 #stamps-bar::-webkit-scrollbar { display: none; }
 
 .stamp {
-  background: var(--pink-p);
-  border: 1.5px solid var(--pink-l);
-  border-radius: 12px;
-  font-size: 1.25rem;
-  padding: 5px 8px;
+  background: var(--px-bg);
+  border: 3px solid;
+  border-color: var(--snes-hi) var(--snes-lo) var(--snes-lo) var(--snes-hi);
+  font-size: 1.15rem;
+  padding: 4px 6px;
   cursor: pointer;
   flex-shrink: 0;
   line-height: 1;
-  min-height: 40px;
-  min-width: 40px;
+  min-height: 38px;
+  min-width: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.12s, background 0.15s;
+  transition: transform 0.05s step-end, box-shadow 0.05s step-end;
+  box-shadow: 2px 2px 0 var(--snes-lo);
+  -webkit-tap-highlight-color: transparent;
 }
-.stamp:hover  { background: var(--purple-p); border-color: var(--purple-l); }
-.stamp:active { transform: scale(0.84); }
+.stamp:hover { filter: brightness(1.3); }
+.stamp:active {
+  border-color: var(--snes-lo) var(--snes-hi) var(--snes-hi) var(--snes-lo);
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--snes-lo);
+}
 
 /* 入力行 */
 #input-row {
   display: flex;
-  gap: 9px;
+  gap: 7px;
 }
 
 #user-input {
   flex: 1;
-  background: var(--bg-input);
-  border: 2px solid var(--border);
-  border-radius: 24px;
-  color: var(--text);
-  padding: 11px 18px;
-  font-size: max(16px, 0.92rem);
+  background: var(--px-black);
+  border: 4px solid;
+  border-color: var(--snes-lo) var(--snes-hi) var(--snes-hi) var(--snes-lo);
+  color: var(--px-cyan);
+  padding: 10px 14px;
+  font-size: max(16px, 0.88rem);
   outline: none;
-  transition: border-color 0.2s;
-  font-family: inherit;
+  font-family: 'DotGothic16', 'BIZ UDPGothic', sans-serif;
   min-height: 46px;
+  caret-color: var(--px-pink);
 }
-#user-input:focus { border-color: var(--pink); }
-#user-input::placeholder { color: var(--text-dim); }
+#user-input:focus {
+  border-color: var(--snes-lo) var(--px-cyan) var(--px-cyan) var(--snes-lo);
+}
+#user-input::placeholder { color: var(--px-gray); }
 
 #send-btn {
-  background: linear-gradient(135deg, var(--pink), var(--purple));
-  border: none;
-  border-radius: 24px;
+  background: var(--px-pink-d);
+  border: 4px solid;
+  border-color: var(--px-pink-l) var(--px-bg) var(--px-bg) var(--px-pink-l);
   color: white;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  font-family: 'DotGothic16', sans-serif;
   font-weight: bold;
-  padding: 11px 20px;
+  padding: 10px 16px;
   cursor: pointer;
   min-height: 46px;
-  transition: opacity 0.2s, transform 0.1s;
   white-space: nowrap;
-  box-shadow: 0 3px 12px rgba(255,110,180,0.35);
+  box-shadow: 3px 3px 0 var(--snes-lo);
+  transition: transform 0.05s step-end, box-shadow 0.05s step-end;
+  letter-spacing: 0.08em;
 }
-#send-btn:hover   { opacity: 0.9; }
-#send-btn:active  { transform: scale(0.95); }
-#send-btn:disabled { opacity: 0.45; cursor: default; box-shadow: none; }
+#send-btn:hover { filter: brightness(1.2); }
+#send-btn:active {
+  border-color: var(--px-bg) var(--px-pink-l) var(--px-pink-l) var(--px-bg);
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--snes-lo);
+}
+#send-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  box-shadow: none;
+}
 
 /* ===== 設定モーダル ===== */
 #settings-modal {
   position: fixed;
   inset: 0;
-  background: rgba(255,220,240,0.5);
+  background: rgba(8, 5, 24, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 200;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
 }
 
 .modal-box {
-  background: var(--bg-card);
-  border: 2px solid var(--border);
-  border-radius: 24px;
-  padding: 28px 24px;
+  background: var(--px-panel);
+  border: 4px solid;
+  border-color: var(--snes-hi) var(--snes-lo) var(--snes-lo) var(--snes-hi);
+  padding: 24px 20px;
   width: min(380px, 90vw);
   display: flex;
   flex-direction: column;
   gap: 12px;
-  box-shadow: 0 8px 40px var(--shadow);
+  box-shadow: 5px 5px 0 var(--snes-lo);
 }
 
 .modal-box h3 {
-  font-size: 1.1rem;
-  color: var(--pink);
-  font-weight: bold;
+  font-size: 1rem;
+  color: var(--px-yellow);
+  font-family: 'DotGothic16', sans-serif;
+  text-shadow: 2px 2px 0 var(--snes-lo);
+  letter-spacing: 0.1em;
 }
 
 .modal-box label {
-  font-size: 0.85rem;
-  color: var(--text-dim);
+  font-size: 0.8rem;
+  color: var(--px-gray);
+  font-family: 'DotGothic16', sans-serif;
 }
 
 .modal-box input {
-  background: var(--bg-input);
-  border: 2px solid var(--border);
-  border-radius: 12px;
-  color: var(--text);
-  padding: 10px 14px;
-  font-size: max(16px, 0.9rem);
+  background: var(--px-black);
+  border: 4px solid;
+  border-color: var(--snes-lo) var(--snes-hi) var(--snes-hi) var(--snes-lo);
+  color: var(--px-cyan);
+  padding: 10px 12px;
+  font-size: max(16px, 0.88rem);
   outline: none;
-  font-family: inherit;
+  font-family: 'DotGothic16', monospace;
+  caret-color: var(--px-pink);
 }
-.modal-box input:focus { border-color: var(--pink); }
+.modal-box input:focus {
+  border-color: var(--snes-lo) var(--px-cyan) var(--px-cyan) var(--snes-lo);
+}
+.modal-box input::placeholder { color: var(--px-gray); }
 
 .modal-actions {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
   margin-top: 4px;
 }
 
 .modal-actions button {
-  border: none;
-  border-radius: 12px;
-  padding: 12px;
-  font-size: 0.9rem;
+  border: 4px solid;
+  border-color: var(--px-pink-l) var(--px-bg) var(--px-bg) var(--px-pink-l);
+  background: var(--px-pink-d);
+  color: white;
+  padding: 11px;
+  font-size: 0.85rem;
+  font-family: 'DotGothic16', sans-serif;
   font-weight: bold;
   cursor: pointer;
   min-height: 46px;
-  transition: opacity 0.2s;
-  background: linear-gradient(135deg, var(--pink), var(--purple));
-  color: white;
+  box-shadow: 3px 3px 0 var(--snes-lo);
+  transition: transform 0.05s step-end, box-shadow 0.05s step-end;
+  letter-spacing: 0.05em;
 }
-.modal-actions button:hover { opacity: 0.9; }
+.modal-actions button:hover { filter: brightness(1.2); }
+.modal-actions button:active {
+  border-color: var(--px-bg) var(--px-pink-l) var(--px-pink-l) var(--px-bg);
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--snes-lo);
+}
 
 .modal-actions button.secondary {
-  background: var(--pink-p);
-  color: var(--text-dim);
-  border: 1.5px solid var(--border);
+  background: var(--px-panel2);
+  border-color: var(--snes-hi) var(--snes-lo) var(--snes-lo) var(--snes-hi);
+  color: var(--px-gray);
 }
 
 .modal-actions button.danger {
-  background: none;
-  border: 1.5px solid var(--danger);
-  color: var(--danger);
+  background: transparent;
+  border-color: var(--px-red) var(--snes-lo) var(--snes-lo) var(--px-red);
+  color: var(--px-red);
 }
 
 /* ===== キャラ着せ替えUI ===== */
@@ -990,27 +1190,28 @@ html, body {
   flex-direction: column;
   gap: 10px;
 }
-.settings-char > label { font-size: 0.85rem; color: var(--text-dim); }
+.settings-char > label { font-size: 0.8rem; color: var(--px-gray); }
 
 .char-upload-row {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 #char-preview {
-  width: 64px;
-  height: 64px;
+  width: 60px;
+  height: 60px;
   object-fit: contain;
-  border-radius: 12px;
-  border: 2px solid var(--border);
-  background: var(--bg-input);
-  padding: 4px;
+  border: 3px solid;
+  border-color: var(--snes-lo) var(--snes-hi) var(--snes-hi) var(--snes-lo);
+  background: var(--px-black);
+  padding: 3px;
   flex-shrink: 0;
+  image-rendering: pixelated;
 }
 .char-upload-actions {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 6px;
   flex: 1;
 }
 .btn-upload {
@@ -1018,24 +1219,30 @@ html, body {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  background: linear-gradient(135deg, var(--pink), var(--purple));
-  border-radius: 12px;
+  background: var(--px-purple);
+  border: 4px solid;
+  border-color: #cc88ff #330055 #330055 #cc88ff;
   color: white;
-  font-size: 0.85rem;
-  font-weight: bold;
-  padding: 10px 14px;
+  font-size: 0.8rem;
+  font-family: 'DotGothic16', sans-serif;
+  padding: 9px 12px;
   cursor: pointer;
-  min-height: 42px;
-  transition: opacity 0.2s;
+  min-height: 40px;
+  box-shadow: 2px 2px 0 var(--snes-lo);
+  transition: transform 0.05s step-end;
   text-align: center;
 }
-.btn-upload:hover { opacity: 0.88; }
+.btn-upload:hover { filter: brightness(1.2); }
+.btn-upload:active {
+  border-color: #330055 #cc88ff #cc88ff #330055;
+  transform: translate(1px, 1px);
+}
 
 .settings-divider {
-  height: 1.5px;
-  background: var(--border);
+  height: 4px;
+  background: var(--snes-lo);
+  border-top: 2px solid var(--snes-hi);
   margin: 2px 0;
-  border-radius: 2px;
 }
 
 /* ===== コピートースト ===== */
@@ -1043,19 +1250,20 @@ html, body {
   position: fixed;
   bottom: 90px;
   left: 50%;
-  transform: translateX(-50%) translateY(10px);
-  background: linear-gradient(135deg, var(--pink), var(--purple));
+  transform: translateX(-50%) translateY(8px);
+  background: var(--px-purple);
   color: white;
-  border-radius: 22px;
-  font-size: 0.82rem;
-  font-weight: bold;
-  padding: 8px 18px;
+  border: 3px solid;
+  border-color: #cc88ff #330055 #330055 #cc88ff;
+  font-size: 0.75rem;
+  font-family: 'DotGothic16', sans-serif;
+  padding: 7px 16px;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 3px 3px 0 var(--snes-lo);
   z-index: 300;
   white-space: nowrap;
-  box-shadow: 0 4px 16px var(--shadow);
+  transition: opacity 0.1s step-end, transform 0.1s step-end;
 }
 #copy-toast.show {
   opacity: 1;
@@ -1065,29 +1273,18 @@ html, body {
 /* ===== パーティクルキャンバス ===== */
 #particles-canvas { z-index: 0; }
 
-/* #setup-screen と #settings-modal は position:fixed なのでここに含めない */
-#app {
-  position: relative;
-  z-index: 1;
-}
-
 /* ===== シーンアニメーション ===== */
 @keyframes butterfly {
-  0%, 100% { transform: translateY(0) rotate(-5deg); }
-  50%       { transform: translateY(-12px) rotate(5deg); }
-}
-@keyframes twinkle-emoji {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.3; }
+  0%, 49% { transform: translateY(0); }
+  50%, 100% { transform: translateY(-8px); }
 }
 @keyframes twinkle-stars {
-  0%   { opacity: 0.55; }
-  50%  { opacity: 1.0;  }
-  100% { opacity: 0.65; }
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1.0; }
 }
 @keyframes sun-glow {
-  0%, 100% { filter: drop-shadow(0 0 4px rgba(255,220,0,0.5)); }
-  50%       { filter: drop-shadow(0 0 12px rgba(255,220,0,0.9)); }
+  0%, 100% { opacity: 0.85; }
+  50%       { opacity: 1.0; }
 }
 
 /* ===== ユーティリティ ===== */
@@ -1100,18 +1297,20 @@ html, body {
 }
 @media (max-height: 600px) {
   #character-area { flex: 0 0 min(28svh, 180px); }
-  #character { width: 80px !important; }
+  #character { width: 78px !important; }
 }
 
 @media (max-width: 380px) {
-  #speech-bubble { max-width: 190px; font-size: 0.82rem; }
-  .message { font-size: 0.88rem; }
-  #send-btn { padding: 11px 14px; font-size: 0.85rem; }
+  #speech-bubble { max-width: 180px; font-size: 0.78rem; }
+  .message { font-size: 0.84rem; }
+  #send-btn { padding: 10px 12px; font-size: 0.8rem; }
+  .px-stat-bar { width: 36px; }
+  .px-stat-label { font-size: 5px; }
 }
 
 /* iOS safe area for header */
 @supports (padding-top: env(safe-area-inset-top)) {
   #app-header {
-    padding-top: max(12px, env(safe-area-inset-top));
+    padding-top: max(10px, env(safe-area-inset-top));
   }
 }

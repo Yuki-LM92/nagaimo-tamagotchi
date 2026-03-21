@@ -21,7 +21,7 @@
              font-src 'self' https://fonts.gstatic.com;">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DotGothic16&family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -74,6 +74,18 @@
         <div class="vf-corner br"></div>
         <div id="live-badge"><span class="live-dot"></span>LIVE</div>
         <div id="theme-label"></div>
+      </div>
+
+      <!-- ステータスバー（HP/MP） -->
+      <div id="status-bar" aria-hidden="true">
+        <div class="px-stat">
+          <span class="px-stat-label">HP</span>
+          <div class="px-stat-bar"><div class="px-stat-fill hp-fill"></div></div>
+        </div>
+        <div class="px-stat">
+          <span class="px-stat-label">MP</span>
+          <div class="px-stat-bar"><div class="px-stat-fill mp-fill"></div></div>
+        </div>
       </div>
 
       <!-- 吹き出し（character-area上部に配置 → キャラと重ならない） -->
