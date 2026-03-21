@@ -15,91 +15,83 @@ const GeminiAPI = (() => {
 返答は短めにしてください（1〜3文程度）。長くなりすぎないこと。
 Markdownの記号（**や##など）は使わないでください。普通の日本語テキストで返してください。`;
 
-  // 試みるモデルのリスト（新しい順）
-  const MODELS = [
-    'gemini-2.5-flash',
-    'gemini-2.5-flash-preview',
-    'gemini-2.5-pro',
-    'gemini-2.0-flash-exp',
-    'gemini-1.5-flash-002'
-  ];
+  // 優先モデルキーワード（含まれていれば優先）
+  const PREFERRED = ['2.5-flash', '2.5-pro', '2.0-flash', '1.5-flash', '1.5-pro'];
+
+  // 発見したモデルをキャッシュ
+  let cachedModel = null;
+
+  // ListModels でアカウントで使えるモデルを自動検出
+  async function discoverModel(apiKey) {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`
+    );
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+
+    const models = (data.models || [])
+      .filter(m => m.supportedGenerationMethods?.includes('generateContent'))
+      .map(m => m.name.replace('models/', ''));
+
+    if (models.length === 0) throw new Error('generateContent対応モデルが見つかりません');
+
+    // 優先キーワード順に探す
+    for (const keyword of PREFERRED) {
+      const found = models.find(m => m.includes(keyword));
+      if (found) return found;
+    }
+
+    return models[0];
+  }
 
   async function chat(apiKey, contextMessages, userMessage) {
     if (!apiKey) throw new Error('APIキーが設定されていません');
 
-    // ユーザーメッセージを末尾に追加したコンテキストを作る
+    // モデルを未発見なら自動検出
+    if (!cachedModel) {
+      cachedModel = await discoverModel(apiKey);
+    }
+
     const contents = [
       ...contextMessages,
       { role: 'user', parts: [{ text: userMessage }] }
     ];
 
-    let lastError = null;
-    const modelErrors = [];
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${cachedModel}:generateContent?key=${apiKey}`;
 
-    for (const model of MODELS) {
-      try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+    const body = {
+      system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
+      contents,
+      generationConfig: { maxOutputTokens: 256, temperature: 0.9 }
+    };
 
-        const body = {
-          system_instruction: {
-            parts: [{ text: SYSTEM_PROMPT }]
-          },
-          contents,
-          generationConfig: {
-            maxOutputTokens: 256,
-            temperature: 0.9
-          }
-        };
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
 
-        const res = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
-        });
+    const data = await res.json();
 
-        const data = await res.json();
-
-        // エラーレスポンス
-        if (data.error) {
-          const code = data.error.code;
-          const status = data.error.status || '';
-          // 認証エラーのみ即時スロー（キーが違う → 他モデルでも同じ）
-          if (code === 401 || code === 403 ||
-              status === 'UNAUTHENTICATED' || status === 'PERMISSION_DENIED') {
-            throw new Error(`${status ? status + ': ' : ''}${data.error.message || 'APIエラー'}`);
-          }
-          // それ以外（404, 429, 400, 500など）は次モデルへ
-          const msg = `${status ? status + ': ' : ''}${data.error.message || 'APIエラー'}`;
-          modelErrors.push(`[${model}] ${msg}`);
-          lastError = new Error(msg);
-          continue;
-        }
-
-        // 正常レスポンス
-        const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (!text) throw new Error('返答が空でした');
-
-        return text.trim();
-
-      } catch (e) {
-        // 認証エラーは全モデルで同じなので即時スロー
-        if (
-          e.message.includes('UNAUTHENTICATED') ||
-          e.message.includes('PERMISSION_DENIED') ||
-          e.message.includes('401') ||
-          e.message.includes('403')
-        ) {
-          throw e;
-        }
-        // それ以外（ネットワーク含む）は次モデルへ
-        modelErrors.push(`[${model}] ${e.message}`);
-        lastError = e;
-      }
+    if (data.error) {
+      // キャッシュを捨てて次回再検出させる
+      cachedModel = null;
+      const status = data.error.status ? data.error.status + ': ' : '';
+      throw new Error(status + (data.error.message || 'APIエラー'));
     }
 
-    const summary = modelErrors.length ? modelErrors.join(' | ') : '利用できるモデルが見つかりませんでした';
-    throw new Error(summary);
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!text) throw new Error('返答が空でした');
+
+    return text.trim();
   }
 
-  return { chat };
+  // テスト用：発見したモデル名も返す
+  async function test(apiKey) {
+    const model = await discoverModel(apiKey);
+    const reply = await chat(apiKey, [], 'テスト');
+    return { model, reply };
+  }
+
+  return { chat, test };
 })();

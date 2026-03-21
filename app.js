@@ -209,11 +209,11 @@ const App = (() => {
     if (!wrapEl || !textEl) return;
     wrapEl.style.display = 'block';
     textEl.style.color = '#aaa';
-    textEl.textContent = '通信中...';
+    textEl.textContent = 'モデルを検索中...';
     try {
-      const reply = await GeminiAPI.chat(key, [], 'テスト');
+      const { model, reply } = await GeminiAPI.test(key);
       textEl.style.color = '#0f0';
-      textEl.textContent = '✅ 成功:\n' + reply;
+      textEl.textContent = '✅ 成功\nモデル: ' + model + '\n返答: ' + reply;
     } catch (err) {
       textEl.style.color = '#f66';
       textEl.textContent = '❌ エラー:\n' + (err?.message || String(err));
