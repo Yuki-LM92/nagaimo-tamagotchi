@@ -133,9 +133,9 @@ const Character = (() => {
     const st = speechText();
     if (!bubble || !st) return;
 
-    // フォントサイズをリセットしてテキストをセット
+    // フォントサイズをリセットしてテキストをセット（先頭末尾の空白・改行を除去）
     st.style.fontSize = '';
-    st.textContent = text;
+    st.textContent = text.trim();
     bubble.classList.remove('hidden');
 
     // シュリンクトゥフィット: max-heightに収まるまで文字を縮小
