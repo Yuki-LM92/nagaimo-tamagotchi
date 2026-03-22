@@ -21,17 +21,18 @@ const App = (() => {
   const settingsCloseBtn  = $('settings-close-btn');
 
   // ===== 初期化 =====
+  const DEFAULT_ROOM = 'nagaimo-shared';
+
   async function init() {
     bindEvents();
     Character.idle();
     Character.setupTap();
 
-    const roomCode = SupabaseSync.getRoomCode();
-    if (roomCode) {
-      await syncAndShowApp(roomCode);
-    } else {
-      showSetup();
+    // ルームコードが未設定の場合は固定コードを自動セット
+    if (!SupabaseSync.getRoomCode()) {
+      SupabaseSync.saveRoomCode(DEFAULT_ROOM);
     }
+    await syncAndShowApp(SupabaseSync.getRoomCode());
   }
 
   async function syncAndShowApp(roomCode) {
